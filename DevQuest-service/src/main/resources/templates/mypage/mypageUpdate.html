@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>마이페이지 수정 | DevQuest</title>
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+    <link rel="stylesheet" th:href="@{/css/mypage/mypageUpdate.css}">
+</head>
+<body>
+
+<div class="header">
+    <div class="logo">
+        <a th:href="@{/dashboard}" style="text-decoration: none; color:inherit;">
+            DevQuest
+        </a>
+    </div>
+    <div class="menu">
+        <span class="menu-item" onclick="goToDashboard()">대시보드</span>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <span class="menu-item" onclick="logout()">로그아웃</span>
+    </div>
+</div>
+
+<div class="container">
+    <div class="nickname" th:text="${user.nickname} + ' 님의 마이페이지'"></div>
+    <img class="profile-img" th:src="@{'/images/profile/' + ${user.userImage}}" alt="프로필 이미지">
+
+    <div class="level-title" th:text="${user.level.levelName}"></div>
+    <div class="level" th:text="'Lv.' + ${user.level.levelId}"></div>
+
+    <div class="progress-bar">
+        <div class="progress" th:style="'width:' + ${progressPercent} + '%'"></div>
+    </div>
+
+    <form class="edit-box" method="post" action="/user/update" enctype="multipart/form-data">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <label for="userImageFile">프로필 이미지 업로드</label>
+        <input type="file" id="userImageFile" name="userImageFile">
+
+        <label for="nickname">닉네임</label>
+        <input type="text" id="nickname" name="nickname" th:value="${user.nickname}">
+
+        <label for="currentPassword">현재 비밀번호</label>
+        <input type="password" id="currentPassword" name="currentPassword" placeholder="현재 비밀번호를 입력해주세요">
+
+        <div class="error" th:if="${passwordError}" th:text="${passwordError}"></div>
+
+        <label for="password">변경 비밀번호</label>
+        <input type="password" id="password" name="password">
+
+        <label for="comment">한마디</label>
+        <input type="text" id="comment" name="comment" th:value="${user.comment}">
+
+        <button type="submit" class="submit-btn">수정 완료</button>
+    </form>
+</div>
+</body>
+<script src="/js/header.js" defer></script>
+<script src="/js/achievement/mypageAchieve.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+</html>

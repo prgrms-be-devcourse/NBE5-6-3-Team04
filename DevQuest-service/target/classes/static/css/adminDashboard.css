@@ -1,0 +1,204 @@
+body {
+  background-color: #f4f4f4;
+  font-family: 'Noto Sans KR', sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column; /* 콘텐츠가 위에서 아래로 */
+}
+
+.container {
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 40px;
+  width: 100%;
+  max-width: 1000px; /* 적절한 고정 너비 */
+  margin: 40px auto;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+h3.member-title {
+  font-size: 18px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+th {
+  text-align: center;
+}
+
+hr {
+  margin: 1rem 0rem 1rem 0rem;
+}
+.tab-menu, .tabs {
+  display: flex;
+  justify-content: right;
+  margin-bottom: 20px;
+  gap: 20px;
+}
+
+.tab-btn {
+  font-size: 16px;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 6px 10px;
+  transition: all 0.3s;
+}
+
+.tab-btn:hover {
+  color: #3b4bd3;
+  border-bottom: 2px solid #3b4bd3;
+}
+
+.tab-btn.active {
+  color: #3b4bd3;
+  border-bottom: 2px solid #3b4bd3;
+  font-weight: bold;
+}
+
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  table-layout: fixed;
+  word-break: break-word;
+}
+
+.table-container th, .table-container td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+td {
+  text-align: center;
+}
+
+table.dataTable thead th {
+  text-align: center;
+}
+
+
+.email-small {
+  font-size: 13px;
+  color: #666;
+  display: block;
+  margin-top: 4px;
+}
+
+.role-admin {
+  color: #1a73e8;
+}
+
+button {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  background-color: #d9534f;
+  color: white;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.table-scroll-area {
+  overflow-y: auto;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  max-height: 400px;
+  margin-top: -1px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  padding: 6px 12px;
+!important;
+  margin: 2px;
+!important;
+  border-radius: 4px;
+!important;
+  border: none;
+!important;
+  background-color: #eee;
+!important;
+  color: #333 !important;
+  font-weight: 500;
+!important;
+  transition: all 0.3s ease;
+!important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  background-color: #3f51b5;
+!important;
+  color: white !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background-color: #dcdcdc;
+!important;
+  color: #111 !important;
+}
+
+/* search bar */
+.dataTables_filter {
+  float: right;
+  margin-bottom: 16px;
+}
+
+.dataTables_filter input[type="search"] {
+  border: none;
+  border-bottom: 1.5px solid #aaa;
+  background-color: transparent;
+  font-size: 14px;
+  padding: 6px 4px;
+  width: 220px;
+  transition: border-color 0.3s ease;
+  outline: none;
+}
+
+.dataTables_filter input[type="search"]::placeholder {
+  color: #ccc;
+}
+
+.dataTables_filter input[type="search"]:focus {
+  border-bottom: 2px solid #3f51b5;
+  background-color: transparent;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 20px;
+    max-width: 100%;
+  }
+
+  .table-container table {
+    font-size: 12px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .tab-btn {
+    font-size: 0.9rem;
+    padding: 4px 10px;
+  }
+}

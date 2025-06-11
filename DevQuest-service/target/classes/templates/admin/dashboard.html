@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>DevQuest 관리자 페이지</title>
+
+  <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/header.css">
+  <link rel="stylesheet" href="/css/adminDashboard.css">
+</head>
+<body>
+<div class="logo">
+  <a href="/admin/dashboard">DevQuest</a>
+</div>
+
+<div th:replace="~{fragments/header :: header}"></div>
+<main>
+  <h2><b th:text="${nickname} + ' 관리자님, 안녕하세요!'"></b></h2>
+
+  <div class="container">
+    <h2 class="member-title">
+      <i class="material-icons" style="vertical-align: middle; margin-right: 6px;">supervisor_account</i>
+      회원 목록
+    </h2>
+
+    <div class="tabs">
+      <a href="#" class="tab-btn" onclick="showTab('admin'); return false;">관리자</a>
+      <a href="#" class="tab-btn active" onclick="showTab('active'); return false;">현재 회원</a>
+      <a href="#" class="tab-btn" onclick="showTab('deleted'); return false;">탈퇴 회원</a>
+    </div>
+
+    <hr/>
+
+    <!-- 현재 회원 -->
+    <div class="card tab-content" id="tab-active">
+      <table class="display user-table" style="width:100%">
+        <thead>
+        <tr>
+          <th style="width: 0"></th>
+          <th>번호</th>
+          <th>사용자</th>
+          <th>가입일</th>
+          <th>권한</th>
+          <th>관리</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user, iterStat : ${activeUsers}">
+          <td style="width: 0"></td>
+          <td th:text="${iterStat.count}">1</td>
+          <td>
+            <div th:text="${user.nickname}">닉네임</div>
+            <span class="email-small" th:text="${user.email}">user@example.com</span>
+          </td>
+          <td th:text="${user.createdAt}">2025-05-15</td>
+          <td>
+            <span th:if="${user.role.name() == 'ROLE_ADMIN'}" class="role-admin">관리자</span>
+            <span th:unless="${user.role.name() == 'ROLE_ADMIN'}"></span>
+          </td>
+          <td>
+            <form th:action="@{/admin/removeUser}" method="post">
+              <input type="hidden" name="email" th:value="${user.email}"/>
+              <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+            </form>
+            <span th:if="${user.email == currentUserEmail}" style="color: gray;">본인</span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 관리자 -->
+    <div class="card tab-content" id="tab-admin" style="display: none;">
+      <table class="display user-table" style="width:100%">
+        <thead>
+        <tr>
+          <th style="width: 0"></th>
+          <th>번호</th>
+          <th>사용자</th>
+          <th>가입일</th>
+          <th>권한</th>
+          <th>관리</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user, iterStat : ${adminUsers}">
+          <td style="width: 0"></td>
+          <td th:text="${iterStat.count}">1</td>
+          <td>
+            <div th:text="${user.nickname}">닉네임</div>
+            <span class="email-small" th:text="${user.email}">user@example.com</span>
+          </td>
+          <td th:text="${user.createdAt}">2025-05-15</td>
+          <td><span class="role-admin">관리자</span></td>
+          <td>
+            <form th:action="@{/admin/removeUser}" method="post">
+              <input type="hidden" name="email" th:value="${user.email}"/>
+              <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+            </form>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 탈퇴 회원 -->
+    <div class="card tab-content" id="tab-deleted" style="display: none;">
+      <table class="display user-table" style="width:100%">
+        <thead>
+        <tr>
+          <th style="width: 0"></th>
+          <th>번호</th>
+          <th>사용자</th>
+          <th>가입일</th>
+          <th>권한</th>
+          <th>관리</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user, iterStat : ${deletedUsers}">
+          <td style="width: 0"></td>
+          <td th:text="${iterStat.count}">1</td>
+          <td>
+            <div th:text="${user.nickname}">닉네임</div>
+            <span class="email-small" th:text="${user.email}">user@example.com</span>
+          </td>
+          <td th:text="${user.createdAt}">2025-05-15</td>
+          <td>
+            <span th:if="${user.role.name() == 'ROLE_ADMIN'}" class="role-admin">관리자</span>
+            <span th:unless="${user.role.name() == 'ROLE_ADMIN'}"></span>
+          </td>
+          <td>
+            <span style="color: #888;">탈퇴</span><br/>
+            <span class="email-small"
+                  th:text="${#temporals.format(user.deletedAt, 'yyyy-MM-dd')}"></span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</main>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script>
+  const initializedTables = {};
+
+  function showTab(type) {
+
+    localStorage.setItem('adminActiveTab', type);
+
+    document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    const targetTab = document.getElementById(`tab-${type}`);
+    targetTab.style.display = '';
+    document.querySelector(`.tab-btn[onclick*="${type}"]`).classList.add('active');
+
+    // 해당 탭의 테이블만 초기화 (한 번만)
+    if (!initializedTables[type]) {
+      const table = $(targetTab).find('.user-table').DataTable({
+        language: {
+          info: "_START_ - _END_ / 총 _TOTAL_명",
+        },
+        paging: true,
+        searching: true,
+        ordering: true,
+        info: true,
+        columnDefs: [
+          { orderable: false, targets: 0 }
+        ],
+        scrollY: '400px',
+        scrollCollapse: false
+      });
+
+      // 검색창 placeholder
+      $(targetTab).find('.dataTables_filter input').attr('placeholder', '검색어를 입력하세요.');
+
+      // 전체 선택
+      $(targetTab).find('.select-all').on('click', function () {
+        const checked = this.checked;
+        $(table.rows({ search: 'applied' }).nodes()).find('input[type="checkbox"]').prop('checked', checked);
+      });
+
+      initializedTables[type] = true;
+    }
+  }
+
+  $(document).ready(function () {
+    // localStorage에서 마지막으로 본 탭 정보 불러오기
+    const savedTab = localStorage.getItem('adminActiveTab') || 'active';
+    showTab(savedTab);
+  });
+</script>
+
+</body>
+</html>

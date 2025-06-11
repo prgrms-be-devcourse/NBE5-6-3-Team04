@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>탈퇴 완료 | DevQuest</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8fc;
+            font-family: "Apple SD Gothic Neo", sans-serif;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4B2DBD;
+            padding: 30px 0 0 40px;
+            text-align: left;
+        }
+
+        .container {
+            margin-top: 80px;
+        }
+
+        .message {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .image-box img {
+            width: 600px;
+            max-width: 80vw;    /* 반응형 대응: 화면 너무 작을 때 줄어들게 */
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .sub-text {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #3b3b3b;
+            line-height: 1.6;
+        }
+
+        .home-btn {
+            margin-top: 40px;
+            padding: 12px 24px;
+            background-color: #4B2DBD;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .home-btn:hover {
+            background-color: #3a1fa0;
+        }
+    </style>
+</head>
+<body class="withdraw-success">
+<div class="logo">DevQuest</div>
+
+<div class="container">
+    <div class="message">탈퇴처리가 완료되었습니다</div>
+
+    <div class="image-box">
+        <img th:src="@{/img/withDraw.png}" alt="안녕히가세요 이미지" loading="lazy">
+    </div>
+
+    <div class="sub-text">
+        당신의 개발 여정에 언제나 멋진 코드와 멋진 기회가 함께하길 바랍니다.<br>
+        응원합니다 🙏
+    </div>
+    <button class="home-btn" onclick="window.location.href='/'">홈으로 돌아가기</button>
+</div>
+</body>
+</html>

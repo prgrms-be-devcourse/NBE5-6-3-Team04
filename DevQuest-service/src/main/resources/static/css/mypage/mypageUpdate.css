@@ -1,0 +1,123 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #f5f4f8;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    font-weight: bold;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 700;
+    color: #3F2296;
+    /* position 제거 */
+    top: 30px;
+    left: 40px;
+}
+
+.menu {
+    font-size: 14px;
+    color: #666;
+}
+.menu-item {
+    cursor: pointer;
+    color: #666; /* 기본 색상 유지 */
+    text-decoration: none;
+}
+
+.menu-item:hover {
+    color: #666;           /* hover 시에도 동일한 색상 유지 */
+    text-decoration: none; /* 밑줄 제거 */
+    font-weight: normal;   /* 폰트 두께도 변화 없음 */
+}
+.container {
+    margin-top: 40px;
+}
+
+.nickname {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.profile-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 20px auto;
+}
+
+.level-title {
+    color: #5b5b5b;
+    font-size: 14px;
+}
+
+.level {
+    font-size: 24px;
+    color: #00c853;
+    font-weight: bold;
+}
+
+.progress-bar {
+    width: 200px;
+    height: 12px;
+    background-color: #ddd;
+    border-radius: 6px;
+    margin: 10px auto;
+    position: relative;
+}
+
+.progress {
+    width: 70%;
+    height: 100%;
+    background-color: #00c853;
+    border-radius: 6px;
+}
+
+.edit-box {
+    background-color: #eaeaea;
+    border-radius: 12px;
+    padding: 20px;
+    max-width: 300px;
+    margin: 30px auto;
+    text-align: left;
+    font-size: 14px;
+}
+
+.edit-box label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.edit-box input {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+.submit-btn {
+    margin-top: 20px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.submit-btn::after {
+    content: " ✎";
+}

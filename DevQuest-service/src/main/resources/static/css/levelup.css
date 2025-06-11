@@ -1,0 +1,40 @@
+.level-up-flash {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: white;
+    opacity: 0.8;
+    z-index: 9999;
+    animation: flash 0.3s ease-in-out;
+}
+
+@keyframes flash {
+    0% { opacity: 0; }
+    50% { opacity: 0.8; }
+    100% { opacity: 0; }
+}
+
+.Level-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2000;
+    background-color: white;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+}
+
+.highlight-level {
+    color: #6a0dad;
+    font-weight: 900;
+}
+
+.Level-modal-content {
+    padding: 1rem;
+}

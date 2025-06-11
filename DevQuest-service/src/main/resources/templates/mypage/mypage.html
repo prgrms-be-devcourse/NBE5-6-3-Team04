@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>마이페이지 | DevQuest</title>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <link rel="stylesheet" th:href="@{/css/achievement/congratulation.css}">
+    <link rel="stylesheet" th:href="@{/css/mypage/mypage.css}">
+</head>
+<body>
+
+<div class="header">
+    <div class="logo">
+        <a th:href="@{/dashboard}" style="text-decoration: none; color:inherit;">
+            DevQuest
+        </a>
+    </div>
+    <div class="menu">
+        <span class="menu-item" onclick="goToDashboard()">대시보드</span>
+        <span> </span>
+        <span class="menu-item" onclick="logout()">로그아웃</span>
+    </div>
+</div>
+
+<div class="container">
+    <div class="nickname" th:text="${user.nickname} + ' 님의 마이페이지'"></div>
+    <img alt="프로필 이미지" class="profile-img" th:src="@{'/images/profile/' + ${user.userImage}}">
+    <div class="level-title" th:text="${user.level.levelName}"></div>
+    <div class="level" th:text="'Lv.' + ${user.level.levelId}"></div>
+
+    <div class="progress-bar">
+        <div class="progress" th:style="'width:' + ${progressPercent} + '%'">
+        </div>
+    </div>
+
+    <div class="info-box">
+        <p><b>이메일</b> <span th:text="${user.email}"></span></p>
+        <p><b>한마디</b> <span th:text="${user.comment}"></span></p>
+    </div>
+
+    <div class="achievements">
+        <b>나의 업적</b>
+        <div class="achievement-icons">
+            <div class="achievement-preview" th:each="ua, stat : ${userAchieve}" th:if="${stat.index < 3}">
+                <span class="icon">🏅</span>
+                <span th:text="${ua.achievement.name}">업적 이름</span>
+            </div>
+        </div>
+        <div class="more-button-wrapper">
+            <button onclick="openModal()">더보기</button>
+        </div>
+    </div>
+
+    <div class="ccmModal" id="achievementListModal">
+        <div class="ccmModal-content">
+            <span class="close" onclick="closeListModal()">×</span>
+            <h3>🏅 획득 업적 목록</h3>
+            <div id="achievementList">
+            </div>
+        </div>
+    </div>
+    <div class="edit" onclick="location.href='/user/update'">수정하기</div>
+</div>
+
+<div class="logout" onclick="deleteAccount()">
+    <img alt="탈퇴 아이콘" src="https://cdn-icons-png.flaticon.com/512/847/847969.png">
+    <span class="logout-hover">계정 탈퇴</span>
+</div>
+
+<div th:replace="~{fragments/achievement-modal :: achievementModal}"></div>
+</body>
+<script defer src="/js/header.js"></script>
+<script defer src="/js/withdraw.js"></script>
+<script defer src="/js/achievement/mypageAchieve.js"></script>
+<script defer src="/js/achievement/congratulation.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+</html>
