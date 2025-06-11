@@ -1,0 +1,44 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+# application.yml 무시
+src/main/resources/application.yml
+
+# profile 폴더 안에 있는 모든 .png 파일 무시
+uploads/profile/*.png
+
+# 하지만 default.png는 예외로 추적 허용
+!uploads/profile/default.pnguploads/profile/*.png
+
+# macOS 시스템 파일 무시
+.DS_Store

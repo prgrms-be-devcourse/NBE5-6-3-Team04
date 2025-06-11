@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.grepp</groupId>
-    <artifactId>NBE5-6-2-Team04</artifactId>
+    <artifactId>NBE5-6-3-Team04</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>NBE5-6-2-Team04</name>
-    <description>NBE5-6-2-Team04</description>
+    <name>NBE5-6-3-Team04</name>
+    <description>NBE5-6-3-Team04</description>
     <url/>
     <licenses>
         <license/>
