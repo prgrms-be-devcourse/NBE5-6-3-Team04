@@ -120,7 +120,7 @@
       <div th:each="goal : ${goals}" th:if="${!goal.isDone}" class="goal-card">
         <div>
           <div class="card-header">
-            <p class="goal-name" th:text="${goal.title}">목표명</p>
+            <p class="goal-name" th:text="${goal.goalListLabel}">목표명</p>
             <span class="status" th:text="${goal.isDone}? '완료' : '진행 중'">진행 상태</span>
 
             <!-- 수정/삭제 드롭다운  -->

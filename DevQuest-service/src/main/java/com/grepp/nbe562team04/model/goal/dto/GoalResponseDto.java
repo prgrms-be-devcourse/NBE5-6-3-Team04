@@ -21,4 +21,5 @@ public class GoalResponseDto {
     private String status;
     private int progress;       // 목표별 투두 진행률
 
+    private String goalListLabel; // goalListLabel 라벨을 한글로 변환
 }

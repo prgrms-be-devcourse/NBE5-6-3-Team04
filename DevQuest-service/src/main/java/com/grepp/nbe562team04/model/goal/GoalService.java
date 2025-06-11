@@ -30,6 +30,7 @@ public class GoalService {
     private final TodoRepository todoRepository;
     private final UserRepository userRepository;
     private final AchievementService achievementService;
+
     // 목표 생성
     @Transactional
     public String createGoal(GoalRequestDto dto, Long userId) {
@@ -70,6 +71,7 @@ public class GoalService {
                             .isDone(goal.getIsDone())
                             .createdAt(goal.getCreatedAt())
                             .progress(progress)
+                            .goalListLabel(goal.getTitle().getLabel())
                             .build();
                 })
                 .collect(Collectors.toList());
