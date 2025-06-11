@@ -78,6 +78,7 @@ CREATE TABLE todos (
                        todo_id BIGINT NOT NULL AUTO_INCREMENT,
                        goal_id BIGINT NOT NULL,
                        content VARCHAR(255),
+                       url VARCHAR(255),
                        start_date TIMESTAMP NULL,
                        end_date TIMESTAMP NULL,
                        is_done BOOLEAN,

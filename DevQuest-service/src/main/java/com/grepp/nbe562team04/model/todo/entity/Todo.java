@@ -25,6 +25,8 @@ public class Todo {
 
     private String content;
 
+    private String url;
+
     @Column(name = "start_date")
     private LocalDate startDate;
 

@@ -22,7 +22,7 @@ public class TodoService {
     private final TodoRepository todoRepository;
     private final GoalRepository goalRepository;
 
-    // 투두 추가
+    // 투두 생성
     @Transactional
     public void create(TodoRequestDto dto) {
         Goal goal = goalRepository.findById(dto.getGoalId())
@@ -39,6 +39,7 @@ public class TodoService {
         Todo todo = Todo.builder()
                 .goal(goal)
                 .content(dto.getContent())
+                .url(dto.getUrl())
                 .startDate(dto.getStartDate() != null ? dto.getStartDate() : LocalDate.now())
                 .endDate(dto.getEndDate())
                 .isDone(dto.getIsDone() != null ? dto.getIsDone() : false)
@@ -54,6 +55,7 @@ public class TodoService {
                 .map(todo -> TodoResponseDto.builder()
                         .todoId(todo.getTodoId())
                         .content(todo.getContent())
+                        .url(todo.getUrl())
                         .startDate(todo.getStartDate())
                         .endDate(todo.getEndDate())
                         .isDone(todo.getIsDone())
@@ -68,6 +70,7 @@ public class TodoService {
         Todo todo = todoRepository.findById(todoId)
                 .orElseThrow(() -> new RuntimeException("해당 투두가 존재하지 않습니다."));
 
+        todo.setUrl(dto.getUrl());
         todo.setContent(dto.getContent());
         todo.setStartDate(dto.getStartDate());
         todo.setEndDate(dto.getEndDate());
@@ -90,6 +93,7 @@ public class TodoService {
         return TodoResponseDto.builder()
                 .todoId(todo.getTodoId())
                 .content(todo.getContent())
+                .url(todo.getUrl())
                 .startDate(todo.getStartDate())
                 .endDate(todo.getEndDate())
                 .isDone(todo.getIsDone())

@@ -138,6 +138,7 @@
             </button>
           </div>
         </div>
+
         <!-- 목표 카드 -->
         <div class="todo-list-container">
           <ul>
@@ -147,7 +148,9 @@
                      th:checked="${todo.isDone}"
                      th:attr="data-id=${todo.todoId}"
                      class="todo-checkbox">
-              <span class="todo-content" th:text="${todo.content}">투두 내용</span>
+
+              <a class="todo-content" th:href="${todo.url}" th:text="${todo.content}">투두 내용</a>
+
 
               <div class="todo-actions">
                 <button type="button" class="update-todo-btn" th:attr="data-id=${todo.todoId}">수정
@@ -242,13 +245,14 @@
     </div>
   </div>
 
-  <!-- 투두  생성 모달 -->
+  <!-- 투두 생성 모달 -->
   <div id="todoModal" class="modal modal-small" style="display: none;">
     <div class="modal-content">
       <span class="close" onclick="closeModal('todoModal')">&times;</span>
       <h2>todo 생성</h2>
       <form id="todo-form">
         <input type="text" name="title" placeholder="할 일을 입력해주세요" required><br><br>
+        <input type="text" name="url" placeholder="(선택)주소를 입력해주세요" ><br><br>
         <input type="hidden" name="goalId">
         <button type="submit">추가</button>
         <input type="hidden" name="startDate">
