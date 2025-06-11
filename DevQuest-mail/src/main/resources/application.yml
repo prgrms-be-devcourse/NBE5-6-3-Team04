@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: DevQuest-mail
+
+server:
+  port: 8081
+
