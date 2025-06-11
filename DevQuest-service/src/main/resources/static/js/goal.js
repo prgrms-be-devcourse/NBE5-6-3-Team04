@@ -501,3 +501,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+ // 캘린더 보기 버튼
+  function showCalendar() {
+    document.querySelector('.goal-list').style.display = 'none';
+    document.querySelector('.calendar').style.display = 'block';
+    document.querySelector('.completed-toggle-wrapper').style.display = 'none';
+}
+
+ // 목표 보기 버튼
+  function showGoalList() {
+    document.querySelector('.goal-list').style.display = 'flex'; // 원래 flex일 수도 있음
+    document.querySelector('.calendar').style.display = 'none';
+}
+
+  // full-calendar 관련 코드
+document.addEventListener('DOMContentLoaded', function() {
+  var calendarEl = document.getElementById('calendar');
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'dayGridMonth'
+  });
+  calendar.render();
+});

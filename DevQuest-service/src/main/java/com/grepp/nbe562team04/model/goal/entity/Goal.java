@@ -1,5 +1,7 @@
 package com.grepp.nbe562team04.model.goal.entity;
 
+import com.grepp.nbe562team04.model.goal.code.GoalList;
+import com.grepp.nbe562team04.model.goalcompany.code.GoalStatus;
 import com.grepp.nbe562team04.model.goalcompany.entity.GoalCompany;
 import com.grepp.nbe562team04.model.user.entity.User;
 import jakarta.persistence.*;
@@ -24,8 +26,12 @@ public class Goal {
     @JoinColumn(name = "company_id", nullable = false)
     private GoalCompany company;
 
-    @Column(nullable = false)
-    private String title;
+//    @Column(nullable = false)
+//    private String title;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "title")
+    private GoalList title;
 
     @Column(name = "start_date")
     private LocalDate startDate;

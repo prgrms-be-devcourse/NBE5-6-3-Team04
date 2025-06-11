@@ -1,5 +1,6 @@
 package com.grepp.nbe562team04.model.goal.dto;
 
+import com.grepp.nbe562team04.model.goal.code.GoalList;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 public class GoalResponseDto {
 
     private Long goalId;
-    private String title;
+    private GoalList title;
     private LocalDate startDate;
     private LocalDate endDate;
     private Boolean isDone;

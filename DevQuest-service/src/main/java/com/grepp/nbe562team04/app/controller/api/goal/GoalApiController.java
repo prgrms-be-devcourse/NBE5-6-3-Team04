@@ -17,10 +17,11 @@ import java.util.Map;
 @RequestMapping("/goals")
 public class GoalApiController {
 
+    // 생성자 주입
     private final GoalService goalService;
 
-    //  목표 생성
-    @PostMapping("/{companyId}/create")
+    // 목표 생성
+    @PostMapping("/{companyId}/create") // /goals/{companyId}/create
     public ResponseEntity<?> createGoal(@RequestBody GoalRequestDto dto, @AuthenticationPrincipal Principal principal) {
         Long userId = principal.getUser().getUserId();
         String achievementName = goalService.createGoal(dto, userId);// 로그인된 유저 ID 꺼내기
@@ -38,20 +39,20 @@ public class GoalApiController {
     }
 
     //  목표 단건 조회
-    @GetMapping("/{goalId}/select")
+    @GetMapping("/{goalId}/select")// /goals/{goalId}/select
     public GoalResponseDto selectGoal(@PathVariable Long goalId) {
         return goalService.getGoalById(goalId);
     }
 
     //  목표 수정
-    @PutMapping("/{goalId}/update")
+    @PutMapping("/{goalId}/update")// /goals/{goalId}/update
     public ResponseEntity<String> update(@PathVariable Long goalId, @RequestBody GoalRequestDto dto) {
         goalService.updateGoal(goalId, dto);
         return ResponseEntity.ok("목표 수정 완료");
     }
 
     //  목표 삭제
-    @DeleteMapping("/{goalId}/delete")
+    @DeleteMapping("/{goalId}/delete")// /goals/{goalId}/delete
     public ResponseEntity<String> delete(@PathVariable Long goalId) {
         goalService.deleteGoal(goalId);
         return ResponseEntity.ok("목표 삭제 완료");
