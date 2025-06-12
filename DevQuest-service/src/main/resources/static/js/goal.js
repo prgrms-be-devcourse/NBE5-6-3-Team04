@@ -187,11 +187,15 @@ document.addEventListener("DOMContentLoaded", () => {
 function createGoal() {
   const form = document.getElementById("goal-form");
   const companyId = form.dataset.companyId; // 필요시 상위에서 설정
+
+
   const data = {
     companyId: companyId,
-    title: form.title.value,
+    title: form.categoryName.value,
+    categoryName: form.categoryName.value,
     startDate: form.startDate.value,
     endDate: form.endDate.value
+
   };
 
   fetch(`/goals/${companyId}/create`, {
@@ -221,7 +225,8 @@ function updateGoal(e) {
   const goalId = form.dataset.id;
 
   const data = {
-    title: form.title.value,
+    title: form.categoryName.value,
+    categoryName: form.categoryName.value,
     startDate: form.startDate.value,
     endDate: form.endDate.value,
     isDone: form.isDone.value === "true"
@@ -276,10 +281,11 @@ function fillGoalForm(goalId) {
   .then(res => res.json())
   .then(data => {
     const form = document.getElementById("goal-form");
-    form.title.value = data.title ?? '';        // null-safe 처리 (에러 방지)
+    form.title.value = data.title;        // null-safe 처리 (에러 방지)
     form.startDate.value = data.startDate ?? '';
     form.endDate.value = data.endDate ?? '';
     form.isDone.value = data.isDone ? "true" : "false";
+    form.categoryName.value = data.categoryName;
   })
   .catch(err => {
     console.error("목표 불러오기 실패", err);

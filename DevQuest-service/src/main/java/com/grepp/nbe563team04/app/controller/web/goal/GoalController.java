@@ -6,6 +6,8 @@ import com.grepp.nbe563team04.model.dashboard.dto.DashboardDto;
 import com.grepp.nbe563team04.model.dashboard.dto.GoalCompanyDto;
 import com.grepp.nbe563team04.model.goal.GoalService;
 import com.grepp.nbe563team04.model.goal.dto.GoalResponseDto;
+import com.grepp.nbe563team04.model.goalCategory.GoalCategoryRepository;
+import com.grepp.nbe563team04.model.goalCategory.entity.GoalCategory;
 import com.grepp.nbe563team04.model.todo.TodoService;
 import com.grepp.nbe563team04.model.todo.dto.TodoResponseDto;
 import com.grepp.nbe563team04.model.user.UserRepository;
@@ -27,6 +29,7 @@ public class GoalController {
 
     private final DashboardService dashboardService;
     private final UserRepository userRepository;
+    private final GoalCategoryRepository goalCategoryRepository;
     private final GoalService goalService;
     private final TodoService todoService;
 
@@ -42,6 +45,7 @@ public class GoalController {
         GoalCompanyDto companyDto = dashboardService.getCompanyDetailById(companyId);
         List<GoalResponseDto> goalList = goalService.getGoalsByCompanyId(companyId);
 
+        List<GoalCategory> categories = goalCategoryRepository.findAll();
 
         // 목표별 투두 리스트 맵으로 저장
         Map<Long, List<TodoResponseDto>> todoMap = new HashMap<>(); // goalId, 투두 리스트 로 저장
@@ -55,6 +59,7 @@ public class GoalController {
         model.addAttribute("company", companyDto);   // 기업 정보
         model.addAttribute("goals", goalList);       // 목표 리스트(진행률 포함)
         model.addAttribute("todoMap", todoMap);
+        model.addAttribute("categories", categories);
 
 
         return "goal/goal";

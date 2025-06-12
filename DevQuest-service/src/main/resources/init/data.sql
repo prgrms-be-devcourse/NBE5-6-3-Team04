@@ -1,3 +1,11 @@
+-- goal category 데이터
+INSERT INTO goal_category (category_name, korean_name, color) VALUES
+                                                                  ('DOCUMENT', '서류', '#F94144'),
+                                                                  ('CODING_TEST', '코딩테스트', '#F3722C'),
+                                                                  ('ASSIGNMENT', '과제', '#F9C74F'),
+                                                                  ('APTITUDE', '인적성검사', '#90BE6D');
+
+
 -- Level 데이터
 INSERT INTO level (level_name, xp) VALUES
                                        ('초보 개발자', 0),

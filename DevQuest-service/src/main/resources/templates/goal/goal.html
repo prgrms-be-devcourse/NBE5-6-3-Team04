@@ -230,11 +230,10 @@
       <span class="close" onclick="closeModal('goalModal')">&times;</span>
       <h2>목표 생성</h2>
       <form id="goal-form" th:attr="data-company-id=${company.companyId}">
-        <select name="title">
-          <option value="DOCUMENT">서류</option>
-          <option value="CODING_TEST">코딩테스트</option>
-          <option value="ASSIGNMENT">과제</option>
-          <option value="APTITUDE">인적성검사</option>
+        <select name="categoryName">
+          <option th:each="category : ${categories}"
+                  th:value="${category.categoryName}"
+                  th:text="${category.koreanName}">카테고리</option>
         </select><br><br>
         <label>시작일</label><br>
         <input type="date" name="startDate"><br><br>
