@@ -1,9 +1,12 @@
+upload:
+  path: C:/backend/NBE5-6-3-Team04/upload/
+
 remember-me:
   key: dladmldmlzl123
 
 spring:
   application:
-    name: NBE5-6-2-Team04
+    name: NBE5-6-3-Team04
 
   web:
     resources:
@@ -17,7 +20,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/todoRpg
     username: bm
-    password: it2116016^^
+    password: 123qwe!@#
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -31,3 +34,4 @@ spring:
 gemini:
   base-url: https://generativelanguage.googleapis.com
   api-key: "AIzaSyDJ2t_TcJ7ZwV0AI5AePRiVdUtqhvnvkN4"
+
