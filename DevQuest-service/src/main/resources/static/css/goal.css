@@ -655,3 +655,8 @@
 .dropdown ul li:hover {
   background-color: #f0f0f0;
 }
+
+.todo-done .fc-event-title {
+  text-decoration: line-through;
+  color: gray !important;
+}

@@ -45,6 +45,12 @@ public class CalendarApiController {
                 event.put("end", todo.getEndDate());
                 event.put("color", color);
                 event.put("url", todo.getUrl());
+
+                if (todo.getIsDone()) {
+                    event.put("color", "#d3d3d3");               // 회색 배경
+                    event.put("className", "todo-done");         // 커스텀 CSS 클래스
+                }
+
                 events.add(event);
             }
             colorIndex++;
