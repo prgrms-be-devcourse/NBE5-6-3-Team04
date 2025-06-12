@@ -24,7 +24,7 @@ public class Goal {
     @JoinColumn(name = "company_id", nullable = false)
     private GoalCompany company;
 
-//    @Column(nullable = false)
+    //    @Column(nullable = false)
 //    private String title;
 
     @Enumerated(EnumType.STRING)
