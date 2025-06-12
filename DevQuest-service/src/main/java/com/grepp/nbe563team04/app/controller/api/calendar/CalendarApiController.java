@@ -27,18 +27,28 @@ public class CalendarApiController {
     public List<Map<String, Object>> getTodosByCompany(@PathVariable Long companyId) {
         List<GoalResponseDto> goals = goalService.getGoalsByCompanyId(companyId);
 
+
+        Map<Long, String> colorMap = new HashMap<>();
+        String[] colors = {"#F94144", "#F3722C", "#F9C74F", "#90BE6D", "#577590"};
+        int colorIndex = 0;
+
         List<Map<String, Object>> events = new ArrayList<>();
         for (GoalResponseDto goal : goals) {
+            colorMap.putIfAbsent(goal.getGoalId(), colors[colorIndex % colors.length]);
+            String color = colorMap.get(goal.getGoalId());
+
             List<TodoResponseDto> todos = todoService.getByGoal(goal.getGoalId());
             for (TodoResponseDto todo : todos) {
                 Map<String, Object> event = new HashMap<>();
                 event.put("title", todo.getContent());
-                event.put("start", todo.getStartDate()); // 날짜 포맷 확인 필요
+                event.put("start", todo.getStartDate());
                 event.put("end", todo.getEndDate());
+                event.put("color", color);
                 events.add(event);
             }
+            colorIndex++;
         }
-        return events;
+        return events; //Map 에 담아 json 형태로 넘기기
     }
 }
 
