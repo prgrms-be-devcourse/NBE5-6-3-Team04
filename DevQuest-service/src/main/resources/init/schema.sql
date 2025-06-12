@@ -115,6 +115,7 @@ CREATE TABLE user_image (
                             rename_file_name VARCHAR(255),
                             save_path VARCHAR(255),
                             created_at TIMESTAMP NULL,
+                            activated TINYINT(1) NOT NULL DEFAULT '1',
                             PRIMARY KEY (user_image_id),
                             FOREIGN KEY (user_id) REFERENCES user(user_id)
 );

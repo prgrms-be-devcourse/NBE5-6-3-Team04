@@ -1,5 +1,6 @@
 package com.grepp.nbe563team04.model.user.dto;
 
+import com.grepp.nbe563team04.infra.util.FileDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -22,5 +23,13 @@ public class UserImageDto {
         this.originFileName = originFileName;
         this.renameFileName = renameFileName;
         this.savePath = savePath;
+    }
+
+    public String getUrl() {
+        return "/download/" + savePath + renameFileName;
+    }
+
+    public String getPath() {
+        return savePath + renameFileName;
     }
 }
