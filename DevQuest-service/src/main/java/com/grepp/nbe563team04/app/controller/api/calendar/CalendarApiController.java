@@ -44,6 +44,7 @@ public class CalendarApiController {
                 event.put("start", todo.getStartDate());
                 event.put("end", todo.getEndDate());
                 event.put("color", color);
+                event.put("url", todo.getUrl());
                 events.add(event);
             }
             colorIndex++;
