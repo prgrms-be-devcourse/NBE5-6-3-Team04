@@ -520,10 +520,13 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 
   // full-calendar 관련 코드
-document.addEventListener('DOMContentLoaded', function() {
-  var calendarEl = document.getElementById('calendar');
-  var calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: 'dayGridMonth'
-  });
-  calendar.render();
-});
+// const goalId = [[${goalId}]];
+// document.addEventListener('DOMContentLoaded', function() {
+//   var calendarEl = document.getElementById('calendar');
+//   var calendar = new FullCalendar.Calendar(calendarEl, {
+//     initialView: 'dayGridMonth',
+//     events: '/goals/' + goalId + '/events'
+//
+//   });
+//   calendar.render();
+// });
