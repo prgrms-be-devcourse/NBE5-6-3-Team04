@@ -28,9 +28,13 @@ public class GoalCompanyService {
     private final TodoRepository todoRepository;
     private final AchievementService achievementService;
 
+    // 목표 기업 생성
+    // 클라이언트로 부터 전달 받은 GoalCompanyRequestDto 를 GoalCompany(Entity)로 변환하여 저장하는 로직
     public String  createGoalCompany(GoalCompanyRequestDto dto, Long userId ) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findById(userId) // user entity 불러오기
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
+        // GoalCompany Entity 생성
         GoalCompany company = GoalCompany.builder()
                 .user(user)
                 .companyName(dto.getCompanyName())
@@ -40,7 +44,9 @@ public class GoalCompanyService {
                 .createdAt(LocalDate.now())
                 .build();
 
-        goalCompanyRepository.save(company);
+
+        goalCompanyRepository.save(company); // 생성한 GoalCompany Entity를 DB에 저장
+
         String achievementName = achievementService.giveGoalCompanyAchievement(userId);
         if (achievementName != null) return achievementName;
 
@@ -51,9 +57,10 @@ public class GoalCompanyService {
 
     // 목표 기업 단건 조회
     public GoalCompanyResponseDto getCompanyById(Long companyId) {
-        GoalCompany company = goalCompanyRepository.findById(companyId)
+        GoalCompany company = goalCompanyRepository.findById(companyId) // 회사 id 로 회사 불러오기
                 .orElseThrow(() -> new RuntimeException("해당 기업이 존재하지 않습니다."));
 
+        // GoalCompanyResponseDto dto 생성 - 서버에서 클라이언트로 보내기 위한 Dto 생성 ( Entity -> Dto 변환)
         GoalCompanyResponseDto dto = GoalCompanyResponseDto.builder()
                 .companyName(company.getCompanyName())
                 .content(company.getContent())
@@ -67,7 +74,7 @@ public class GoalCompanyService {
     // 목표 기업 수정
     @Transactional
     public void updateGoalCompany(Long companyId, GoalCompanyRequestDto dto) {
-        GoalCompany company = goalCompanyRepository.findById(companyId)
+        GoalCompany company = goalCompanyRepository.findById(companyId) // 회사 id 로 회사 불러오기
                 .orElseThrow(() -> new RuntimeException("해당 기업이 존재하지 않습니다."));
 
         company.setCompanyName(dto.getCompanyName());
@@ -79,16 +86,16 @@ public class GoalCompanyService {
     // 목표 기업 삭제
     @Transactional
     public void deleteGoalCompany(Long companyId) {
-        GoalCompany company = goalCompanyRepository.findById(companyId)
+        GoalCompany company = goalCompanyRepository.findById(companyId) // 회사 id 로 회사 불러오기
                 .orElseThrow(() -> new RuntimeException("해당 기업이 존재하지 않습니다."));
 
         // goal 에 값이 들어 있으면 goalCompany가 삭제되지 않아 goal을 먼저 삭제하고 goalCompany를 삭제하는 로직 추가
         List<Goal> goals = goalRepository.findByCompanyCompanyId(companyId);
         for (Goal goal : goals) {
-            todoRepository.deleteByGoalGoalId(goal.getGoalId()); //  각 goal에 연결된 todo 삭제
+            todoRepository.deleteByGoalGoalId(goal.getGoalId()); //  각 goal에 연결된 투두 삭제
             goalRepository.delete(goal); // goal 삭제
         }
-        goalCompanyRepository.delete(company);
+        goalCompanyRepository.delete(company); // goalCompany 삭제
     }
 
     // 알림 생성 (D-3 남았을때 트리거 발생)

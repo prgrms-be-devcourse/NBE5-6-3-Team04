@@ -141,6 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
         form.reset();
         form.goalId.value = data.goalId; // 필요 시 포함
         form.title.value = data.content;
+        form.url.value = data.url;
         form.startDate.value = data.startDate ?? "";
         form.endDate.value = data.endDate ?? "";
         form.isDone.value = data.isDone ? "true" : "false";
@@ -294,10 +295,12 @@ function createTodo() {
   const form = document.getElementById("todo-form");
   const goalId = form.goalId.value;
   const content = form.title.value;
+  const url = form.url.value;
 
   const data = {
     goalId: goalId,
-    content: content
+    content: content,
+    url:url
   };
 
   fetch(`/todos/${goalId}/create`, {
@@ -330,6 +333,7 @@ function updateTodo(todoId) {
 
   const data = {
     content: form.title.value,
+    url: form.url.value,
     startDate: form.startDate.value,
     endDate: form.endDate.value,
     isDone: form.isDone.value === "true"
@@ -501,3 +505,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+ // 캘린더 보기 버튼
+  function showCalendar() {
+    document.querySelector('.goal-list').style.display = 'none';
+    document.querySelector('.calendar').style.display = 'block';
+    document.querySelector('.completed-toggle-wrapper').style.display = 'none';
+}
+
+ // 목표 보기 버튼
+  function showGoalList() {
+    document.querySelector('.goal-list').style.display = 'flex'; // 원래 flex일 수도 있음
+    document.querySelector('.calendar').style.display = 'none';
+}
+
+  // full-calendar 관련 코드
+// const goalId = [[${goalId}]];
+// document.addEventListener('DOMContentLoaded', function() {
+//   var calendarEl = document.getElementById('calendar');
+//   var calendar = new FullCalendar.Calendar(calendarEl, {
+//     initialView: 'dayGridMonth',
+//     events: '/goals/' + goalId + '/events'
+//
+//   });
+//   calendar.render();
+// });

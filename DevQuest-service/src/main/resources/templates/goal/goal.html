@@ -112,12 +112,15 @@
       </div>
     </div>
 
+    <button onclick="showCalendar()">캘린더 보기</button>
+    <button onclick="showGoalList()">목표 보기</button>
+
     <!--  Goal List   -->
     <div class="goal-list">
       <div th:each="goal : ${goals}" th:if="${!goal.isDone}" class="goal-card">
         <div>
           <div class="card-header">
-            <p class="goal-name" th:text="${goal.title}">목표명</p>
+            <p class="goal-name" th:text="${goal.goalListLabel}">목표명</p>
             <span class="status" th:text="${goal.isDone}? '완료' : '진행 중'">진행 상태</span>
 
             <!-- 수정/삭제 드롭다운  -->
@@ -135,6 +138,7 @@
             </button>
           </div>
         </div>
+
         <!-- 목표 카드 -->
         <div class="todo-list-container">
           <ul>
@@ -144,7 +148,9 @@
                      th:checked="${todo.isDone}"
                      th:attr="data-id=${todo.todoId}"
                      class="todo-checkbox">
-              <span class="todo-content" th:text="${todo.content}">투두 내용</span>
+
+              <a class="todo-content" th:href="${todo.url}" th:text="${todo.content}">투두 내용</a>
+
 
               <div class="todo-actions">
                 <button type="button" class="update-todo-btn" th:attr="data-id=${todo.todoId}">수정
@@ -173,6 +179,19 @@
         </p>
       </div>
     </div>
+
+
+    <!-- 캘린더 -->
+<!--    <div class="calendar" th:each="goal : ${goals}">-->
+<!--      <div class="todo-item" th:each="todo : ${todoMap[goal.goalId]}">-->
+<!--        <div id='calendar'>-->
+<!--          <p>캘린더 에용</p>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+
+
 
       <!-- 완료된 목표 보기 토글 버튼-->
       <div class="completed-toggle-wrapper">
@@ -211,7 +230,12 @@
       <span class="close" onclick="closeModal('goalModal')">&times;</span>
       <h2>목표 생성</h2>
       <form id="goal-form" th:attr="data-company-id=${company.companyId}">
-        <input type="text" name="title" placeholder="목표를 입력해주세요" required><br><br>
+        <select name="title">
+          <option value="DOCUMENT">서류</option>
+          <option value="CODING_TEST">코딩테스트</option>
+          <option value="ASSIGNMENT">과제</option>
+          <option value="APTITUDE">인적성검사</option>
+        </select><br><br>
         <label>시작일</label><br>
         <input type="date" name="startDate"><br><br>
         <label>마감일</label><br>
@@ -222,13 +246,14 @@
     </div>
   </div>
 
-  <!-- 투두  생성 모달 -->
+  <!-- 투두 생성 모달 -->
   <div id="todoModal" class="modal modal-small" style="display: none;">
     <div class="modal-content">
       <span class="close" onclick="closeModal('todoModal')">&times;</span>
       <h2>todo 생성</h2>
       <form id="todo-form">
         <input type="text" name="title" placeholder="할 일을 입력해주세요" required><br><br>
+        <input type="text" name="url" placeholder="(선택)주소를 입력해주세요" ><br><br>
         <input type="hidden" name="goalId">
         <button type="submit">추가</button>
         <input type="hidden" name="startDate">
@@ -247,4 +272,5 @@
 <script
         src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 <script defer src="/js/level/level.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js'></script>
 </html>

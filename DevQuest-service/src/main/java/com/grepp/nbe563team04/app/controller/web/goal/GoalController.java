@@ -43,7 +43,8 @@ public class GoalController {
         List<GoalResponseDto> goalList = goalService.getGoalsByCompanyId(companyId);
 
 
-        Map<Long, List<TodoResponseDto>> todoMap = new HashMap<>(); // 목표별 투두 리스트 맵으로 저장
+        // 목표별 투두 리스트 맵으로 저장
+        Map<Long, List<TodoResponseDto>> todoMap = new HashMap<>(); // goalId, 투두 리스트 로 저장
 
         for (GoalResponseDto goal : goalList) {
             List<TodoResponseDto> todos = todoService.getByGoal(goal.getGoalId());
@@ -54,6 +55,7 @@ public class GoalController {
         model.addAttribute("company", companyDto);   // 기업 정보
         model.addAttribute("goals", goalList);       // 목표 리스트(진행률 포함)
         model.addAttribute("todoMap", todoMap);
+
 
         return "goal/goal";
     }

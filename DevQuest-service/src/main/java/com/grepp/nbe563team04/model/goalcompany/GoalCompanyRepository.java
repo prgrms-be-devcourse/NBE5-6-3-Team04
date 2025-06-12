@@ -16,7 +16,6 @@ public interface GoalCompanyRepository extends JpaRepository<GoalCompany, Long> 
 //    deleteById(id)	DELETE FROM table WHERE id = ?
 //    existsById(id)	존재 여부 확인
 
-    List<GoalCompany> findByUserUserId(Long userId);
 
     // 알림 생성 시 유저의 모든 목표 기업 조회
     List<GoalCompany> findAllByUser(User user);

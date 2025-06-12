@@ -10,6 +10,7 @@ public class TodoResponseDto {
 
     private Long todoId;
     private String content;
+    private String url;             // url
     private LocalDate startDate;
     private LocalDate endDate;
     private Boolean isDone;

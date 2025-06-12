@@ -1,5 +1,6 @@
 package com.grepp.nbe563team04.model.goal.dto;
 
+import com.grepp.nbe563team04.model.goal.code.GoalList;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 public class GoalResponseDto {
 
     private Long goalId;
-    private String title;
+    private GoalList title;
     private LocalDate startDate;
     private LocalDate endDate;
     private Boolean isDone;
@@ -20,4 +21,5 @@ public class GoalResponseDto {
     private String status;
     private int progress;       // 목표별 투두 진행률
 
+    private String goalListLabel; // goalListLabel 라벨을 한글로 변환
 }
