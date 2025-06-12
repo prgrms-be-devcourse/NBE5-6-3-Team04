@@ -3,7 +3,7 @@ remember-me:
 
 spring:
   application:
-    name: NBE5-6-2-Team04
+    name: NBE5-6-3-Team04
 
   web:
     resources:
@@ -31,3 +31,8 @@ spring:
 gemini:
   base-url: https://generativelanguage.googleapis.com
   api-key: "AIzaSyDJ2t_TcJ7ZwV0AI5AePRiVdUtqhvnvkN4"
+
+  spring:
+    thymeleaf:
+      prefix: classpath:/templates/
+      suffix: .html
