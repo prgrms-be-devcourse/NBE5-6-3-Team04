@@ -296,11 +296,13 @@ function createTodo() {
   const goalId = form.goalId.value;
   const content = form.title.value;
   const url = form.url.value;
+  const startDate = form.startDate.value;
 
   const data = {
     goalId: goalId,
     content: content,
-    url:url
+    url:url,
+    startDate: startDate
   };
 
   fetch(`/todos/${goalId}/create`, {
