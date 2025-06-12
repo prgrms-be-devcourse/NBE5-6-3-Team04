@@ -30,11 +30,29 @@ public class GoalService {
     private final UserRepository userRepository;
     private final AchievementService achievementService;
 
+
+    private static final String[] COLORS = {
+            "#F94144", "#F3722C", "#F9C74F", "#90BE6D", "#577590"
+    };
+
     // 목표 생성
     @Transactional
     public String createGoal(GoalRequestDto dto, Long userId) {
         GoalCompany company = goalCompanyRepository.findById(dto.getCompanyId())
                 .orElseThrow(() -> new RuntimeException("해당 기업이 존재하지 않습니다."));
+
+        // 1. 해당 회사의 이미 사용된 색상 목록 조회
+        List<String> usedColors = goalRepository.findColorsByCompanyId(dto.getCompanyId());
+
+        // 2. 아직 사용되지 않은 색상 필터링
+        List<String> availableColors = Arrays.stream(COLORS)
+                .filter(color -> !usedColors.contains(color))
+                .collect(Collectors.toList());
+
+        // 3. 남은 색상 중 랜덤 선택 (없으면 전체 중 랜덤)
+        String assignedColor = availableColors.isEmpty()
+                ? COLORS[new Random().nextInt(COLORS.length)]
+                : availableColors.get(new Random().nextInt(availableColors.size()));
 
         Goal goal = Goal.builder()
                 .company(company)
@@ -43,6 +61,7 @@ public class GoalService {
                 .endDate(dto.getEndDate())
                 .isDone(false) // 명시적으로 false 표시
                 .createdAt(LocalDate.now())
+                .color(assignedColor) // 사용되지 않은 색상중 랜덤으로 색상 지정
                 .build();
 
         goalRepository.save(goal);
@@ -71,6 +90,7 @@ public class GoalService {
                             .createdAt(goal.getCreatedAt())
                             .progress(progress)
                             .goalListLabel(goal.getTitle().getLabel())
+                            .color(goal.getColor())
                             .build();
                 })
                 .collect(Collectors.toList());

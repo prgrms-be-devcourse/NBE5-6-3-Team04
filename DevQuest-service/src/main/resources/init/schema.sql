@@ -67,6 +67,7 @@ CREATE TABLE goal (
                       title VARCHAR(255) NOT NULL,
                       start_date DATETIME,
                       end_date DATETIME,
+                      color VARCHAR(255) NOT NULL,
                       created_at TIMESTAMP NULL,
                       is_done BOOLEAN,
                       PRIMARY KEY (goal_id),

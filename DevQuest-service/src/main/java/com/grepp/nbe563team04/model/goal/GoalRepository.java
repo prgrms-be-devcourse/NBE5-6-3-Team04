@@ -2,6 +2,8 @@ package com.grepp.nbe563team04.model.goal;
 
 import com.grepp.nbe563team04.model.goal.entity.Goal;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -10,4 +12,6 @@ public interface GoalRepository extends JpaRepository<Goal, Long> {
 
     long countByCompany_User_UserId(Long userId);
 
+    @Query("SELECT g.color FROM Goal g WHERE g.company.companyId = :companyId")
+    List<String> findColorsByCompanyId(@Param("companyId") Long companyId);
 }

@@ -17,4 +17,5 @@ public class GoalRequestDto {
     private LocalDate startDate;
     private LocalDate endDate;
     private Boolean isDone;
+    private String color;
 }

@@ -31,6 +31,9 @@ public class Goal {
     @Column(name = "title")
     private GoalList title;
 
+    @Column(name = "color")
+    private String color;
+
     @Column(name = "start_date")
     private LocalDate startDate;
 
