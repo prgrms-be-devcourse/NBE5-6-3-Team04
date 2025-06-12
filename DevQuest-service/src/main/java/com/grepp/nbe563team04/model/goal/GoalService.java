@@ -64,28 +64,40 @@ public class GoalService {
     // 기업별 목표 목록 조회
     @Transactional
     public List<GoalResponseDto> getGoalsByCompanyId(Long companyId) {
-        return goalRepository.findByCompanyCompanyId(companyId).stream()
-                .map(goal -> {
-                    List<Todo> todos = Optional.ofNullable(todoRepository.findByGoalGoalId(goal.getGoalId()))
-                            .orElse(Collections.emptyList());
-                    long total = todos.size();
-                    long done = todos.stream()
-                            .filter(todo -> Boolean.TRUE.equals(todo.getIsDone()))
-                            .count();
-                    int progress = total == 0 ? 0 : (int) ((done * 100.0) / total);
+        List<Goal> goals = goalRepository.findByCompanyCompanyId(companyId);
 
-                    return GoalResponseDto.builder()
-                            .goalId(goal.getGoalId())
-                            .title(goal.getTitle())
-                            .startDate(goal.getStartDate())
-                            .endDate(goal.getEndDate())
-                            .isDone(goal.getIsDone())
-                            .createdAt(goal.getCreatedAt())
-                            .progress(progress)
-                            .color(goal.getColor())
-                            .build();
-                })
-                .collect(Collectors.toList());
+
+        List<GoalResponseDto> result = new ArrayList<>();
+
+        for (Goal goal : goals) {
+            List<Todo> todos = Optional.ofNullable(
+                    todoRepository.findByGoalGoalId(goal.getGoalId())
+            ).orElse(Collections.emptyList());
+
+            long total = todos.size();
+            long done = todos.stream().filter(todo -> Boolean.TRUE.equals(todo.getIsDone())).count();
+            int progress = total == 0 ? 0 : (int) ((done * 100.0) / total);
+
+            GoalCategory category = goalCategoryRepository.findByCategoryName(goal.getTitle())
+                    .orElseThrow(() -> new RuntimeException("해당 카테고리가 존재하지 않습니다."));
+
+            GoalResponseDto dto = GoalResponseDto.builder()
+                    .goalId(goal.getGoalId())
+                    .title(goal.getTitle())
+                    .startDate(goal.getStartDate())
+                    .endDate(goal.getEndDate())
+                    .isDone(goal.getIsDone())
+                    .createdAt(goal.getCreatedAt())
+                    .progress(progress)
+                    .color(goal.getColor())
+                    .koreanName(category.getKoreanName())
+                    .categoryName(category.getCategoryName())
+                    .build();
+
+            result.add(dto);
+        }
+
+        return result;
     }
 
 

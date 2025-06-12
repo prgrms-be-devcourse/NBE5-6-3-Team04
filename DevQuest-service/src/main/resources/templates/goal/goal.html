@@ -73,7 +73,7 @@
       <div class="goal-item" th:each="goal : ${goals}">
         <div class="goal-info">
           <span class="goal-status" th:text="${goal.status}">상태</span>
-          <span class="goal-title" th:text="${goal.title}">제목</span>
+          <span class="goal-title" th:text="${goal.koreanName}" th:style="'color:' + (${goal.color} != null ? ${goal.color} : '#000000')">제목</span>
           <span class="done-label" th:if="${goal.isDone}">(완료)</span>
 
           <div class="goal-progress-wrapper">
@@ -120,9 +120,9 @@
       <div th:each="goal : ${goals}" th:if="${!goal.isDone}" class="goal-card">
         <div>
           <div class="card-header">
-            <p class="goal-name" th:text="${goal.goalListLabel}" >목표명</p>
+            <p class="goal-name" th:text="${goal.koreanName}" th:style="'color:' + (${goal.color} != null ? ${goal.color} : '#000000')">목표명</p>
             <span class="status" th:text="${goal.isDone}? '완료' : '진행 중'">진행 상태</span>
-            <p th:style="'color:' + (${goal.color} != null ? ${goal.color} : '#000000')">색상테스트용</p>
+
 
 
             <!-- 수정/삭제 드롭다운  -->
@@ -191,8 +191,6 @@
     </div>
 
 
-
-
       <!-- 완료된 목표 보기 토글 버튼-->
       <div class="completed-toggle-wrapper">
         <button id="toggleCompletedBtn">완료된 목표 보기</button>
@@ -205,7 +203,7 @@
              class="goal-card done">
           <div>
             <div class="card-header">
-              <p class="goal-name" th:text="${goal.title}">목표명</p>
+              <p class="goal-name" th:text="${goal.koreanName}" th:style="'color:' + (${goal.color} != null ? ${goal.color} : '#000000')">목표명</p>
               <span class="status">완료</span>
             </div>
           </div>
