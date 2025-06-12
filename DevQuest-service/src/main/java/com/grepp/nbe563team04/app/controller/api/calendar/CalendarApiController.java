@@ -25,13 +25,10 @@ public class CalendarApiController {
 
     @GetMapping
     public List<Map<String, Object>> getTodosByCompany(@PathVariable Long companyId) {
+
         List<GoalResponseDto> goals = goalService.getGoalsByCompanyId(companyId);
-
-
         List<Map<String, Object>> events = new ArrayList<>();
         for (GoalResponseDto goal : goals) {
-
-
             List<TodoResponseDto> todos = todoService.getByGoal(goal.getGoalId());
             for (TodoResponseDto todo : todos) {
                 Map<String, Object> event = new HashMap<>();
@@ -40,7 +37,7 @@ public class CalendarApiController {
                 event.put("end", todo.getEndDate());
                 event.put("color", goal.getColor());
                 event.put("url", todo.getUrl());
-
+                event.put("className", todo.getIsDone() ? "todo-done" : "");
 
                 events.add(event);
             }

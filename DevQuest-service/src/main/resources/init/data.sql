@@ -3,7 +3,14 @@ INSERT INTO goal_category (category_name, korean_name, color) VALUES
                                                                   ('DOCUMENT', '서류', '#F94144'),
                                                                   ('CODING_TEST', '코딩테스트', '#F3722C'),
                                                                   ('ASSIGNMENT', '과제', '#F9C74F'),
-                                                                  ('APTITUDE', '인적성검사', '#90BE6D');
+                                                                  ('APTITUDE', '인적성검사', '#90BE6D'),
+                                                                  ('INTERVIEW', '면접 준비', '#577590'),
+                                                                  ('PORTFOLIO', '포트폴리오', '#43AA8B'),
+                                                                  ('PROJECT', '개인/팀 프로젝트', '#577590'),
+                                                                  ('STUDY', '스터디 참여', '#277DA1'),
+                                                                  ('CERTIFICATE', '자격증 준비', '#B5179E'),
+                                                                  ('NETWORKING', '네트워킹/멘토링', '#7209B7');
+
 
 
 -- Level 데이터
