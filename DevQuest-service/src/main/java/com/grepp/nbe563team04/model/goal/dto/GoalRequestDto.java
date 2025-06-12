@@ -1,6 +1,6 @@
 package com.grepp.nbe563team04.model.goal.dto;
 
-import com.grepp.nbe562team04.model.goal.code.GoalList;
+import com.grepp.nbe563team04.model.goal.code.GoalList;
 import lombok.*;
 
 import java.time.LocalDate;

@@ -3,7 +3,7 @@ remember-me:
 
 spring:
   application:
-    name: NBE5-6-2-Team04
+    name: NBE5-6-3-Team04
 
   web:
     resources:
