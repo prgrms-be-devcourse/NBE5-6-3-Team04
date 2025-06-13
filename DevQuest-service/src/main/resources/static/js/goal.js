@@ -527,6 +527,23 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.calendar').style.display = 'none';
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+  const toggleBtn = document.getElementById('toggleDoneGoalsBtn');
+  let isHidden = false;
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      const doneGoals = document.querySelectorAll('.goal-process .done-goal');
+      doneGoals.forEach(goal => goal.classList.toggle('hidden'));
+      isHidden = !isHidden;
+      toggleBtn.textContent = isHidden
+          ? '완료된 목표 보기'   // ✅ 숨겨졌을 때 → 다시 보이게 하는 텍스트
+          : '완료된 목표 숨기기'; // ✅ 기본값 → 숨기기
+    });
+  }
+});
+
+
   // full-calendar 관련 코드
 
 document.addEventListener('DOMContentLoaded', function() {

@@ -656,6 +656,33 @@
   background-color: #f0f0f0;
 }
 
+.done-goal {
+  display: block;
+}
+.done-goal.hidden {
+  display: none;
+}
+
+
+  #toggleDoneGoalsBtn {
+    padding: 5px 10px;
+    font-size: 11px;
+    font-weight: bolder;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.2;
+    color: white;
+    background-color: rgb(136, 115, 193);
+    border: transparent;
+    transition: background-color 0.2s ease;
+    float: right;
+    margin-bottom: 10px;
+  }
+
 .todo-done .fc-event-title {
   text-decoration: line-through;
   color: gray !important;

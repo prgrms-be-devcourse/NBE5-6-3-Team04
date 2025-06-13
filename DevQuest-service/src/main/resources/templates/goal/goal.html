@@ -70,7 +70,10 @@
     <!-- 진행률 -->
     <div class="goal-process">
       <span class="progress-title">목표 진행률</span>
-      <div class="goal-item" th:each="goal : ${goals}">
+      <button id="toggleDoneGoalsBtn">완료된 목표 보기</button>
+      <div class="goal-item"
+           th:each="goal : ${goals}"
+           th:classappend="${goal.isDone} ? 'done-goal hidden' : ''">
         <div class="goal-info">
           <span class="goal-status" th:text="${goal.status}">상태</span>
           <span class="goal-title" th:text="${goal.koreanName}" th:style="'color:' + (${goal.color} != null ? ${goal.color} : '#000000')">제목</span>
