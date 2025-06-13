@@ -1,4 +1,4 @@
-package com.grepp.nbe563team04.model.user.dto;
+package com.grepp.nbe563team04.model.member.dto;
 
 import com.grepp.nbe563team04.infra.util.file.FileDto;
 import lombok.Data;
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
-public class UserImageDto {
+public class MemberImageDto {
 
     private Long Id;
     private Long userId;
@@ -18,7 +18,7 @@ public class UserImageDto {
     private LocalDateTime createdAt;
     private Boolean activated;
 
-    public UserImageDto(Long userId, FileDto fileDto) {
+    public MemberImageDto(Long userId, FileDto fileDto) {
         this.userId = userId;
         this.originFileName = originFileName;
         this.renameFileName = renameFileName;

@@ -124,7 +124,7 @@
     document.querySelector('#email').addEventListener('focusout', async ev => {
       const email = encodeURIComponent(ev.target.value);
       if(!email) return;
-      const response = await fetch('/api/user/exists/' + email);
+      const response = await fetch('/api/member/exists/' + email);
       const data = await response.json();
 
       validElement.style.display = 'block';
@@ -161,7 +161,7 @@
 
       // 이메일 중복 체크
       const email = encodeURIComponent(document.querySelector('#email').value);
-      const emailRes = await fetch('/api/user/exists/' + email);
+      const emailRes = await fetch('/api/member/exists/' + email);
       const emailData = await emailRes.json();
 
       if(emailData.data){

@@ -1,7 +1,3 @@
--- 전체 테이블 삭제 시, 아래 두줄 실행 후 주석처리 > 애플리케이션 실행
--- DROP DATABASE todoRpg;
--- CREATE DATABASE todoRpg;
-
 -- goal category 데이터
 INSERT INTO goal_category (category_name, korean_name, color) VALUES
                                                                   ('DOCUMENT', '서류', '#F94144'),

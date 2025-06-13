@@ -11,8 +11,8 @@ import com.grepp.nbe563team04.model.interest.dto.InterestDto;
 import com.grepp.nbe563team04.model.interest.entity.Interest;
 import com.grepp.nbe563team04.model.level.LevelRepository;
 import com.grepp.nbe563team04.model.level.entity.Level;
-import com.grepp.nbe563team04.model.user.UserRepository;
-import com.grepp.nbe563team04.model.user.entity.User;
+import com.grepp.nbe563team04.model.member.MemberRepository;
+import com.grepp.nbe563team04.model.member.entity.Member;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
@@ -27,36 +27,36 @@ import org.springframework.transaction.annotation.Transactional;
 public class DashboardService {
 
     private final DashboardRepository dashboardRepository;
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
     private final LevelRepository levelRepository;
 
     public DashboardService(DashboardRepository dashboardRepository,
-        UserRepository userRepository, GoalCompanyRepository goalCompanyRepository,
+        MemberRepository memberRepository, GoalCompanyRepository goalCompanyRepository,
         LevelRepository levelRepository) {
         this.dashboardRepository = dashboardRepository;
-        this.userRepository = userRepository;
+        this.memberRepository = memberRepository;
         this.levelRepository = levelRepository;
     }
 
     // 대시보드 조회
     @Transactional
-    public DashboardDto getDashboard(User user) {
+    public DashboardDto getDashboard(Member member) {
 
-        user.getUserInterests().forEach(ui -> ui.getInterest().getInterestName());
+        member.getMemberInterests().forEach(ui -> ui.getInterest().getInterestName());
 
         // 사용자 정보
         DashboardDto dto = new DashboardDto();
-        dto.setNickname(user.getNickname());
-        dto.setComment(user.getComment());
-        dto.setCreatedAt(user.getCreatedAt());
-//        dto.setUserImage(user.getUserImage());
+        dto.setNickname(member.getNickname());
+        dto.setComment(member.getComment());
+        dto.setCreatedAt(member.getCreatedAt());
+//        dto.setUserImage(member.getUserImage());
 
-        long dayCount = ChronoUnit.DAYS.between(user.getCreatedAt().atStartOfDay().toLocalDate(),
+        long dayCount = ChronoUnit.DAYS.between(member.getCreatedAt().atStartOfDay().toLocalDate(),
             LocalDate.now()) + 1;
         dto.setDayCount(dayCount);
 
         // 관심 분야 필터링
-        List<InterestDto> interests = user.getUserInterests().stream()
+        List<InterestDto> interests = member.getMemberInterests().stream()
             .map(userInterest -> {
                 Interest interest = userInterest.getInterest();
                 return new InterestDto(interest);
@@ -87,19 +87,19 @@ public class DashboardService {
         );
 
         // 현재 레벨 계산
-        Level currentLevel = levelRepository.findTopByXpLessThanEqualOrderByXpDesc(user.getExp())
+        Level currentLevel = levelRepository.findTopByXpLessThanEqualOrderByXpDesc(member.getExp())
             .orElseThrow(() -> new IllegalStateException("레벨 데이터가 없습니다."));
-        user.setLevel(currentLevel);
+        member.setLevel(currentLevel);
 
         // 다음 레벨 계산
         Optional<Level> nextLevelOpt = levelRepository.findTopByXpGreaterThanOrderByXpAsc(
-            user.getExp());
+            member.getExp());
 
         // xp bar - 진행률 계산
         int progress = 0;
         if (nextLevelOpt.isPresent()) {
             Level nextLevel = nextLevelOpt.get();
-            int curExp = user.getExp();
+            int curExp = member.getExp();
             int curXp = currentLevel.getXp();
             int nextXp = nextLevel.getXp();
 
@@ -109,16 +109,16 @@ public class DashboardService {
         }
 
         // 레벨 정보 - 대시보드 반영
-        dto.setLevelName(user.getLevel().getLevelName());
-        dto.setLevelValue(user.getLevel().getLevelId().intValue());
-        dto.setExp(user.getExp());
+        dto.setLevelName(member.getLevel().getLevelName());
+        dto.setLevelValue(member.getLevel().getLevelId().intValue());
+        dto.setExp(member.getExp());
         dto.setProgressPercent(progress);
 
         // 알림 토글
-        dto.setNotificationOn(user.isNotificationOn());
+        dto.setNotificationOn(member.isNotificationOn());
 
         // 목표기업 정보
-        List<GoalCompany> goalCompanies = dashboardRepository.findGoalCompaniesByUser(user);
+        List<GoalCompany> goalCompanies = dashboardRepository.findGoalCompaniesByMember(member);
         List<GoalCompanyDto> companyDtos = goalCompanies.stream()
             .map(this::convertToDto)
             .filter(Objects::nonNull)
@@ -166,10 +166,10 @@ public class DashboardService {
 
     // 알림 토글 처리 로직
     @Transactional
-    public void toggleNotification(User user) {
-        User managedUser = userRepository.findById(user.getUserId())
+    public void toggleNotification(Member member) {
+        Member managedMember = memberRepository.findById(member.getUserId())
             .orElseThrow(() -> new IllegalArgumentException("유저 없음"));
-        managedUser.setNotificationOn(!managedUser.isNotificationOn());
+        managedMember.setNotificationOn(!managedMember.isNotificationOn());
     }
 
     private GoalCompanyDto convertToDto(GoalCompany company) {

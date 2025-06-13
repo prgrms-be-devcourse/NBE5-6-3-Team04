@@ -1,4 +1,4 @@
-package com.grepp.nbe563team04.model.user.entity;
+package com.grepp.nbe563team04.model.member.entity;
 
 import com.grepp.nbe563team04.model.auth.code.Role;
 import com.grepp.nbe563team04.model.goalcompany.entity.GoalCompany;
@@ -25,7 +25,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @NoArgsConstructor
-public class User {
+public class Member {
 
     @Id
     @Column(name = "user_id")
@@ -44,8 +44,8 @@ public class User {
     @Column(name = "profile_activated")
     private boolean profile;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserInterest> userInterests;
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MemberInterest> memberInterests;
 
     @Column(name = "is_notification_on")
     private boolean NotificationOn;
@@ -53,10 +53,8 @@ public class User {
     private LocalDate createdAt;
     @Column(name = "deleted_at")
     private LocalDate deletedAt;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GoalCompany> goalCompanies;
-
-
 
     // 경험치 추가 로직
     public void addXp(int amount) {
