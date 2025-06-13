@@ -519,12 +519,18 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.goal-list').style.display = 'none';
     document.querySelector('.calendar').style.display = 'block';
     document.querySelector('.completed-toggle-wrapper').style.display = 'none';
+
+    // ✅ 렌더링은 DOM이 보이고 난 뒤!
+    setTimeout(() => {
+      calendar.render();
+    }, 0);
 }
 
  // 목표 보기 버튼
   function showGoalList() {
     document.querySelector('.goal-list').style.display = 'flex'; // 원래 flex일 수도 있음
     document.querySelector('.calendar').style.display = 'none';
+    document.querySelector('.completed-toggle-wrapper').style.display = 'flex';
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -546,11 +552,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // full-calendar 관련 코드
 
+let calendar;
 document.addEventListener('DOMContentLoaded', function() {
   const companyId = document.querySelector('.calendar').dataset.companyid;
 
   var calendarEl = document.getElementById('calendar');
-  var calendar = new FullCalendar.Calendar(calendarEl, {
+   calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: 'dayGridMonth',
     events: '/companies/' + companyId + '/events',
     eventClick: function(info) {
@@ -559,5 +566,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
   });
-  calendar.render();
+  // calendar.render();
 });
+
