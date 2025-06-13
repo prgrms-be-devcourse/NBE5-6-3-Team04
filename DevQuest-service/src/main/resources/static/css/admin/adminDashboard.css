@@ -218,3 +218,20 @@ body nav.top-bar, header nav{
 canvas {
   height: 600px !important;
 }
+
+.admin-dashboard-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-family: sans-serif;
+  background: #f8f8f8;
+}
+.admin-dashboard-card {
+  width: 600px;
+  padding: 20px;
+  background: white;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  border-radius: 10px;
+}

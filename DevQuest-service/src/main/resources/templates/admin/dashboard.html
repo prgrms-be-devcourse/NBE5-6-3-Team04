@@ -5,20 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>DevQuest 관리자 페이지</title>
 
+  <!--cdn-->
   <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <!-- sidenav -->
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <!--stats 차트-->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!--css-->
   <link rel="stylesheet" href="/css/common.css">
   <link rel="stylesheet" href="/css/header.css">
   <link rel="stylesheet" href="/css/admin/adminDashboard.css">
 </head>
+
 <body>
 <div class="logo">
   <a href="/admin/dashboard">DevQuest</a>
 </div>
 
+<!--fragments-->
 <div th:replace="~{fragments/header :: header}"></div>
 <div th:replace="~{fragments/admin-sidenav :: sidenav}"></div>
 
@@ -36,45 +42,56 @@
 <main>
   <h2><b th:text="${nickname} + ' 관리자님, 안녕하세요!'"></b></h2>
 
-  <!--가입/탈퇴 회원 추이 표-->
+  <!--stats 차트-->
   <div class="col s12 m6">
-    <h4>User Management</h4>
     <div class="card">
       <div class="card-content">
-        <canvas class="card-chart" id="card-legend-line-chart" width="400" height="400"></canvas>
-      </div>
-    </div>
-  </div>
-
-  <!-- -->
-  <div class="col m6 s12">
-    <h4>회원 관리</h4>
-    <div class="card">
-      <div class="card-content">
-        <span class="card-title">Updates</span>
-        <ul class="badge-updates">
-          <li>
-            <span class="new badge red" data-badge-caption="joined"></span>
-            <span class="message">Hong Gil-dong joined</span>
-            <span class="time">-14 minutes ago</span>
-          </li>
-          <li>
-            <span class="new badge green" data-badge-caption="left"></span>
-            <span class="message">Hong Gil-dong left</span>
-            <span class="time">-8 minutes ago</span>
-          </li>
-          <li>
-            <span class="new badge red" data-badge-caption="joined"></span>
-            <span class="message">Kim Na-than joined</span>
-            <span class="time">-5 minutes ago</span>
-          </li>
-        </ul>
+        <span class="card-title">Stats</span>
+        <div class="wrapper">
+          <canvas id="radar-chart" height="400"></canvas>
+        </div>
       </div>
     </div>
   </div>
 
 </main>
 
+<!--회원 가입/탈퇴 차트-->
+<div class="col s12 m6">
+  <h4>User Management</h4>
+  <div class="admin-dashboard-card">
+    <div class="card-content">
+      <canvas class="card-chart" id="card-legend-line-chart" width="400" height="400"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- -->
+<div class="col m6 s12">
+  <h4>회원 관리</h4>
+  <div class="card">
+    <div class="card-content">
+      <span class="card-title">Updates</span>
+      <ul class="badge-updates">
+        <li>
+          <span class="new badge red" data-badge-caption="joined"></span>
+          <span class="message">Hong Gil-dong joined</span>
+          <span class="time">-14 minutes ago</span>
+        </li>
+        <li>
+          <span class="new badge green" data-badge-caption="left"></span>
+          <span class="message">Hong Gil-dong left</span>
+          <span class="time">-8 minutes ago</span>
+        </li>
+        <li>
+          <span class="new badge red" data-badge-caption="joined"></span>
+          <span class="message">Kim Na-than joined</span>
+          <span class="time">-5 minutes ago</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
 
 <!--sidenav-->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -89,33 +106,33 @@
   });
 </script>
 
-<!--가입/탈퇴자수-->
+<!--회원 가입/탈퇴 차트-->
 <script th:inline="javascript">
   const labels = [[${labels}]];
   const joinData = [[${joinData}]];
   const leaveData = [[${leaveData}]];
 </script>
 
-<!-- ChartJS -->
-<!-- ✅ Chart.js 최신버전 CDN -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<script type="text/javascript" src="/js/admin/user-line-chart.js"></script>
-
-
+<!--cdn-->
 <script
     src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.js"></script>
 <script type="text/javascript"
         src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+<!--js-->
 <script src="js/imagesloaded.pkgd.min.js"></script>
 <script src="js/masonry.pkgd.min.js"></script>
 
+<!-- ChartJS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script type="text/javascript" src="/js/admin/user-line-chart.js"></script>
+
+<!--stats 차트-->
+<script src="/js/admin/area-charts.js"></script>
+<script th:inline="javascript">
+  const langLabels = [[${langLabels}]];
+</script>
 
 <!-- Initialization script -->
-<script src="js/admin.js"></script>
 <script src="/js/admin/user-line-chart.js"></script>
-<script src="js/init.js"></script>
-</body>
-</html>
-
 </body>
 </html>

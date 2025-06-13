@@ -3,6 +3,9 @@ package com.grepp.nbe563team04.app.controller.web.admin;
 import com.grepp.nbe563team04.app.controller.web.user.payload.SignupRequest;
 import com.grepp.nbe563team04.model.auth.code.Role;
 import com.grepp.nbe563team04.model.auth.domain.Principal;
+import com.grepp.nbe563team04.model.interest.InterestService;
+import com.grepp.nbe563team04.model.user.UserInterestRepository;
+import com.grepp.nbe563team04.model.user.UserInterestService;
 import com.grepp.nbe563team04.model.user.UserService;
 import com.grepp.nbe563team04.model.user.dto.UserDto;
 import com.grepp.nbe563team04.model.user.entity.User;
@@ -29,6 +32,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class AdminController {
 
     private final UserService userService;
+    private final UserInterestService userInterestService;
 
     @GetMapping("signup")
     public String signup(Model model) {
@@ -120,19 +124,14 @@ public class AdminController {
         return "redirect:/admin/dashboard";
     }
 
-    // 기업 통계
-    @GetMapping("company-stats")
-    public String showCompanyStatsPage(
-        @AuthenticationPrincipal Principal principal,
-        Model model,
-        CsrfToken csrfToken) {
-
-        // 로그인한 관리자 정보
-        User admin = userService.findByEmail(principal.getUsername());
-
-        model.addAttribute("nickname", principal.getUser().getNickname());
-        // model.addAttribute("data", data);
-        return "admin/company-stats";
+    // 대시보드-방사형 차트
+    @GetMapping("/dashboard/rader")
+    public String raderChart(Model model, Principal principal) {
+        String userId = principal.getUsername();
+        List<String> langLabels = userInterestService.getTop6Langs(userId);
+        model.addAttribute("langLabels", langLabels);
+        return "dashboard";
     }
+
 
 }
