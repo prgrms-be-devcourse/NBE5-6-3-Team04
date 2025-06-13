@@ -42,3 +42,6 @@ uploads/profile/*.png
 
 # macOS 시스템 파일 무시
 .DS_Store
+
+# 환경 변수 파일
+.env

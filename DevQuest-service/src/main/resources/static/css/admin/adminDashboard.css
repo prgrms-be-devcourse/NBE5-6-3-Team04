@@ -45,6 +45,7 @@ th {
 hr {
   margin: 1rem 0rem 1rem 0rem;
 }
+
 .tab-menu, .tabs {
   display: flex;
   justify-content: right;
@@ -201,4 +202,19 @@ button {
     font-size: 0.9rem;
     padding: 4px 10px;
   }
+}
+
+/* 공통 배경 없애기 */
+body nav.top-bar, header nav{
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.material-icons-menu {
+  color: black;
+}
+
+/*기업 통계 표 높이조절*/
+canvas {
+  height: 600px !important;
 }

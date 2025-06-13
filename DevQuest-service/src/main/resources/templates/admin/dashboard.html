@@ -7,9 +7,12 @@
 
   <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- sidenav -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" href="/css/common.css">
   <link rel="stylesheet" href="/css/header.css">
-  <link rel="stylesheet" href="/css/adminDashboard.css">
+  <link rel="stylesheet" href="/css/admin/adminDashboard.css">
 </head>
 <body>
 <div class="logo">
@@ -17,185 +20,102 @@
 </div>
 
 <div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/admin-sidenav :: sidenav}"></div>
+
+<!--sidenav-->
+<nav class="top-bar">
+  <div class="nav-wrapper">
+    <div class="nav-container">
+      <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large">
+        <i class="material-icons material-icons-menu">menu</i>
+      </a>
+    </div>
+  </div>
+</nav>
+
 <main>
   <h2><b th:text="${nickname} + ' 관리자님, 안녕하세요!'"></b></h2>
 
-  <div class="container">
-    <h2 class="member-title">
-      <i class="material-icons" style="vertical-align: middle; margin-right: 6px;">supervisor_account</i>
-      회원 목록
-    </h2>
-
-    <div class="tabs">
-      <a href="#" class="tab-btn" onclick="showTab('admin'); return false;">관리자</a>
-      <a href="#" class="tab-btn active" onclick="showTab('active'); return false;">현재 회원</a>
-      <a href="#" class="tab-btn" onclick="showTab('deleted'); return false;">탈퇴 회원</a>
+  <!--가입/탈퇴 회원 추이 표-->
+  <div class="col s12 m6">
+    <h4>User Management</h4>
+    <div class="card">
+      <div class="card-content">
+        <canvas class="card-chart" id="card-legend-line-chart" width="400" height="400"></canvas>
+      </div>
     </div>
-
-    <hr/>
-
-    <!-- 현재 회원 -->
-    <div class="card tab-content" id="tab-active">
-      <table class="display user-table" style="width:100%">
-        <thead>
-        <tr>
-          <th style="width: 0"></th>
-          <th>번호</th>
-          <th>사용자</th>
-          <th>가입일</th>
-          <th>권한</th>
-          <th>관리</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="user, iterStat : ${activeUsers}">
-          <td style="width: 0"></td>
-          <td th:text="${iterStat.count}">1</td>
-          <td>
-            <div th:text="${user.nickname}">닉네임</div>
-            <span class="email-small" th:text="${user.email}">user@example.com</span>
-          </td>
-          <td th:text="${user.createdAt}">2025-05-15</td>
-          <td>
-            <span th:if="${user.role.name() == 'ROLE_ADMIN'}" class="role-admin">관리자</span>
-            <span th:unless="${user.role.name() == 'ROLE_ADMIN'}"></span>
-          </td>
-          <td>
-            <form th:action="@{/admin/removeUser}" method="post">
-              <input type="hidden" name="email" th:value="${user.email}"/>
-              <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
-            </form>
-            <span th:if="${user.email == currentUserEmail}" style="color: gray;">본인</span>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- 관리자 -->
-    <div class="card tab-content" id="tab-admin" style="display: none;">
-      <table class="display user-table" style="width:100%">
-        <thead>
-        <tr>
-          <th style="width: 0"></th>
-          <th>번호</th>
-          <th>사용자</th>
-          <th>가입일</th>
-          <th>권한</th>
-          <th>관리</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="user, iterStat : ${adminUsers}">
-          <td style="width: 0"></td>
-          <td th:text="${iterStat.count}">1</td>
-          <td>
-            <div th:text="${user.nickname}">닉네임</div>
-            <span class="email-small" th:text="${user.email}">user@example.com</span>
-          </td>
-          <td th:text="${user.createdAt}">2025-05-15</td>
-          <td><span class="role-admin">관리자</span></td>
-          <td>
-            <form th:action="@{/admin/removeUser}" method="post">
-              <input type="hidden" name="email" th:value="${user.email}"/>
-              <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
-            </form>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- 탈퇴 회원 -->
-    <div class="card tab-content" id="tab-deleted" style="display: none;">
-      <table class="display user-table" style="width:100%">
-        <thead>
-        <tr>
-          <th style="width: 0"></th>
-          <th>번호</th>
-          <th>사용자</th>
-          <th>가입일</th>
-          <th>권한</th>
-          <th>관리</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="user, iterStat : ${deletedUsers}">
-          <td style="width: 0"></td>
-          <td th:text="${iterStat.count}">1</td>
-          <td>
-            <div th:text="${user.nickname}">닉네임</div>
-            <span class="email-small" th:text="${user.email}">user@example.com</span>
-          </td>
-          <td th:text="${user.createdAt}">2025-05-15</td>
-          <td>
-            <span th:if="${user.role.name() == 'ROLE_ADMIN'}" class="role-admin">관리자</span>
-            <span th:unless="${user.role.name() == 'ROLE_ADMIN'}"></span>
-          </td>
-          <td>
-            <span style="color: #888;">탈퇴</span><br/>
-            <span class="email-small"
-                  th:text="${#temporals.format(user.deletedAt, 'yyyy-MM-dd')}"></span>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-
   </div>
+
+  <!-- -->
+  <div class="col m6 s12">
+    <h4>회원 관리</h4>
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">Updates</span>
+        <ul class="badge-updates">
+          <li>
+            <span class="new badge red" data-badge-caption="joined"></span>
+            <span class="message">Hong Gil-dong joined</span>
+            <span class="time">-14 minutes ago</span>
+          </li>
+          <li>
+            <span class="new badge green" data-badge-caption="left"></span>
+            <span class="message">Hong Gil-dong left</span>
+            <span class="time">-8 minutes ago</span>
+          </li>
+          <li>
+            <span class="new badge red" data-badge-caption="joined"></span>
+            <span class="message">Kim Na-than joined</span>
+            <span class="time">-5 minutes ago</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
 </main>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<!--sidenav-->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+<!-- sidenav 초기화 JS -->
 <script>
-  const initializedTables = {};
-
-  function showTab(type) {
-
-    localStorage.setItem('adminActiveTab', type);
-
-    document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    const targetTab = document.getElementById(`tab-${type}`);
-    targetTab.style.display = '';
-    document.querySelector(`.tab-btn[onclick*="${type}"]`).classList.add('active');
-
-    // 해당 탭의 테이블만 초기화 (한 번만)
-    if (!initializedTables[type]) {
-      const table = $(targetTab).find('.user-table').DataTable({
-        language: {
-          info: "_START_ - _END_ / 총 _TOTAL_명",
-        },
-        paging: true,
-        searching: true,
-        ordering: true,
-        info: true,
-        columnDefs: [
-          { orderable: false, targets: 0 }
-        ],
-        scrollY: '400px',
-        scrollCollapse: false
-      });
-
-      // 검색창 placeholder
-      $(targetTab).find('.dataTables_filter input').attr('placeholder', '검색어를 입력하세요.');
-
-      // 전체 선택
-      $(targetTab).find('.select-all').on('click', function () {
-        const checked = this.checked;
-        $(table.rows({ search: 'applied' }).nodes()).find('input[type="checkbox"]').prop('checked', checked);
-      });
-
-      initializedTables[type] = true;
-    }
-  }
-
-  $(document).ready(function () {
-    // localStorage에서 마지막으로 본 탭 정보 불러오기
-    const savedTab = localStorage.getItem('adminActiveTab') || 'active';
-    showTab(savedTab);
+  document.addEventListener('DOMContentLoaded', function () {
+    const elems = document.querySelectorAll('.sidenav');
+    M.Sidenav.init(elems);
   });
 </script>
+
+<!--가입/탈퇴자수-->
+<script th:inline="javascript">
+  const labels = [[${labels}]];
+  const joinData = [[${joinData}]];
+  const leaveData = [[${leaveData}]];
+</script>
+
+<!-- ChartJS -->
+<!-- ✅ Chart.js 최신버전 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script type="text/javascript" src="/js/admin/user-line-chart.js"></script>
+
+
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.js"></script>
+<script type="text/javascript"
+        src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+<script src="js/imagesloaded.pkgd.min.js"></script>
+<script src="js/masonry.pkgd.min.js"></script>
+
+
+<!-- Initialization script -->
+<script src="js/admin.js"></script>
+<script src="/js/admin/user-line-chart.js"></script>
+<script src="js/init.js"></script>
+</body>
+</html>
 
 </body>
 </html>
