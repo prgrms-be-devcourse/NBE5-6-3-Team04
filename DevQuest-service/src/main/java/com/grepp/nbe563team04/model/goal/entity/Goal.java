@@ -1,6 +1,5 @@
 package com.grepp.nbe563team04.model.goal.entity;
 
-import com.grepp.nbe563team04.model.goal.code.GoalList;
 import com.grepp.nbe563team04.model.goalcompany.entity.GoalCompany;
 import jakarta.persistence.*;
 import java.time.LocalDate;
