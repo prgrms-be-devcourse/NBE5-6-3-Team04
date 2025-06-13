@@ -187,11 +187,15 @@ document.addEventListener("DOMContentLoaded", () => {
 function createGoal() {
   const form = document.getElementById("goal-form");
   const companyId = form.dataset.companyId; // 필요시 상위에서 설정
+
+
   const data = {
     companyId: companyId,
-    title: form.title.value,
+    title: form.categoryName.value,
+    categoryName: form.categoryName.value,
     startDate: form.startDate.value,
     endDate: form.endDate.value
+
   };
 
   fetch(`/goals/${companyId}/create`, {
@@ -221,7 +225,8 @@ function updateGoal(e) {
   const goalId = form.dataset.id;
 
   const data = {
-    title: form.title.value,
+    title: form.categoryName.value,
+    categoryName: form.categoryName.value,
     startDate: form.startDate.value,
     endDate: form.endDate.value,
     isDone: form.isDone.value === "true"
@@ -276,10 +281,11 @@ function fillGoalForm(goalId) {
   .then(res => res.json())
   .then(data => {
     const form = document.getElementById("goal-form");
-    form.title.value = data.title ?? '';        // null-safe 처리 (에러 방지)
+    form.title.value = data.title;        // null-safe 처리 (에러 방지)
     form.startDate.value = data.startDate ?? '';
     form.endDate.value = data.endDate ?? '';
     form.isDone.value = data.isDone ? "true" : "false";
+    form.categoryName.value = data.categoryName;
   })
   .catch(err => {
     console.error("목표 불러오기 실패", err);
@@ -296,11 +302,13 @@ function createTodo() {
   const goalId = form.goalId.value;
   const content = form.title.value;
   const url = form.url.value;
+  const startDate = form.startDate.value;
 
   const data = {
     goalId: goalId,
     content: content,
-    url:url
+    url:url,
+    startDate: startDate
   };
 
   fetch(`/todos/${goalId}/create`, {
@@ -520,13 +528,19 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 
   // full-calendar 관련 코드
-// const goalId = [[${goalId}]];
-// document.addEventListener('DOMContentLoaded', function() {
-//   var calendarEl = document.getElementById('calendar');
-//   var calendar = new FullCalendar.Calendar(calendarEl, {
-//     initialView: 'dayGridMonth',
-//     events: '/goals/' + goalId + '/events'
-//
-//   });
-//   calendar.render();
-// });
+
+document.addEventListener('DOMContentLoaded', function() {
+  const companyId = document.querySelector('.calendar').dataset.companyid;
+
+  var calendarEl = document.getElementById('calendar');
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'dayGridMonth',
+    events: '/companies/' + companyId + '/events',
+    eventClick: function(info) {
+      info.jsEvent.preventDefault(); // ✅ 기본 링크 이동 막기
+      window.open(info.event.url, '_blank');    // 새 창에서만 열리게
+    }
+
+  });
+  calendar.render();
+});

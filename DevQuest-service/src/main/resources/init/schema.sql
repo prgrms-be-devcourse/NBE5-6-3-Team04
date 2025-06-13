@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS goal_company;
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS level;
 DROP TABLE IF EXISTS interest;
+DROP TABLE IF EXISTS goal_category;
 
 -- level (최상위 부모)
 CREATE TABLE level (
@@ -58,17 +59,29 @@ CREATE TABLE goal_company (
                               FOREIGN KEY (user_id) REFERENCES user(user_id)
 );
 
+-- goal_category
+CREATE TABLE goal_category (
+                               category_id BIGINT AUTO_INCREMENT,
+                               category_name VARCHAR(255) NOT NULL,  -- 영문 (ex. CODING_TEST)
+                               korean_name VARCHAR(255) NOT NULL,    -- 사용자 표시용 (ex. 코딩테스트)
+                               color VARCHAR(255) NOT NULL,
+                               PRIMARY KEY (category_id)
+);
+
 -- goal
 CREATE TABLE goal (
                       goal_id BIGINT NOT NULL AUTO_INCREMENT,
                       company_id BIGINT NOT NULL,
+                      category_id BIGINT NOT NULL,
                       title VARCHAR(255) NOT NULL,
                       start_date DATETIME,
                       end_date DATETIME,
+                      color VARCHAR(255) NOT NULL,
                       created_at TIMESTAMP NULL,
                       is_done BOOLEAN,
                       PRIMARY KEY (goal_id),
-                      FOREIGN KEY (company_id) REFERENCES goal_company(company_id)
+                      FOREIGN KEY (company_id) REFERENCES goal_company(company_id),
+                      FOREIGN KEY (category_id) REFERENCES goal_category(category_id)
 );
 
 -- todos
@@ -147,3 +160,4 @@ CREATE TABLE user_interest (
                                FOREIGN KEY (user_id) REFERENCES user(user_id),
                                FOREIGN KEY (interest_id) REFERENCES interest(interest_id)
 );
+
