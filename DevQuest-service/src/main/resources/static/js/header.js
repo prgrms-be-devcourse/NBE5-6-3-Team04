@@ -20,7 +20,7 @@ function logout() {
         }
     })
     .then(() => {
-        window.location.href = '/';
+        window.location.href = '/signin';
     })
     .catch(err => {
         console.error('Logout failed', err);

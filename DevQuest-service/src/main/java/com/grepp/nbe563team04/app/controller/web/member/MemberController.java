@@ -1,11 +1,11 @@
-package com.grepp.nbe563team04.app.controller.web.user;
+package com.grepp.nbe563team04.app.controller.web.member;
 
-import com.grepp.nbe563team04.app.controller.web.user.payload.SigninRequest;
-import com.grepp.nbe563team04.app.controller.web.user.payload.SignupRequest;
+import com.grepp.nbe563team04.app.controller.web.member.payload.SigninRequest;
+import com.grepp.nbe563team04.app.controller.web.member.payload.SignupRequest;
 import com.grepp.nbe563team04.model.auth.code.Role;
 import com.grepp.nbe563team04.model.interest.InterestService;
 import com.grepp.nbe563team04.model.interest.dto.InterestDto;
-import com.grepp.nbe563team04.model.user.UserService;
+import com.grepp.nbe563team04.model.member.MemberService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import java.util.Arrays;
@@ -27,9 +27,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-public class UserController {
+public class MemberController {
 
-    private final UserService userService;
+    private final MemberService memberService;
     private final InterestService interestService;
 
     // 로그인 폼
@@ -42,7 +42,7 @@ public class UserController {
         }
 
         model.addAttribute("signinRequest", new SigninRequest());
-        return "user/signin";
+        return "member/signin";
     }
 
 
@@ -50,7 +50,7 @@ public class UserController {
     @GetMapping("signup")
     public String signup(Model model) {
         model.addAttribute("signupForm", new SignupRequest());
-        return "user/signup";
+        return "member/signup";
     }
 
     // 회원가입 > 관심분야 선택
@@ -61,27 +61,27 @@ public class UserController {
         HttpSession session
     ) {
         if (bindingResult.hasErrors()) {
-            return "user/signup";
+            return "member/signup";
         }
 
         session.setAttribute("signupForm", form);
-        return "redirect:/user/interests";
+        return "redirect:/member/interests";
     }
 
 
     // 관심분야 전체 조회
-    @GetMapping("user/interests")
+    @GetMapping("member/interests")
     public String interestList(Model model) {
         Map<String, List<InterestDto>> interestGroup = interestService.findInterestGroupByType();
 
         model.addAttribute("interestRoles", interestGroup.get("interestRoles"));
         model.addAttribute("interestSkills", interestGroup.get("interestSkills"));
 
-        return "user/interests";
+        return "member/interests";
     }
 
     // 관심분야 등록
-    @PostMapping("user/interests")
+    @PostMapping("member/interests")
     public String receiveInterests(
         HttpSession session,
         @RequestParam("role") Long roleId,
@@ -90,18 +90,20 @@ public class UserController {
         SignupRequest signupForm = (SignupRequest) session.getAttribute("signupForm");
         if (signupForm == null) {
 
-            return "redirect:/user/signup";
+            return "redirect:/member/signup";
         }
 
         List<Long> skillIds = Arrays.stream(skills.split(","))
             .map(Long::parseLong)
             .collect(Collectors.toList());
 
-        Long userId = userService.signup(signupForm.toDto(), Role.ROLE_USER);
-        userService.receiveInterest(userId, roleId, skillIds);
+        log.info("여기까지 왔다");
+
+        Long userId = memberService.signup(signupForm.toDto(), Role.ROLE_USER);
+        memberService.receiveInterest(userId, roleId, skillIds);
 
         session.removeAttribute("signupForm");
-        return "user/signupSuccess";
+        return "member/signupSuccess";
     }
 
 }

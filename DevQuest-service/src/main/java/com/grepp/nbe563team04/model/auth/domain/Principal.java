@@ -1,6 +1,6 @@
 package com.grepp.nbe563team04.model.auth.domain;
 
-import com.grepp.nbe563team04.model.user.entity.User;
+import com.grepp.nbe563team04.model.member.entity.Member;
 import java.util.Collection;
 import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
@@ -9,35 +9,35 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class Principal implements UserDetails {
 
-    private final User user;
+    private final Member member;
 
-    public Principal(User user) {
-        this.user = user;
+    public Principal(Member member) {
+        this.member = member;
     }
 
-    public User getUser() {
-        return this.user;
+    public Member getUser() {
+        return this.member;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // 권한 목록 리턴 (예: ROLE_USER 등)
-        return List.of(() -> user.getRole().name());
+        return List.of(() -> member.getRole().name());
     }
 
-    public static Principal createPrincipal(User member, List<SimpleGrantedAuthority> authorities) {
+    public static Principal createPrincipal(Member member, List<SimpleGrantedAuthority> authorities) {
         return new Principal(member);
 //        return new Principal(member.getEmail(), member.getPassword(), authorities);
     }
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return member.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return user.getEmail(); // 혹은 ID
+        return member.getEmail(); // 혹은 ID
     }
 
     @Override

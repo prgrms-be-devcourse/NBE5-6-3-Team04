@@ -2,11 +2,11 @@ package com.grepp.nbe563team04.model.achievement;
 
 import com.grepp.nbe563team04.model.achievement.dto.AchievementDto;
 import com.grepp.nbe563team04.model.achievement.entity.Achievement;
+import com.grepp.nbe563team04.model.member.entity.Member;
 import com.grepp.nbe563team04.model.todo.TodoRepository;
-import com.grepp.nbe563team04.model.user.entity.UsersAchieve;
-import com.grepp.nbe563team04.model.user.UserRepository;
-import com.grepp.nbe563team04.model.user.UsersAchieveRepository;
-import com.grepp.nbe563team04.model.user.entity.User;
+import com.grepp.nbe563team04.model.member.entity.MembersAchieve;
+import com.grepp.nbe563team04.model.member.MemberRepository;
+import com.grepp.nbe563team04.model.member.MembersAchieveRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,8 +21,8 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class AchievementService {
 
-    private final UsersAchieveRepository usersAchieveRepository;
-    private final UserRepository userRepository;
+    private final MembersAchieveRepository membersAchieveRepository;
+    private final MemberRepository memberRepository;
     private final AchieveRepository achieveRepository;
     private final TodoRepository todoRepository;
 
@@ -30,17 +30,17 @@ public class AchievementService {
     public String giveTutorialAchievement(Long userId) {
         Long achieveId = 1L;
 
-        boolean already = usersAchieveRepository.existsByUser_UserIdAndAchievement_AchieveId(userId, achieveId);
+        boolean already = membersAchieveRepository.existsByMember_UserIdAndAchievement_AchieveId(userId, achieveId);
         if (already) {
             return null;
         }
-        UsersAchieve ua = new UsersAchieve();
-        ua.setUser(userRepository.getReferenceById(userId));
+        MembersAchieve ua = new MembersAchieve();
+        ua.setMember(memberRepository.getReferenceById(userId));
         Achievement achievement = achieveRepository.getReferenceById(achieveId);
         ua.setAchievement(achievement);
         ua.setAchievedAt(LocalDateTime.now());
 
-        usersAchieveRepository.save(ua);
+        membersAchieveRepository.save(ua);
         return achievement.getName();
     }
 
@@ -48,16 +48,16 @@ public class AchievementService {
     public String giveGoalCompanyAchievement(Long userId) {
         Long achieveId = 2L;
 
-        boolean already = usersAchieveRepository.existsByUser_UserIdAndAchievement_AchieveId(userId, achieveId);
+        boolean already = membersAchieveRepository.existsByMember_UserIdAndAchievement_AchieveId(userId, achieveId);
         if (already) return null;
 
-        UsersAchieve ua = new UsersAchieve();
-        ua.setUser(userRepository.getReferenceById(userId));
+        MembersAchieve ua = new MembersAchieve();
+        ua.setMember(memberRepository.getReferenceById(userId));
         Achievement achievement = achieveRepository.findById(achieveId).orElseThrow();
         ua.setAchievement(achievement);
         ua.setAchievedAt(LocalDateTime.now());
 
-        usersAchieveRepository.save(ua);
+        membersAchieveRepository.save(ua);
         log.info("업적 : {}", achievement.getName());
         return achievement.getName();
     }
@@ -66,25 +66,25 @@ public class AchievementService {
     public String giveThreeGoalCompaniesAchievement(Long userId) {
         Long achieveId = 5L;
 
-        boolean already = usersAchieveRepository.existsByUser_UserIdAndAchievement_AchieveId(userId, achieveId);
+        boolean already = membersAchieveRepository.existsByMember_UserIdAndAchievement_AchieveId(userId, achieveId);
         if (already) {
             return null;
         }
 
-        User user = userRepository.findById(userId).orElseThrow();
-        int companyCount = user.getGoalCompanies().size();
+        Member member = memberRepository.findById(userId).orElseThrow();
+        int companyCount = member.getGoalCompanies().size();
 
         if (companyCount < 3) {
             return null;
         }
 
         Achievement achievement = achieveRepository.findById(achieveId).orElseThrow();
-        UsersAchieve ua = new UsersAchieve();
-        ua.setUser(user);
+        MembersAchieve ua = new MembersAchieve();
+        ua.setMember(member);
         ua.setAchievement(achievement);
         ua.setAchievedAt(LocalDateTime.now());
 
-        usersAchieveRepository.save(ua);
+        membersAchieveRepository.save(ua);
         return achievement.getName();
     }
 
@@ -92,20 +92,20 @@ public class AchievementService {
     public String giveFirstGoalCreateAchievement(Long userId) {
         Long achieveId = 4L; // 업적10의 ID
 
-        boolean already = usersAchieveRepository.existsByUser_UserIdAndAchievement_AchieveId(userId, achieveId);
+        boolean already = membersAchieveRepository.existsByMember_UserIdAndAchievement_AchieveId(userId, achieveId);
         if (already) {
             return null;
         }
 
-        User user = userRepository.findById(userId).orElseThrow();
+        Member member = memberRepository.findById(userId).orElseThrow();
 
         Achievement achievement = achieveRepository.findById(achieveId).orElseThrow();
-        UsersAchieve ua = new UsersAchieve();
-        ua.setUser(user);
+        MembersAchieve ua = new MembersAchieve();
+        ua.setMember(member);
         ua.setAchievement(achievement);
         ua.setAchievedAt(LocalDateTime.now());
 
-        usersAchieveRepository.save(ua);
+        membersAchieveRepository.save(ua);
         return achievement.getName();
     }
 
@@ -113,17 +113,17 @@ public class AchievementService {
     public String giveTodoFirstCheckAchievement(Long userId) {
         Long achieveId = 3L;
 
-        boolean already = usersAchieveRepository.existsByUser_UserIdAndAchievement_AchieveId(userId, achieveId);
+        boolean already = membersAchieveRepository.existsByMember_UserIdAndAchievement_AchieveId(userId, achieveId);
         if (already) return null;
 
-        User user = userRepository.findById(userId).orElseThrow();
+        Member member = memberRepository.findById(userId).orElseThrow();
         Achievement achievement = achieveRepository.findById(achieveId).orElseThrow();
-        UsersAchieve ua = new UsersAchieve();
-        ua.setUser(user);
+        MembersAchieve ua = new MembersAchieve();
+        ua.setMember(member);
         ua.setAchievement(achievement);
         ua.setAchievedAt(LocalDateTime.now());
 
-        usersAchieveRepository.save(ua);
+        membersAchieveRepository.save(ua);
 
         return achievement.getName();
     }
@@ -133,31 +133,31 @@ public class AchievementService {
         Long achieveId = 11L;
 
         // 이미 업적을 획득했는지 확인
-        boolean already = usersAchieveRepository.existsByUser_UserIdAndAchievement_AchieveId(userId, achieveId);
+        boolean already = membersAchieveRepository.existsByMember_UserIdAndAchievement_AchieveId(userId, achieveId);
         if (already) return null;
 
-        User user = userRepository.findById(userId).orElseThrow();
+        Member member = memberRepository.findById(userId).orElseThrow();
 
         // 완료된 Todo 개수
-        long doneCount = todoRepository.countByGoal_Company_User_UserIdAndIsDoneTrue(userId);
+        long doneCount = todoRepository.countByGoal_Company_Member_UserIdAndIsDoneTrue(userId);
 
         if (doneCount < 5) {
             return null;
         }
 
         Achievement achievement = achieveRepository.findById(achieveId).orElseThrow();
-        UsersAchieve ua = new UsersAchieve();
-        ua.setUser(user);
+        MembersAchieve ua = new MembersAchieve();
+        ua.setMember(member);
         ua.setAchievement(achievement);
         ua.setAchievedAt(LocalDateTime.now());
 
-        usersAchieveRepository.save(ua);
+        membersAchieveRepository.save(ua);
         return achievement.getName();
     }
 
     public List<AchievementDto> getUserAchievements(Long userId) {
-        List<UsersAchieve> usersAchievements = usersAchieveRepository.findWithAchievementByUserId(userId);
-        return usersAchievements.stream()
+        List<MembersAchieve> membersAchievements = membersAchieveRepository.findWithAchievementByUserId(userId);
+        return membersAchievements.stream()
                 .map(ua -> new AchievementDto(
                         ua.getAchievement().getName(),
                         ua.getAchievement().getDescription()

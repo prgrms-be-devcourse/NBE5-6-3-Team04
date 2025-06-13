@@ -51,7 +51,7 @@
 
     <!-- 현재 회원 -->
     <div class="card tab-content" id="tab-active">
-      <table class="display user-table" style="width:100%">
+      <table class="display member-table" style="width:100%">
         <thead>
         <tr>
           <th style="width: 0"></th>
@@ -63,24 +63,24 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="user, iterStat : ${activeUsers}">
+        <tr th:each="member, iterStat : ${activeUsers}">
           <td style="width: 0"></td>
           <td th:text="${iterStat.count}">1</td>
           <td>
-            <div th:text="${user.nickname}">닉네임</div>
-            <span class="email-small" th:text="${user.email}">user@example.com</span>
+            <div th:text="${member.nickname}">닉네임</div>
+            <span class="email-small" th:text="${member.email}">member@example.com</span>
           </td>
-          <td th:text="${user.createdAt}">2025-05-15</td>
+          <td th:text="${member.createdAt}">2025-05-15</td>
           <td>
-            <span th:if="${user.role.name() == 'ROLE_ADMIN'}" class="role-admin">관리자</span>
-            <span th:unless="${user.role.name() == 'ROLE_ADMIN'}"></span>
+            <span th:if="${member.role.name() == 'ROLE_ADMIN'}" class="role-admin">관리자</span>
+            <span th:unless="${member.role.name() == 'ROLE_ADMIN'}"></span>
           </td>
           <td>
             <form th:action="@{/admin/removeUser}" method="post">
-              <input type="hidden" name="email" th:value="${user.email}"/>
+              <input type="hidden" name="email" th:value="${member.email}"/>
               <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
             </form>
-            <span th:if="${user.email == currentUserEmail}" style="color: gray;">본인</span>
+            <span th:if="${member.email == currentUserEmail}" style="color: gray;">본인</span>
           </td>
         </tr>
         </tbody>
@@ -89,7 +89,7 @@
 
     <!-- 관리자 -->
     <div class="card tab-content" id="tab-admin" style="display: none;">
-      <table class="display user-table" style="width:100%">
+      <table class="display member-table" style="width:100%">
         <thead>
         <tr>
           <th style="width: 0"></th>
@@ -101,18 +101,18 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="user, iterStat : ${adminUsers}">
+        <tr th:each="member, iterStat : ${adminUsers}">
           <td style="width: 0"></td>
           <td th:text="${iterStat.count}">1</td>
           <td>
-            <div th:text="${user.nickname}">닉네임</div>
-            <span class="email-small" th:text="${user.email}">user@example.com</span>
+            <div th:text="${member.nickname}">닉네임</div>
+            <span class="email-small" th:text="${member.email}">member@example.com</span>
           </td>
-          <td th:text="${user.createdAt}">2025-05-15</td>
+          <td th:text="${member.createdAt}">2025-05-15</td>
           <td><span class="role-admin">관리자</span></td>
           <td>
             <form th:action="@{/admin/removeUser}" method="post">
-              <input type="hidden" name="email" th:value="${user.email}"/>
+              <input type="hidden" name="email" th:value="${member.email}"/>
               <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
             </form>
           </td>
@@ -123,7 +123,7 @@
 
     <!-- 탈퇴 회원 -->
     <div class="card tab-content" id="tab-deleted" style="display: none;">
-      <table class="display user-table" style="width:100%">
+      <table class="display member-table" style="width:100%">
         <thead>
         <tr>
           <th style="width: 0"></th>
@@ -135,22 +135,22 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="user, iterStat : ${deletedUsers}">
+        <tr th:each="member, iterStat : ${deletedUsers}">
           <td style="width: 0"></td>
           <td th:text="${iterStat.count}">1</td>
           <td>
-            <div th:text="${user.nickname}">닉네임</div>
-            <span class="email-small" th:text="${user.email}">user@example.com</span>
+            <div th:text="${member.nickname}">닉네임</div>
+            <span class="email-small" th:text="${member.email}">member@example.com</span>
           </td>
-          <td th:text="${user.createdAt}">2025-05-15</td>
+          <td th:text="${member.createdAt}">2025-05-15</td>
           <td>
-            <span th:if="${user.role.name() == 'ROLE_ADMIN'}" class="role-admin">관리자</span>
-            <span th:unless="${user.role.name() == 'ROLE_ADMIN'}"></span>
+            <span th:if="${member.role.name() == 'ROLE_ADMIN'}" class="role-admin">관리자</span>
+            <span th:unless="${member.role.name() == 'ROLE_ADMIN'}"></span>
           </td>
           <td>
             <span style="color: #888;">탈퇴</span><br/>
             <span class="email-small"
-                  th:text="${#temporals.format(user.deletedAt, 'yyyy-MM-dd')}"></span>
+                  th:text="${#temporals.format(member.deletedAt, 'yyyy-MM-dd')}"></span>
           </td>
         </tr>
         </tbody>
@@ -190,7 +190,7 @@
 
     // 해당 탭의 테이블만 초기화 (한 번만)
     if (!initializedTables[type]) {
-      const table = $(targetTab).find('.user-table').DataTable({
+      const table = $(targetTab).find('.member-table').DataTable({
         language: {
           info: "_START_ - _END_ / 총 _TOTAL_명",
         },

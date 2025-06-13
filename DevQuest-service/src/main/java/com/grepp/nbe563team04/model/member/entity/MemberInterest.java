@@ -1,4 +1,4 @@
-package com.grepp.nbe563team04.model.user.entity;
+package com.grepp.nbe563team04.model.member.entity;
 
 import com.grepp.nbe563team04.model.interest.entity.Interest;
 import jakarta.persistence.Entity;
@@ -16,21 +16,21 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserInterest {
+public class MemberInterest {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "interest_id")
     private Interest interest;
 
-    public UserInterest(User user, Interest interest) {
-        this.user = user;
+    public MemberInterest(Member member, Interest interest) {
+        this.member = member;
         this.interest = interest;
     }
 }

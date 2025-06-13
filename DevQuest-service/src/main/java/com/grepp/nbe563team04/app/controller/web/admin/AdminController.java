@@ -1,11 +1,11 @@
 package com.grepp.nbe563team04.app.controller.web.admin;
 
-import com.grepp.nbe563team04.app.controller.web.user.payload.SignupRequest;
+import com.grepp.nbe563team04.app.controller.web.member.payload.SignupRequest;
 import com.grepp.nbe563team04.model.auth.code.Role;
 import com.grepp.nbe563team04.model.auth.domain.Principal;
-import com.grepp.nbe563team04.model.user.UserService;
-import com.grepp.nbe563team04.model.user.dto.UserDto;
-import com.grepp.nbe563team04.model.user.entity.User;
+import com.grepp.nbe563team04.model.member.MemberService;
+import com.grepp.nbe563team04.model.member.dto.MemberDto;
+import com.grepp.nbe563team04.model.member.entity.Member;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("admin")
 public class AdminController {
 
-    private final UserService userService;
+    private final MemberService memberService;
 
     @GetMapping("signup")
     public String signup(Model model) {
@@ -42,8 +42,8 @@ public class AdminController {
             return "admin/signup";
         }
 
-        userService.signup(form.toDto(), Role.ROLE_ADMIN);
-        return "redirect:/user/signin";
+        memberService.signup(form.toDto(), Role.ROLE_ADMIN);
+        return "redirect:/member/signin";
     }
 
     // 관리자페이지 대시보드
@@ -54,13 +54,13 @@ public class AdminController {
         CsrfToken csrfToken) {
 
         // 로그인한 관리자 정보
-        User admin = userService.findByEmail(principal.getUsername());
+        Member admin = memberService.findByEmail(principal.getUsername());
 
         // 사용자 그룹 정보 (활성, 삭제됨, 관리자)
-        Map<String, List<UserDto>> userGroups = userService.findUsersGroupedByStatus();
-        List<UserDto> activeUsers = userGroups.get("activeUsers");
-        List<UserDto> deletedUsers = userGroups.get("deletedUsers");
-        List<UserDto> adminUsers = userGroups.get("adminUsers");
+        Map<String, List<MemberDto>> userGroups = memberService.findUsersGroupedByStatus();
+        List<MemberDto> activeUsers = userGroups.get("activeUsers");
+        List<MemberDto> deletedUsers = userGroups.get("deletedUsers");
+        List<MemberDto> adminUsers = userGroups.get("adminUsers");
 
         // 모델에 값 설정
         model.addAttribute("admin", admin);
@@ -80,20 +80,20 @@ public class AdminController {
     }
 
     // 회원 관리
-    @GetMapping("user-management")
+    @GetMapping("member-management")
     public String userManagement(
         @AuthenticationPrincipal Principal principal,
         Model model,
         CsrfToken csrfToken) {
 
         // 로그인한 관리자 정보
-        User admin = userService.findByEmail(principal.getUsername());
+        Member admin = memberService.findByEmail(principal.getUsername());
 
         // 사용자 그룹 정보 (활성, 삭제됨, 관리자)
-        Map<String, List<UserDto>> userGroups = userService.findUsersGroupedByStatus();
-        List<UserDto> activeUsers = userGroups.get("activeUsers");
-        List<UserDto> deletedUsers = userGroups.get("deletedUsers");
-        List<UserDto> adminUsers = userGroups.get("adminUsers");
+        Map<String, List<MemberDto>> userGroups = memberService.findUsersGroupedByStatus();
+        List<MemberDto> activeUsers = userGroups.get("activeUsers");
+        List<MemberDto> deletedUsers = userGroups.get("deletedUsers");
+        List<MemberDto> adminUsers = userGroups.get("adminUsers");
 
         // 모델에 값 설정
         model.addAttribute("admin", admin);
@@ -105,13 +105,13 @@ public class AdminController {
 
         log.info("닉네임: {}", principal.getUser().getNickname());
 
-        return "admin/user-management";
+        return "member-management";
     }
 
-    @PostMapping("removeUser")
+    @PostMapping("removeMember")
     public String removeUser(@RequestParam String email, RedirectAttributes redirectAttributes) {
         try {
-            userService.softDeleteUser(email);
+            memberService.softDeleteUser(email);
             redirectAttributes.addFlashAttribute("message", "회원이 삭제되었습니다.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "회원 삭제 중 오류가 발생했습니다.");
@@ -128,7 +128,7 @@ public class AdminController {
         CsrfToken csrfToken) {
 
         // 로그인한 관리자 정보
-        User admin = userService.findByEmail(principal.getUsername());
+        Member admin = memberService.findByEmail(principal.getUsername());
 
         model.addAttribute("nickname", principal.getUser().getNickname());
         // model.addAttribute("data", data);

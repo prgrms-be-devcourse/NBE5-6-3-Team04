@@ -8,28 +8,27 @@ import com.grepp.nbe563team04.model.goalCategory.GoalCategoryRepository;
 import com.grepp.nbe563team04.model.goalCategory.entity.GoalCategory;
 import com.grepp.nbe563team04.model.goalcompany.entity.GoalCompany;
 import com.grepp.nbe563team04.model.goalcompany.GoalCompanyRepository;
+import com.grepp.nbe563team04.model.member.entity.Member;
 import com.grepp.nbe563team04.model.todo.TodoRepository;
 import com.grepp.nbe563team04.model.todo.entity.Todo;
-import com.grepp.nbe563team04.model.user.UserRepository;
-import com.grepp.nbe563team04.model.user.UserService;
-import com.grepp.nbe563team04.model.user.entity.User;
+import com.grepp.nbe563team04.model.member.MemberRepository;
+import com.grepp.nbe563team04.model.member.MemberService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class GoalService {
 
-    private final UserService userService;
+    private final MemberService memberService;
     private final GoalRepository goalRepository;
     private final GoalCompanyRepository goalCompanyRepository;
     private final TodoRepository todoRepository;
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
     private final AchievementService achievementService;
     private final GoalCategoryRepository goalCategoryRepository;
 
@@ -163,7 +162,7 @@ public class GoalService {
 
     //목표 완료
     @Transactional
-    public Map<String, Object> completeGoal(Long goalId, User user) {
+    public Map<String, Object> completeGoal(Long goalId, Member member) {
         Goal goal = goalRepository.findById(goalId)
                 .orElseThrow(() -> new RuntimeException("해당 목표가 존재하지 않습니다."));
 
@@ -180,18 +179,18 @@ public class GoalService {
         goal.setIsDone(true);
         goalRepository.save(goal);
 
-        User dbUser = userRepository.findById(user.getUserId())
+        Member dbMember = memberRepository.findById(member.getUserId())
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
-        Long beforeLevelId = dbUser.getLevel().getLevelId();
-        userService.updateXpAndLevel(dbUser, 10);  // 여기에 실제 DB User 넘기기
-        Long afterLevelId = dbUser.getLevel().getLevelId();
+        Long beforeLevelId = dbMember.getLevel().getLevelId();
+        memberService.updateXpAndLevel(dbMember, 10);  // 여기에 실제 DB Member 넘기기
+        Long afterLevelId = dbMember.getLevel().getLevelId();
         boolean leveledUp = !beforeLevelId.equals(afterLevelId);
 
         Map<String, Object> result = new HashMap<>();
         result.put("leveledUp", leveledUp);
         result.put("newLevelId", afterLevelId);
-        result.put("newLevelName", dbUser.getLevel().getLevelName());
+        result.put("newLevelName", dbMember.getLevel().getLevelName());
 
         return result;
     }

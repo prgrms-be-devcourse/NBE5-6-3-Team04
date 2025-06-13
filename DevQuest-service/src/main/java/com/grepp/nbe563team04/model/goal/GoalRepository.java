@@ -10,8 +10,6 @@ import java.util.List;
 public interface GoalRepository extends JpaRepository<Goal, Long> {
     List<Goal> findByCompanyCompanyId(Long companyId);// 특정 기업의 목표 리스트 조회용
 
-    long countByCompany_User_UserId(Long userId);
-
     @Query("SELECT g.color FROM Goal g WHERE g.company.companyId = :companyId")
     List<String> findColorsByCompanyId(@Param("companyId") Long companyId);
 }

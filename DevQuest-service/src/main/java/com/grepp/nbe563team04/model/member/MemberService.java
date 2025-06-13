@@ -1,26 +1,22 @@
-package com.grepp.nbe563team04.model.user;
+package com.grepp.nbe563team04.model.member;
 
 import com.grepp.nbe563team04.infra.util.file.FileDto;
 import com.grepp.nbe563team04.infra.util.file.FileUtil;
 import com.grepp.nbe563team04.model.achievement.AchievementService;
-import com.grepp.nbe563team04.model.user.dto.UserImageDto;
-import com.grepp.nbe563team04.model.user.entity.UserImage;
-import com.grepp.nbe563team04.model.user.entity.UsersAchieve;
+import com.grepp.nbe563team04.model.member.entity.Member;
+import com.grepp.nbe563team04.model.member.entity.MemberImage;
+import com.grepp.nbe563team04.model.member.entity.MembersAchieve;
 import com.grepp.nbe563team04.model.auth.code.Role;
 import com.grepp.nbe563team04.model.auth.domain.Principal;
 import com.grepp.nbe563team04.model.interest.InterestRepository;
 import com.grepp.nbe563team04.model.interest.entity.Interest;
 import com.grepp.nbe563team04.model.level.LevelRepository;
 import com.grepp.nbe563team04.model.level.entity.Level;
-import com.grepp.nbe563team04.model.user.dto.UserDto;
-import com.grepp.nbe563team04.model.user.entity.User;
+import com.grepp.nbe563team04.model.member.dto.MemberDto;
 
-import com.grepp.nbe563team04.model.user.entity.UserInterest;
+import com.grepp.nbe563team04.model.member.entity.MemberInterest;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -42,81 +38,81 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class UserService implements UserDetailsService {
+public class MemberService implements UserDetailsService {
 
-    private final UserRepository userRepository;
-    private final UserImageRepository userImageRepository;
+    private final MemberRepository memberRepository;
+    private final MemberImageRepository memberImageRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper mapper;
     private final LevelRepository levelRepository;
     private final InterestRepository interestRepository;
-    private final UserInterestRepository userInterestRepository;
+    private final MemberInterestRepository memberInterestRepository;
     private final AchievementService achievementService;
-    private final UsersAchieveRepository usersAchieveRepository;
+    private final MembersAchieveRepository membersAchieveRepository;
     private final FileUtil fileUtil;
 
     @Transactional
-    public Long signup(UserDto dto, Role role) {
-        User user = mapper.map(dto, User.class);
+    public Long signup(MemberDto dto, Role role) {
+        Member member = mapper.map(dto, Member.class);
         Level defaultLevel = levelRepository.findFirstByOrderByLevelIdAsc()
                 .orElseThrow(() -> new IllegalStateException("기본 레벨이 존재하지 않습니다."));
 
         String encodedPassword = passwordEncoder.encode(dto.getPassword());
-        user.setPassword(encodedPassword);
-        user.setRole(role);
-        user.setLevel(defaultLevel);
-        user.setExp(0);
-        user.setCreatedAt(LocalDate.now());
-        user.setDeletedAt(null);
+        member.setPassword(encodedPassword);
+        member.setRole(role);
+        member.setLevel(defaultLevel);
+        member.setExp(0);
+        member.setCreatedAt(LocalDate.now());
+        member.setDeletedAt(null);
 
-        User savedUser = userRepository.save(user);
+        Member savedMember = memberRepository.save(member);
 
-        UserImage defaultImage = new UserImage();
-        defaultImage.setUser(savedUser);
+        MemberImage defaultImage = new MemberImage();
+        defaultImage.setMember(savedMember);
         defaultImage.setOriginFileName("default.png");
         defaultImage.setRenameFileName("default.png");
         defaultImage.setSavePath("/");
         defaultImage.setCreatedAt(LocalDateTime.now());
         defaultImage.setActivated(true);
 
-        userImageRepository.save(defaultImage);
+        memberImageRepository.save(defaultImage);
 
-        return savedUser.getUserId();
+        return savedMember.getUserId();
     }
 
-    public User findByEmail(String email) {
+    public Member findByEmail(String email) {
 
-        User user = userRepository.findByEmailAndDeletedAtIsNull(email)
+        Member member = memberRepository.findByEmailAndDeletedAtIsNull(email)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다: " + email));
 
-        Level currentLevel = levelRepository.findTopByXpLessThanEqualOrderByXpDesc(user.getExp())
+        Level currentLevel = levelRepository.findTopByXpLessThanEqualOrderByXpDesc(member.getExp())
                 .orElseThrow(() -> new IllegalStateException("레벨 데이터가 없습니다."));
-        user.setLevel(currentLevel);
-        return user;
+        member.setLevel(currentLevel);
+        return member;
     }
 
-    public List<UsersAchieve> findAchieveByUserId(Long userId){
+    public List<MembersAchieve> findAchieveByUserId(Long userId){
 
-        return usersAchieveRepository.findTop3ByUser_UserIdOrderByAchievedAtDesc(userId);
+        return membersAchieveRepository.findTop3ByMember_UserIdOrderByAchievedAtDesc(userId);
     }
-    public List<UsersAchieve> findAllAchieveByUserId(Long userId){
+    public List<MembersAchieve> findAllAchieveByUserId(Long userId){
 
-        return usersAchieveRepository.findByUser_UserIdOrderByAchievedAtDesc(userId);
+        return membersAchieveRepository.findByMember_UserIdOrderByAchievedAtDesc(userId);
     }
 
     @Transactional
-    public void updateUser(String email, UserDto dto, List<MultipartFile> file) throws IOException {
+    public void updateUser(String email, MemberDto dto, List<MultipartFile> file) throws IOException {
         log.info(">> 수정 요청 진입: " + email);
 
-        User user = userRepository.findByEmail(email)
+        Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
 
-        user.setComment(dto.getComment());
-        user.setNickname(dto.getNickname());
+        member.setComment(dto.getComment());
+        member.setNickname(dto.getNickname());
 
         if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
             String hashed = passwordEncoder.encode(dto.getPassword());
-            user.setPassword(hashed);
+            member.setPassword(hashed);
         }
         // 파일 처리
         if (file != null && !file.isEmpty()) {
@@ -125,53 +121,53 @@ public class UserService implements UserDetailsService {
             List<FileDto> fileDtos = fileUtil.upload(file, "profile");
             if (!fileDtos.isEmpty()) {
                 // 기존 이미지 비활성화 (선택)
-                List<UserImage> oldImages = userImageRepository.findByUserAndActivatedTrue(user);
-                for (UserImage old : oldImages) {
+                List<MemberImage> oldImages = memberImageRepository.findByMemberAndActivatedTrue(member);
+                for (MemberImage old : oldImages) {
                     old.setActivated(false);
                 }
-                userImageRepository.saveAll(oldImages);
+                memberImageRepository.saveAll(oldImages);
 
                 FileDto fileDto = fileDtos.getFirst();
 
-                UserImage newImage = new UserImage();
-                newImage.setUser(user);
+                MemberImage newImage = new MemberImage();
+                newImage.setMember(member);
                 newImage.setOriginFileName(fileDto.getOriginFileName());
                 newImage.setRenameFileName(fileDto.getRenameFileName());
                 newImage.setSavePath(fileDto.getSavePath());
                 newImage.setCreatedAt(LocalDateTime.now());
                 newImage.setActivated(true);
 
-                if (!user.isProfile()){
-                    user.setProfile(true);
+                if (!member.isProfile()){
+                    member.setProfile(true);
                 }
 
-                userImageRepository.save(newImage);
+                memberImageRepository.save(newImage);
             }
         }
 
-        userRepository.save(user);
+        memberRepository.save(member);
     }
 
     @Transactional
-    public Map<String, List<UserDto>> findUsersGroupedByStatus() {
-        List<UserDto> users = Optional.of(userRepository.findAll())
+    public Map<String, List<MemberDto>> findUsersGroupedByStatus() {
+        List<MemberDto> users = Optional.of(memberRepository.findAll())
                 .orElse(Collections.emptyList()).stream()
-                .map(UserDto::new)
+                .map(MemberDto::new)
                 .toList();
 
-        List<UserDto> activeUsers = users.stream()
+        List<MemberDto> activeUsers = users.stream()
                 .filter(user -> user.getDeletedAt() == null && !user.getRole().name().equals("ROLE_ADMIN"))
                 .toList();
 
-        List<UserDto> deletedUsers = users.stream()
+        List<MemberDto> deletedUsers = users.stream()
                 .filter(user -> user.getDeletedAt() != null)
                 .toList();
 
-        List<UserDto> adminUsers = users.stream()
+        List<MemberDto> adminUsers = users.stream()
                 .filter(user -> user.getRole().name().equals("ROLE_ADMIN") && user.getDeletedAt() == null)
                 .toList();
 
-        Map<String, List<UserDto>> result = new HashMap<>();
+        Map<String, List<MemberDto>> result = new HashMap<>();
         result.put("activeUsers", activeUsers);
         result.put("deletedUsers", deletedUsers);
         result.put("adminUsers", adminUsers);
@@ -179,64 +175,64 @@ public class UserService implements UserDetailsService {
         return result;
     }
 
-    public boolean checkPassword(User user, String rawPassword) {
-        return passwordEncoder.matches(rawPassword, user.getPassword());
+    public boolean checkPassword(Member member, String rawPassword) {
+        return passwordEncoder.matches(rawPassword, member.getPassword());
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmailAndDeletedAtIsNull(email)
+        Member member = memberRepository.findByEmailAndDeletedAtIsNull(email)
                 .orElseThrow(() -> new UsernameNotFoundException("탈퇴했거나 존재하지 않는 사용자입니다."));
 
-        return new Principal(user);
+        return new Principal(member);
     }
 
     @Transactional
     public void softDeleteUser(String email) {
-        User user = userRepository.findByEmailAndDeletedAtIsNull(email)
+        Member member = memberRepository.findByEmailAndDeletedAtIsNull(email)
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
-        user.setDeletedAt(LocalDate.now()); // 또는 LocalDateTime.now()
-        userRepository.save(user);
+        member.setDeletedAt(LocalDate.now()); // 또는 LocalDateTime.now()
+        memberRepository.save(member);
     }
 
 
     public void receiveInterest(Long userId, Long roleId, List<Long> skillIds) {
-        User user = userRepository.findByUserId(userId)
+        Member member = memberRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Interest role = interestRepository.findById(roleId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 직무입니다."));
 
-        userInterestRepository.save(new UserInterest(user, role));
+        memberInterestRepository.save(new MemberInterest(member, role));
 
         for (Long skillId : skillIds) {
             Interest skill = interestRepository.findById(skillId)
                     .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 기술 ID입니다: " + skillId));
 
-            userInterestRepository.save(new UserInterest(user, skill));
+            memberInterestRepository.save(new MemberInterest(member, skill));
         }
     }
 
     public Boolean isDuplicatedEmail(String email) {
-        return userRepository.existsByEmail(email);
+        return memberRepository.existsByEmail(email);
     }
 
     @Transactional
-    public void updateXpAndLevel(User user, int gainedXp) {
-        user.addXp(gainedXp);
+    public void updateXpAndLevel(Member member, int gainedXp) {
+        member.addXp(gainedXp);
 
         List<Level> levels = levelRepository.findAll();
         levels.sort(Comparator.comparingInt(Level::getXp));
 
         for (Level level : levels) {
-            if (user.getExp() >= level.getXp()) {
-                user.setLevel(level);
+            if (member.getExp() >= level.getXp()) {
+                member.setLevel(level);
             }
         }
 
-        userRepository.save(user);
+        memberRepository.save(member);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails updatedUser = new Principal(user); // 새 User로 Principal 재생성
+        UserDetails updatedUser = new Principal(member); // 새 User로 Principal 재생성
         Authentication newAuth = new UsernamePasswordAuthenticationToken(updatedUser, auth.getCredentials(), auth.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(newAuth);
     }

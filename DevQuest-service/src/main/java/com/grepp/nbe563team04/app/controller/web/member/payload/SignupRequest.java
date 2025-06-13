@@ -1,6 +1,6 @@
-package com.grepp.nbe563team04.app.controller.web.user.payload;
+package com.grepp.nbe563team04.app.controller.web.member.payload;
 
-import com.grepp.nbe563team04.model.user.dto.UserDto;
+import com.grepp.nbe563team04.model.member.dto.MemberDto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -21,12 +21,12 @@ public class SignupRequest {
     )
     private String password;
 
-    public UserDto toDto() {
-        UserDto userDto = new UserDto();
-        userDto.setNickname(nickname);
-        userDto.setEmail(email);
-        userDto.setPassword(password);
-        userDto.setCreatedAt(LocalDate.now());
-        return userDto;
+    public MemberDto toDto() {
+        MemberDto memberDto = new MemberDto();
+        memberDto.setNickname(nickname);
+        memberDto.setEmail(email);
+        memberDto.setPassword(password);
+        memberDto.setCreatedAt(LocalDate.now());
+        return memberDto;
     }
 }

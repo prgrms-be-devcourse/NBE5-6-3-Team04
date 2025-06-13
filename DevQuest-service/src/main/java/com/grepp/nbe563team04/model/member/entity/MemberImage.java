@@ -1,17 +1,17 @@
-package com.grepp.nbe563team04.model.user.entity;
+package com.grepp.nbe563team04.model.member.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
 @Entity
 @NoArgsConstructor
-public class UserImage {
+public class MemberImage {
 
     @Id
     @Column(name = "user_image_id")
@@ -20,7 +20,7 @@ public class UserImage {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private Member member;
 
     private String originFileName;
     private String renameFileName;
