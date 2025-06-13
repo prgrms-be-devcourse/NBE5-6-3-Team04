@@ -1,8 +1,8 @@
 package com.grepp.nbe563team04.model.auth;
 
 import com.grepp.nbe563team04.model.auth.domain.Principal;
-import com.grepp.nbe563team04.model.user.UserRepository;
-import com.grepp.nbe563team04.model.user.entity.User;
+import com.grepp.nbe563team04.model.member.MemberRepository;
+import com.grepp.nbe563team04.model.member.entity.Member;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -20,19 +20,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class AuthService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         // 이메일로 사용자 검색
-        User user = userRepository.findByEmail(email)
+        Member member = memberRepository.findByEmail(email)
             .orElseThrow(() -> new UsernameNotFoundException(email));
 
         // 사용자 권한 설정
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + member.getRole().name()));
 
         // Principal 클래스가 UserDetails를 구현하고 있어야 함
-        return Principal.createPrincipal(user, authorities);
+        return Principal.createPrincipal(member, authorities);
     }
 }
