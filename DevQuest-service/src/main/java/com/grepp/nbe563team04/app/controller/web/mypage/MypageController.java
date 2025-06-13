@@ -4,9 +4,11 @@ import com.grepp.nbe563team04.model.achievement.AchievementService;
 import com.grepp.nbe563team04.model.achievement.dto.AchievementDto;
 import com.grepp.nbe563team04.model.auth.domain.Principal;
 import com.grepp.nbe563team04.model.level.LevelService;
+import com.grepp.nbe563team04.model.user.UserImageRepository;
 import com.grepp.nbe563team04.model.user.UserService;
 import com.grepp.nbe563team04.model.user.dto.UserDto;
 import com.grepp.nbe563team04.model.user.entity.User;
+import com.grepp.nbe563team04.model.user.entity.UserImage;
 import com.grepp.nbe563team04.model.user.entity.UsersAchieve;
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -38,6 +40,7 @@ public class MypageController {
     private final UserService userService;
     private final LevelService levelService;
     private final AchievementService achievementService;
+    private final UserImageRepository userImageRepository;
 
     @GetMapping("mypage")
     public String index(@AuthenticationPrincipal Principal principal,
@@ -48,9 +51,12 @@ public class MypageController {
         String email = principal.getUsername();
         User user = userService.findByEmail(email);
         List<UsersAchieve> usersAchieves = userService.findAchieveByUserId(user.getUserId());
+        UserImage image = userImageRepository.findTopByUserAndActivatedOrderByCreatedAtDesc(user, true)
+                .orElse(null);
 
         int progress = levelService.levelProgress(user);
         model.addAttribute("user", user);
+        model.addAttribute("image", image);
         model.addAttribute("progressPercent", progress);
         model.addAttribute("userAchieve", usersAchieves);
         model.addAttribute("_csrf", csrfToken);
@@ -61,9 +67,12 @@ public class MypageController {
     public String showUpdatePage(@AuthenticationPrincipal Principal principal, Model model,CsrfToken csrfToken) {
         String email = principal.getUsername();
         User user = userService.findByEmail(email);
+        UserImage image = userImageRepository.findTopByUserAndActivatedOrderByCreatedAtDesc(user, true)
+                .orElse(null);
 
         int progress = levelService.levelProgress(user);
         model.addAttribute("user", user);
+        model.addAttribute("image", image);
         model.addAttribute("progressPercent", progress);
         model.addAttribute("_csrf", csrfToken);
         return "mypage/mypageUpdate";
@@ -72,7 +81,7 @@ public class MypageController {
     @PostMapping("update")
     public String updateUser(@AuthenticationPrincipal Principal principal,
                              @ModelAttribute UserDto dto,
-                             @RequestParam("userImageFile") MultipartFile file,
+                             @RequestParam("userImageFile") List<MultipartFile> file,
                              @RequestParam("currentPassword") String currentPassword,
                              Model model,
                              RedirectAttributes redirectAttributes) throws IOException {
@@ -83,7 +92,10 @@ public class MypageController {
         // 현재 비밀번호 확인
         if (!userService.checkPassword(user, currentPassword)) {
             int progress = levelService.levelProgress(user);
+            UserImage image = userImageRepository.findTopByUserAndActivatedOrderByCreatedAtDesc(user, true)
+                    .orElse(null);
             model.addAttribute("user", user);
+            model.addAttribute("image", image);
             model.addAttribute("passwordError", "비밀번호를 확인하세요");
             model.addAttribute("progressPercent", progress);
             return "mypage/mypageUpdate"; // 다시 수정 페이지로
@@ -92,13 +104,14 @@ public class MypageController {
         userService.updateUser(email, dto, file);
 
         User updatedUser = userService.findByEmail(email);
+        UserImage latestImage = userImageRepository.findTopByUserAndActivatedOrderByCreatedAtDesc(updatedUser, true)
+                .orElse(null);
         boolean isProfileComplete = updatedUser.getNickname() != null && !updatedUser.getNickname().isBlank()
                 && updatedUser.getComment() != null && !updatedUser.getComment().isBlank()
-                && updatedUser.getUserImage() != null && !updatedUser.getUserImage().isBlank();
+                && updatedUser.isProfile();
 
         if (isProfileComplete) {
             String achievedName = achievementService.giveTutorialAchievement(updatedUser.getUserId());
-
             if (achievedName != null) {
                 redirectAttributes.addAttribute("achievementName", URLEncoder.encode(achievedName, StandardCharsets.UTF_8));
             }

@@ -47,11 +47,13 @@ body {
 }
 
 .profile-img {
-    width: 100px;
-    height: 100px;
+    width: 180px;
+    height: 180px;
     border-radius: 50%;
+    display: block;
     margin: 20px auto;
 }
+
 
 .level-title {
     color: #5b5b5b;

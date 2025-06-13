@@ -49,7 +49,7 @@ public class DashboardService {
         dto.setNickname(user.getNickname());
         dto.setComment(user.getComment());
         dto.setCreatedAt(user.getCreatedAt());
-        dto.setUserImage(user.getUserImage());
+//        dto.setUserImage(user.getUserImage());
 
         long dayCount = ChronoUnit.DAYS.between(user.getCreatedAt().atStartOfDay().toLocalDate(),
             LocalDate.now()) + 1;

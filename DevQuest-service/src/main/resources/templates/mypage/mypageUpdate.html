@@ -24,7 +24,7 @@
 
 <div class="container">
     <div class="nickname" th:text="${user.nickname} + ' 님의 마이페이지'"></div>
-    <img class="profile-img" th:src="@{'/images/profile/' + ${user.userImage}}" alt="프로필 이미지">
+    <img alt="프로필 이미지" class="profile-img" th:src="@{'/profile/' + ${image.renameFileName}}">
 
     <div class="level-title" th:text="${user.level.levelName}"></div>
     <div class="level" th:text="'Lv.' + ${user.level.levelId}"></div>
