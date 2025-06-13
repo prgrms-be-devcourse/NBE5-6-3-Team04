@@ -1,5 +1,6 @@
 package com.grepp.nbe563team04.model.goal.entity;
 
+import com.grepp.nbe563team04.model.goalCategory.entity.GoalCategory;
 import com.grepp.nbe563team04.model.goalcompany.entity.GoalCompany;
 import jakarta.persistence.*;
 import java.time.LocalDate;
@@ -23,12 +24,15 @@ public class Goal {
     @JoinColumn(name = "company_id", nullable = false)
     private GoalCompany company;
 
-    //    @Column(nullable = false)
-//    private String title;
+    @Column(nullable = false)
+    private String title;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "title")
-    private GoalList title;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
+    private GoalCategory category;
+
+    @Column(name = "color")
+    private String color;
 
     @Column(name = "start_date")
     private LocalDate startDate;
