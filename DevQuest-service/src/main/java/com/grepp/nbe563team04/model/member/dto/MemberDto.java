@@ -1,22 +1,21 @@
-package com.grepp.nbe563team04.model.user.dto;
+package com.grepp.nbe563team04.model.member.dto;
 
 import com.grepp.nbe563team04.model.auth.code.Role;
 import com.grepp.nbe563team04.model.level.entity.Level;
-import com.grepp.nbe563team04.model.user.entity.User;
+import com.grepp.nbe563team04.model.member.entity.Member;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor // 기본 생성자
 @AllArgsConstructor // 모든 필드를 받는 생성자
-public class UserDto {
+public class MemberDto {
     private Long userId;
     private String email;
     private String password;
@@ -29,15 +28,15 @@ public class UserDto {
     private LocalDate deletedAt;
 
 
-    public UserDto (User user) {
-        this.userId = user.getUserId();
-        this.role = user.getRole();
-        this.nickname = user.getNickname();
-        this.email = user.getEmail();
-        this.level = user.getLevel();
-        this.comment = user.getComment();
-        this.createdAt = user.getCreatedAt();
-        this.deletedAt = user.getDeletedAt();
+    public MemberDto(Member member) {
+        this.userId = member.getUserId();
+        this.role = member.getRole();
+        this.nickname = member.getNickname();
+        this.email = member.getEmail();
+        this.level = member.getLevel();
+        this.comment = member.getComment();
+        this.createdAt = member.getCreatedAt();
+        this.deletedAt = member.getDeletedAt();
     }
 
 

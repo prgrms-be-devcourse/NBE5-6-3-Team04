@@ -1,7 +1,7 @@
 package com.grepp.nbe563team04.model.goalcompany;
 
 import com.grepp.nbe563team04.model.goalcompany.entity.GoalCompany;
-import com.grepp.nbe563team04.model.user.entity.User;
+import com.grepp.nbe563team04.model.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,5 +18,5 @@ public interface GoalCompanyRepository extends JpaRepository<GoalCompany, Long> 
 
 
     // 알림 생성 시 유저의 모든 목표 기업 조회
-    List<GoalCompany> findAllByUser(User user);
+    List<GoalCompany> findAllByMember(Member member);
 }

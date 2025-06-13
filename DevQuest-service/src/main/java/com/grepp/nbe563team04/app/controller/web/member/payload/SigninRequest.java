@@ -1,4 +1,4 @@
-package com.grepp.nbe563team04.app.controller.web.user.payload;
+package com.grepp.nbe563team04.app.controller.web.member.payload;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
