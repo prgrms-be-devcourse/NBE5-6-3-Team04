@@ -54,14 +54,8 @@ function goalComplete(goalId) {
 }
 
 
-const toggleBtn = document.getElementById('toggleCompletedBtn');
-const completedSection = document.getElementById('completedGoalsSection');
 
-toggleBtn.addEventListener('click', () => {
-  const isVisible = completedSection.style.display === 'block';
-  completedSection.style.display = isVisible ? 'none' : 'block';
-  toggleBtn.textContent = isVisible ? '완료된 목표 보기' : '완료된 목표 숨기기';
-});
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("goal-form");
@@ -514,37 +508,43 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// 공통 함수: 버튼 강조 효과 토글
-function activateViewToggle(name) {
-  document.querySelectorAll('.view-toggle-btn').forEach(btn => btn.classList.remove('active'));
-  document.querySelector(`.view-toggle-btn[data-type="${name}"]`)?.classList.add('active');
-}
+
 
 // 캘린더 보기 버튼
 function showCalendar() {
-  document.querySelector('.goal-list').style.display = 'none';
-  document.querySelector('.calendar').style.display = 'block';
-  document.querySelector('.completed-toggle-wrapper').style.display = 'none';
+  document.querySelector('#ongoingGoalsSection').style.display = 'none';
+  document.querySelector('.calendar').style.display = 'flex';
   document.querySelector('#completedGoalsSection').style.display = 'none';
 
   setTimeout(() => {
-    calendar.render();
+    if (calendar) {
+      calendar.render();
+    } else {
+      console.warn('calendar가 아직 초기화되지 않았음');
+    }
   }, 0);
 
-  activateViewToggle('calendar');
 }
 
 // 목표 보기 버튼
 function showGoalList() {
-  document.querySelector('.goal-list').style.display = 'flex';
+  document.querySelector('#ongoingGoalsSection').style.display = 'flex';
   document.querySelector('.calendar').style.display = 'none';
-  document.querySelector('.completed-toggle-wrapper').style.display = 'flex';
-  document.querySelector('#completedGoalsSection').style.display = 'block';
+  document.querySelector('#completedGoalsSection').style.display = 'none';
 
-  activateViewToggle('goal');
+
+}
+
+// 완료된 목표 보기 버튼
+function showCompletedGoals() {
+  document.querySelector('#ongoingGoalsSection').style.display = 'none';
+  document.querySelector('.calendar').style.display = 'none';
+  document.querySelector('#completedGoalsSection').style.display = 'flex';
 }
 
 
+
+// 목표진행률 상 완료 목표 버튼
 document.addEventListener('DOMContentLoaded', () => {
   const toggleBtn = document.getElementById('toggleDoneGoalsBtn');
   let isHidden = false;

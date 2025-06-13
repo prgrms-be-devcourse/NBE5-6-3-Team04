@@ -1,14 +1,12 @@
 package com.grepp.nbe563team04.app.controller.web.admin;
 
-import com.grepp.nbe563team04.app.controller.web.user.payload.SignupRequest;
+import com.grepp.nbe563team04.app.controller.web.member.payload.SignupRequest;
 import com.grepp.nbe563team04.model.auth.code.Role;
 import com.grepp.nbe563team04.model.auth.domain.Principal;
-import com.grepp.nbe563team04.model.interest.InterestService;
-import com.grepp.nbe563team04.model.user.UserInterestRepository;
-import com.grepp.nbe563team04.model.user.UserInterestService;
-import com.grepp.nbe563team04.model.user.UserService;
-import com.grepp.nbe563team04.model.user.dto.UserDto;
-import com.grepp.nbe563team04.model.user.entity.User;
+import com.grepp.nbe563team04.model.member.MemberInterestService;
+import com.grepp.nbe563team04.model.member.MemberService;
+import com.grepp.nbe563team04.model.member.dto.MemberDto;
+import com.grepp.nbe563team04.model.member.entity.Member;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -31,8 +29,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("admin")
 public class AdminController {
 
-    private final UserService userService;
-    private final UserInterestService userInterestService;
+    private final MemberInterestService memberInterestService;
+    private final MemberService memberService;
 
     @GetMapping("signup")
     public String signup(Model model) {
@@ -46,8 +44,8 @@ public class AdminController {
             return "admin/signup";
         }
 
-        userService.signup(form.toDto(), Role.ROLE_ADMIN);
-        return "redirect:/user/signin";
+        memberService.signup(form.toDto(), Role.ROLE_ADMIN);
+        return "redirect:/member/signin";
     }
 
     // 관리자페이지 대시보드
@@ -58,19 +56,19 @@ public class AdminController {
         CsrfToken csrfToken) {
 
         // 로그인한 관리자 정보
-        User admin = userService.findByEmail(principal.getUsername());
+        Member admin = memberService.findByEmail(principal.getUsername());
 
         // 사용자 그룹 정보 (활성, 삭제됨, 관리자)
-        Map<String, List<UserDto>> userGroups = userService.findUsersGroupedByStatus();
-        List<UserDto> activeUsers = userGroups.get("activeUsers");
-        List<UserDto> deletedUsers = userGroups.get("deletedUsers");
-        List<UserDto> adminUsers = userGroups.get("adminUsers");
+        Map<String, List<MemberDto>> memberGroups = memberService.findMembersGroupedByStatus();
+        List<MemberDto> activeMembers = memberGroups.get("activeMembers");
+        List<MemberDto> deletedMembers = memberGroups.get("deletedMembers");
+        List<MemberDto> adminMembers = memberGroups.get("adminMembers");
 
         // 모델에 값 설정
         model.addAttribute("admin", admin);
-        model.addAttribute("activeUsers", activeUsers);
-        model.addAttribute("deletedUsers", deletedUsers);
-        model.addAttribute("adminUsers", adminUsers);
+        model.addAttribute("activeMembers", activeMembers);
+        model.addAttribute("deletedMembers", deletedMembers);
+        model.addAttribute("adminMembers", adminMembers);
         model.addAttribute("_csrf", csrfToken);
         model.addAttribute("nickname", principal.getUser().getNickname());
         // 대시보드 가입자/탈퇴자 추이 표 mock data
@@ -84,38 +82,42 @@ public class AdminController {
     }
 
     // 회원 관리
-    @GetMapping("user-management")
-    public String userManagement(
+    @GetMapping("member-management")
+    public String memberManagement(
         @AuthenticationPrincipal Principal principal,
         Model model,
         CsrfToken csrfToken) {
 
         // 로그인한 관리자 정보
-        User admin = userService.findByEmail(principal.getUsername());
+        Member admin = memberService.findByEmail(principal.getUsername());
 
         // 사용자 그룹 정보 (활성, 삭제됨, 관리자)
-        Map<String, List<UserDto>> userGroups = userService.findUsersGroupedByStatus();
-        List<UserDto> activeUsers = userGroups.get("activeUsers");
-        List<UserDto> deletedUsers = userGroups.get("deletedUsers");
-        List<UserDto> adminUsers = userGroups.get("adminUsers");
+        Map<String, List<MemberDto>> memberGroups = memberService.findMembersGroupedByStatus();
+        List<MemberDto> activeMembers = memberGroups.get("activeMembers");
+        List<MemberDto> deletedMembers = memberGroups.get("deletedMembers");
+        List<MemberDto> adminMembers = memberGroups.get("adminMembers");
+
+        log.info("✅ 관리자 수: {}", adminMembers != null ? adminMembers.size() : 0);
+        log.info("✅ 현재 회원 수: {}", activeMembers != null ? activeMembers.size() : 0);
+        log.info("✅ 탈퇴 회원 수: {}", deletedMembers != null ? deletedMembers.size() : 0);
 
         // 모델에 값 설정
         model.addAttribute("admin", admin);
-        model.addAttribute("activeUsers", activeUsers);
-        model.addAttribute("deletedUsers", deletedUsers);
-        model.addAttribute("adminUsers", adminUsers);
+        model.addAttribute("activeMembers", activeMembers);
+        model.addAttribute("deletedMembers", deletedMembers);
+        model.addAttribute("adminMembers", adminMembers);
         model.addAttribute("_csrf", csrfToken);
         model.addAttribute("nickname", principal.getUser().getNickname());
 
         log.info("닉네임: {}", principal.getUser().getNickname());
 
-        return "admin/user-management";
+        return "admin/member-management";
     }
 
-    @PostMapping("removeUser")
-    public String removeUser(@RequestParam String email, RedirectAttributes redirectAttributes) {
+    @PostMapping("removeMember")
+    public String removeMember(@RequestParam String email, RedirectAttributes redirectAttributes) {
         try {
-            userService.softDeleteUser(email);
+            memberService.softDeleteUser(email);
             redirectAttributes.addFlashAttribute("message", "회원이 삭제되었습니다.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "회원 삭제 중 오류가 발생했습니다.");
@@ -127,11 +129,10 @@ public class AdminController {
     // 대시보드-방사형 차트
     @GetMapping("/dashboard/rader")
     public String raderChart(Model model, Principal principal) {
-        String userId = principal.getUsername();
-        List<String> langLabels = userInterestService.getTop6Langs(userId);
+        String memberId = principal.getUsername();
+        List<String> langLabels = memberInterestService.getTop6Langs(memberId);
         model.addAttribute("langLabels", langLabels);
         return "dashboard";
     }
-
 
 }

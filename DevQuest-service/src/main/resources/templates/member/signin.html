@@ -110,7 +110,7 @@
 
 <div class="container">
   <h1>로그인</h1>
-  <form th:action="@{/user/signin}" th:object="${signinRequest}" method="post">
+  <form th:action="@{/member/signin}" th:object="${signinRequest}" method="post">
     <div th:if="${param.error}" class="error">
       이메일 또는 비밀번호를 확인하세요
     </div>

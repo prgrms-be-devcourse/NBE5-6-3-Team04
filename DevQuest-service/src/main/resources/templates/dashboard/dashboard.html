@@ -56,7 +56,7 @@
 
     <!--  마이페이지  -->
     <p class="mypage">
-      <a th:href="@{/user/mypage}">
+      <a th:href="@{/member/mypage}">
         <span class="material-icons">account_circle</span>마이페이지
       </a>
     </p>
@@ -68,8 +68,8 @@
           <img alt="프로필 이미지" class="profile-img" th:src="@{'/profile/' + ${image.renameFileName}}">
 
           <div class="level-info">
-            <p class="level-title" th:text="${user.level.levelName}">레벨명</p>
-            <p class="level" th:text="'Lv. ' + ${user.level.levelId}">Lv. N</p>
+            <p class="level-title" th:text="${member.level.levelName}">레벨명</p>
+            <p class="level" th:text="'Lv. ' + ${member.level.levelId}">Lv. N</p>
           </div>
 
         </div>

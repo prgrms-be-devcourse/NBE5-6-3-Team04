@@ -1,4 +1,4 @@
-package com.grepp.nbe563team04.model.user.entity;
+package com.grepp.nbe563team04.model.member.entity;
 
 import com.grepp.nbe563team04.model.achievement.entity.Achievement;
 import jakarta.persistence.*;
@@ -6,14 +6,12 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
 @Entity
-@Table(name = "users_achieve")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UsersAchieve {
+public class MembersAchieve {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +19,7 @@ public class UsersAchieve {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "achieve_id")

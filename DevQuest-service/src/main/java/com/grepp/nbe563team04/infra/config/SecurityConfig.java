@@ -1,6 +1,6 @@
 package com.grepp.nbe563team04.infra.config;
 
-import com.grepp.nbe563team04.model.user.UserService;
+import com.grepp.nbe563team04.model.member.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -64,29 +64,29 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, UserService userService)
+    public SecurityFilterChain filterChain(HttpSecurity http, MemberService memberService)
         throws Exception {
-        http.userDetailsService(userService)
+        http.userDetailsService(memberService)
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/css/**", "/js/**", "/img/**", "/api/user/exists/*",
-                                "/user/interests").permitAll() // 모두에게 허용
+                        .requestMatchers("/css/**", "/js/**", "/img/**", "/api/member/exists/*",
+                                "/member/interests").permitAll() // 모두에게 허용
                         .requestMatchers("/", "/serviceInfo", "/signin", "/signup", "/admin/signup")
                         .anonymous() // 회원가입, 로그인 접근 권한
-                        .requestMatchers("/user/withdraw-success").permitAll()
+                        .requestMatchers("/member/withdraw-success").permitAll()
                         .requestMatchers("/admin/dashboard").hasRole("ADMIN") // 관리자페이지 접근 권한
-                        .requestMatchers("/user/**", "/dashboard/**", "/api/dashboard/**",
+                        .requestMatchers("/member/**", "/dashboard/**", "/api/dashboard/**",
                                 "/todos/**", "/companies/**", "/goals/**", "/images/profile/**","/api/ai/feedback").hasRole("USER") // 사용자페이지 접근 권한
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/signin")
                         .usernameParameter("email")
-                        .loginProcessingUrl("/user/signin")
+                        .loginProcessingUrl("/member/signin")
                         .successHandler(successHandler())
                 )
                 .rememberMe(rememberMe -> rememberMe
                         .key(rememberMeKey).rememberMeParameter("remember-me")
-                        .userDetailsService(userService)
+                        .userDetailsService(memberService)
                 )
                 .exceptionHandling(exception -> exception
                         .accessDeniedHandler(accessDeniedHandler())
@@ -107,8 +107,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(UserService userService) {
-        return userService;
+    public UserDetailsService userDetailsService(MemberService memberService) {
+        return memberService;
     }
 
 

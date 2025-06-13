@@ -1,7 +1,7 @@
 package com.grepp.nbe563team04.model.level;
 
 import com.grepp.nbe563team04.model.level.entity.Level;
-import com.grepp.nbe563team04.model.user.entity.User;
+import com.grepp.nbe563team04.model.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,9 +15,9 @@ public class LevelService {
 
     private final LevelRepository levelRepository;
 
-    public int levelProgress(User user){
-        int userExp = user.getExp();
-        int currentXp = user.getLevel().getXp();
+    public int levelProgress(Member member){
+        int userExp = member.getExp();
+        int currentXp = member.getLevel().getXp();
 
         Optional<Level> nextLevelOpt = levelRepository.findTopByXpGreaterThanOrderByXpAsc(userExp);
         int nextXp = nextLevelOpt.map(Level::getXp).orElse(currentXp + 1);
