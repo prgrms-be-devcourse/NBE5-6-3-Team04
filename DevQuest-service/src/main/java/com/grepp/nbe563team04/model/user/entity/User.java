@@ -35,15 +35,14 @@ public class User {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
-    private String profileImageUrl;
     private String nickname;
-    @Column(name = "user_image")
-    private String userImage = "default.png";
     @ManyToOne
     @JoinColumn(name = "level_id")
     private Level level;
     private Integer exp;
     private String comment;
+    @Column(name = "profile_activated")
+    private boolean profile;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserInterest> userInterests;
@@ -56,6 +55,8 @@ public class User {
     private LocalDate deletedAt;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GoalCompany> goalCompanies;
+
+
 
     // 경험치 추가 로직
     public void addXp(int amount) {
