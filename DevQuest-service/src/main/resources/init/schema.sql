@@ -12,7 +12,7 @@ DROP TABLE IF EXISTS goal_company;
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS level;
 DROP TABLE IF EXISTS interest;
-DROP TABLE IF EXISTS goal_category;
+DROP TABLE IF EXISTS goal_category;뿌
 
 -- level (최상위 부모)
 CREATE TABLE level
