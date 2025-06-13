@@ -2,7 +2,8 @@ remember-me:
   key: dladmldmlzl123
 
 upload:
-  path: C:/backend/NBE5-6-3-Team04/DevQuest-service/upload/profile
+  path: /Users/cho/Documents/dev/backend/f_spring/NBE5-6-3-Team04/DevQuest-service/upload/profile
+#   path: C:/backend/NBE5-6-3-Team04/DevQuest-service/upload/profile
 
 spring:
   application:
@@ -17,13 +18,13 @@ spring:
 
   datasource:
     url: jdbc:mysql://localhost:3306/todoRpg
-    username: bm
-    password: 123qwe!@#
+    username: root
+    password: 12345678
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
-      ddl-auto: none  # 개발 중엔 update 권장
+      ddl-auto: update  # 개발 중엔 update 권장
     show-sql: true
     properties:
       hibernate:
