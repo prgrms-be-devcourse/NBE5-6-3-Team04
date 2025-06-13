@@ -70,7 +70,10 @@
     <!-- 진행률 -->
     <div class="goal-process">
       <span class="progress-title">목표 진행률</span>
-      <div class="goal-item" th:each="goal : ${goals}">
+      <button id="toggleDoneGoalsBtn">완료된 목표 보기</button>
+      <div class="goal-item"
+           th:each="goal : ${goals}"
+           th:classappend="${goal.isDone} ? 'done-goal hidden' : ''">
         <div class="goal-info">
           <span class="goal-status" th:text="${goal.status}">상태</span>
           <span class="goal-title" th:text="${goal.koreanName}" th:style="'color:' + (${goal.color} != null ? ${goal.color} : '#000000')">제목</span>
@@ -112,8 +115,10 @@
       </div>
     </div>
 
-    <button onclick="showCalendar()">캘린더 보기</button>
-    <button onclick="showGoalList()">목표 보기</button>
+    <div class="view-toggle-wrapper">
+      <button onclick="showCalendar()" class="view-toggle-btn" data-type="calendar">📅 캘린더 보기</button>
+      <button onclick="showGoalList()" class="view-toggle-btn" data-type="goal">📋 목표 보기</button>
+    </div>
 
     <!--  Goal List   -->
     <div class="goal-list">
