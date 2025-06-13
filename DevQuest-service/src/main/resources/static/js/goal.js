@@ -514,24 +514,36 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
- // 캘린더 보기 버튼
-  function showCalendar() {
-    document.querySelector('.goal-list').style.display = 'none';
-    document.querySelector('.calendar').style.display = 'block';
-    document.querySelector('.completed-toggle-wrapper').style.display = 'none';
-
-    // ✅ 렌더링은 DOM이 보이고 난 뒤!
-    setTimeout(() => {
-      calendar.render();
-    }, 0);
+// 공통 함수: 버튼 강조 효과 토글
+function activateViewToggle(name) {
+  document.querySelectorAll('.view-toggle-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelector(`.view-toggle-btn[data-type="${name}"]`)?.classList.add('active');
 }
 
- // 목표 보기 버튼
-  function showGoalList() {
-    document.querySelector('.goal-list').style.display = 'flex'; // 원래 flex일 수도 있음
-    document.querySelector('.calendar').style.display = 'none';
-    document.querySelector('.completed-toggle-wrapper').style.display = 'flex';
+// 캘린더 보기 버튼
+function showCalendar() {
+  document.querySelector('.goal-list').style.display = 'none';
+  document.querySelector('.calendar').style.display = 'block';
+  document.querySelector('.completed-toggle-wrapper').style.display = 'none';
+  document.querySelector('#completedGoalsSection').style.display = 'none';
+
+  setTimeout(() => {
+    calendar.render();
+  }, 0);
+
+  activateViewToggle('calendar');
 }
+
+// 목표 보기 버튼
+function showGoalList() {
+  document.querySelector('.goal-list').style.display = 'flex';
+  document.querySelector('.calendar').style.display = 'none';
+  document.querySelector('.completed-toggle-wrapper').style.display = 'flex';
+  document.querySelector('#completedGoalsSection').style.display = 'block';
+
+  activateViewToggle('goal');
+}
+
 
 document.addEventListener('DOMContentLoaded', () => {
   const toggleBtn = document.getElementById('toggleDoneGoalsBtn');

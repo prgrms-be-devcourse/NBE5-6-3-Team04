@@ -687,3 +687,29 @@
   text-decoration: line-through;
   color: gray !important;
 }
+
+.view-toggle-wrapper {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.view-toggle-btn {
+  padding: 10px 20px;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: background-color 0.2s ease;
+}
+
+.view-toggle-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.view-toggle-btn.active {
+  background-color: #577590;
+  color: white;
+}

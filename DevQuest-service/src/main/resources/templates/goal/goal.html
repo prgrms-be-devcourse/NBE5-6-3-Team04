@@ -115,8 +115,10 @@
       </div>
     </div>
 
-    <button onclick="showCalendar()">캘린더 보기</button>
-    <button onclick="showGoalList()">목표 보기</button>
+    <div class="view-toggle-wrapper">
+      <button onclick="showCalendar()" class="view-toggle-btn" data-type="calendar">📅 캘린더 보기</button>
+      <button onclick="showGoalList()" class="view-toggle-btn" data-type="goal">📋 목표 보기</button>
+    </div>
 
     <!--  Goal List   -->
     <div class="goal-list">
