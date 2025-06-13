@@ -4,6 +4,8 @@ import com.grepp.nbe563team04.model.achievement.AchievementService;
 import com.grepp.nbe563team04.model.goal.dto.GoalRequestDto;
 import com.grepp.nbe563team04.model.goal.dto.GoalResponseDto;
 import com.grepp.nbe563team04.model.goal.entity.Goal;
+import com.grepp.nbe563team04.model.goalCategory.GoalCategoryRepository;
+import com.grepp.nbe563team04.model.goalCategory.entity.GoalCategory;
 import com.grepp.nbe563team04.model.goalcompany.entity.GoalCompany;
 import com.grepp.nbe563team04.model.goalcompany.GoalCompanyRepository;
 import com.grepp.nbe563team04.model.todo.TodoRepository;
@@ -29,12 +31,20 @@ public class GoalService {
     private final TodoRepository todoRepository;
     private final UserRepository userRepository;
     private final AchievementService achievementService;
+    private final GoalCategoryRepository goalCategoryRepository;
+
+
 
     // 목표 생성
     @Transactional
     public String createGoal(GoalRequestDto dto, Long userId) {
+
         GoalCompany company = goalCompanyRepository.findById(dto.getCompanyId())
                 .orElseThrow(() -> new RuntimeException("해당 기업이 존재하지 않습니다."));
+
+        GoalCategory category = goalCategoryRepository.findByCategoryName(dto.getCategoryName())
+                .orElseThrow(() -> new RuntimeException("해당 카테고리가 존재하지 않습니다."));
+
 
         Goal goal = Goal.builder()
                 .company(company)
@@ -43,6 +53,8 @@ public class GoalService {
                 .endDate(dto.getEndDate())
                 .isDone(false) // 명시적으로 false 표시
                 .createdAt(LocalDate.now())
+                .category(category)
+                .color(category.getColor())
                 .build();
 
         goalRepository.save(goal);
@@ -52,28 +64,40 @@ public class GoalService {
     // 기업별 목표 목록 조회
     @Transactional
     public List<GoalResponseDto> getGoalsByCompanyId(Long companyId) {
-        return goalRepository.findByCompanyCompanyId(companyId).stream()
-                .map(goal -> {
-                    List<Todo> todos = Optional.ofNullable(todoRepository.findByGoalGoalId(goal.getGoalId()))
-                            .orElse(Collections.emptyList());
-                    long total = todos.size();
-                    long done = todos.stream()
-                            .filter(todo -> Boolean.TRUE.equals(todo.getIsDone()))
-                            .count();
-                    int progress = total == 0 ? 0 : (int) ((done * 100.0) / total);
+        List<Goal> goals = goalRepository.findByCompanyCompanyId(companyId);
 
-                    return GoalResponseDto.builder()
-                            .goalId(goal.getGoalId())
-                            .title(goal.getTitle())
-                            .startDate(goal.getStartDate())
-                            .endDate(goal.getEndDate())
-                            .isDone(goal.getIsDone())
-                            .createdAt(goal.getCreatedAt())
-                            .progress(progress)
-                            .goalListLabel(goal.getTitle().getLabel())
-                            .build();
-                })
-                .collect(Collectors.toList());
+
+        List<GoalResponseDto> result = new ArrayList<>();
+
+        for (Goal goal : goals) {
+            List<Todo> todos = Optional.ofNullable(
+                    todoRepository.findByGoalGoalId(goal.getGoalId())
+            ).orElse(Collections.emptyList());
+
+            long total = todos.size();
+            long done = todos.stream().filter(todo -> Boolean.TRUE.equals(todo.getIsDone())).count();
+            int progress = total == 0 ? 0 : (int) ((done * 100.0) / total);
+
+            GoalCategory category = goalCategoryRepository.findByCategoryName(goal.getTitle())
+                    .orElseThrow(() -> new RuntimeException("해당 카테고리가 존재하지 않습니다."));
+
+            GoalResponseDto dto = GoalResponseDto.builder()
+                    .goalId(goal.getGoalId())
+                    .title(goal.getTitle())
+                    .startDate(goal.getStartDate())
+                    .endDate(goal.getEndDate())
+                    .isDone(goal.getIsDone())
+                    .createdAt(goal.getCreatedAt())
+                    .progress(progress)
+                    .color(goal.getColor())
+                    .koreanName(category.getKoreanName())
+                    .categoryName(category.getCategoryName())
+                    .build();
+
+            result.add(dto);
+        }
+
+        return result;
     }
 
 
@@ -84,7 +108,12 @@ public class GoalService {
         Goal goal = goalRepository.findById(goalId)
                 .orElseThrow(() -> new RuntimeException("해당 목표가 존재하지 않습니다."));
 
+        GoalCategory category = goalCategoryRepository.findByCategoryName(dto.getCategoryName())
+                .orElseThrow(() -> new RuntimeException("해당 카테고리가 존재하지 않습니다."));
+
         goal.setTitle(dto.getTitle());
+        goal.setCategory(category);
+        goal.setColor(category.getColor());
         goal.setStartDate(dto.getStartDate());
         goal.setEndDate(dto.getEndDate());
         goal.setIsDone(dto.getIsDone());
@@ -103,11 +132,16 @@ public class GoalService {
 
     // 목표 상세 조회
     public GoalResponseDto getGoalById(Long goalId) {
+
         Goal goal = goalRepository.findById(goalId)
                 .orElseThrow(() -> new RuntimeException("목표 없음"));
 
+        GoalCategory category = goalCategoryRepository.findByCategoryName(goal.getTitle())
+                .orElseThrow(() -> new RuntimeException("해당 카테고리가 존재하지 않습니다."));
+
         List<Todo> todos = Optional.ofNullable(todoRepository.findByGoalGoalId(goalId))
                 .orElse(Collections.emptyList());
+
         long total = todos.size();
         long done = todos.stream()
                 .filter(todo -> Boolean.TRUE.equals(todo.getIsDone()))
@@ -122,6 +156,7 @@ public class GoalService {
                 .isDone(goal.getIsDone())
                 .createdAt(goal.getCreatedAt())
                 .progress(percent)
+                .categoryName(category.getCategoryName())
                 .build();
     }
 

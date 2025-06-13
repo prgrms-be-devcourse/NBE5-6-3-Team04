@@ -3,15 +3,14 @@ remember-me:
 
 upload:
   path: /Users/cho/Documents/dev/backend/f_spring/NBE5-6-3-Team04/DevQuest-service/upload/profile
+#   path: C:/backend/NBE5-6-3-Team04/DevQuest-service/upload/profile
 
 spring:
   application:
     name: NBE5-6-3-Team04
-
   web:
     resources:
-      static-locations: classpath:/static/, file:uploads/
-
+      static-locations: classpath:/static/, file:/upload/profile/
   servlet:
     multipart:
       max-file-size: 10MB
@@ -33,4 +32,5 @@ spring:
 
 gemini:
   base-url: https://generativelanguage.googleapis.com
-  api-key: "AIzaSyDfNtJhfDdZAuqDr83VuUucHSKTJRfhP2A"
+  api-key: "AIzaSyDJ2t_TcJ7ZwV0AI5AePRiVdUtqhvnvkN4"
+

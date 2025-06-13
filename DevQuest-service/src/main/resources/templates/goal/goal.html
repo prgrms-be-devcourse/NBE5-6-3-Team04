@@ -70,10 +70,13 @@
     <!-- 진행률 -->
     <div class="goal-process">
       <span class="progress-title">목표 진행률</span>
-      <div class="goal-item" th:each="goal : ${goals}">
+      <button id="toggleDoneGoalsBtn">완료된 목표 보기</button>
+      <div class="goal-item"
+           th:each="goal : ${goals}"
+           th:classappend="${goal.isDone} ? 'done-goal hidden' : ''">
         <div class="goal-info">
           <span class="goal-status" th:text="${goal.status}">상태</span>
-          <span class="goal-title" th:text="${goal.title}">제목</span>
+          <span class="goal-title" th:text="${goal.koreanName}" th:style="'color:' + (${goal.color} != null ? ${goal.color} : '#000000')">제목</span>
           <span class="done-label" th:if="${goal.isDone}">(완료)</span>
 
           <div class="goal-progress-wrapper">
@@ -112,16 +115,20 @@
       </div>
     </div>
 
-    <button onclick="showCalendar()">캘린더 보기</button>
-    <button onclick="showGoalList()">목표 보기</button>
+    <div class="view-toggle-wrapper">
+      <button onclick="showCalendar()" class="view-toggle-btn" data-type="calendar">📅 캘린더 보기</button>
+      <button onclick="showGoalList()" class="view-toggle-btn" data-type="goal">📋 목표 보기</button>
+    </div>
 
     <!--  Goal List   -->
     <div class="goal-list">
       <div th:each="goal : ${goals}" th:if="${!goal.isDone}" class="goal-card">
         <div>
           <div class="card-header">
-            <p class="goal-name" th:text="${goal.goalListLabel}">목표명</p>
+            <p class="goal-name" th:text="${goal.koreanName}" th:style="'color:' + (${goal.color} != null ? ${goal.color} : '#000000')">목표명</p>
             <span class="status" th:text="${goal.isDone}? '완료' : '진행 중'">진행 상태</span>
+
+
 
             <!-- 수정/삭제 드롭다운  -->
             <div class="dropdown" onclick="event.stopPropagation()">
@@ -182,15 +189,10 @@
 
 
     <!-- 캘린더 -->
-<!--    <div class="calendar" th:each="goal : ${goals}">-->
-<!--      <div class="todo-item" th:each="todo : ${todoMap[goal.goalId]}">-->
-<!--        <div id='calendar'>-->
-<!--          <p>캘린더 에용</p>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-
-
+    <div class="calendar" th:data-companyId="${company.companyId}" style="display: none;">
+        <div id='calendar'>
+        </div>
+    </div>
 
 
       <!-- 완료된 목표 보기 토글 버튼-->
@@ -205,7 +207,7 @@
              class="goal-card done">
           <div>
             <div class="card-header">
-              <p class="goal-name" th:text="${goal.title}">목표명</p>
+              <p class="goal-name" th:text="${goal.koreanName}" th:style="'color:' + (${goal.color} != null ? ${goal.color} : '#000000')">목표명</p>
               <span class="status">완료</span>
             </div>
           </div>
@@ -230,11 +232,10 @@
       <span class="close" onclick="closeModal('goalModal')">&times;</span>
       <h2>목표 생성</h2>
       <form id="goal-form" th:attr="data-company-id=${company.companyId}">
-        <select name="title">
-          <option value="DOCUMENT">서류</option>
-          <option value="CODING_TEST">코딩테스트</option>
-          <option value="ASSIGNMENT">과제</option>
-          <option value="APTITUDE">인적성검사</option>
+        <select name="categoryName">
+          <option th:each="category : ${categories}"
+                  th:value="${category.categoryName}"
+                  th:text="${category.koreanName}">카테고리</option>
         </select><br><br>
         <label>시작일</label><br>
         <input type="date" name="startDate"><br><br>
@@ -253,10 +254,11 @@
       <h2>todo 생성</h2>
       <form id="todo-form">
         <input type="text" name="title" placeholder="할 일을 입력해주세요" required><br><br>
+        <input type="date" name="startDate" placeholder="일정을 입력해 주세요" required><br><br>
         <input type="text" name="url" placeholder="(선택)주소를 입력해주세요" ><br><br>
         <input type="hidden" name="goalId">
         <button type="submit">추가</button>
-        <input type="hidden" name="startDate">
+
         <input type="hidden" name="endDate">
         <input type="hidden" name="isDone">
       </form>

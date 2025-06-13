@@ -655,3 +655,160 @@
 .dropdown ul li:hover {
   background-color: #f0f0f0;
 }
+
+.done-goal {
+  display: block;
+}
+.done-goal.hidden {
+  display: none;
+}
+
+
+  #toggleDoneGoalsBtn {
+    padding: 5px 10px;
+    font-size: 11px;
+    font-weight: bolder;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.2;
+    color: white;
+    background-color: rgb(136, 115, 193);
+    border: transparent;
+    transition: background-color 0.2s ease;
+    float: right;
+    margin-bottom: 10px;
+  }
+
+.todo-done .fc-event-title {
+  text-decoration: line-through;
+  color: gray !important;
+}
+
+.view-toggle-wrapper {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.view-toggle-btn {
+  padding: 10px 20px;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: background-color 0.2s ease;
+}
+
+.view-toggle-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.view-toggle-btn.active {
+  background-color: #577590;
+  color: white;
+}
+
+/*풀캘린더 관련 설정*/
+
+/* 전체 폰트 */
+.fc {
+  font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+}
+
+/* 요일 헤더 */
+.fc .fc-col-header-cell {
+  background-color: #f3f0ff;
+  color: #5e49b0;
+  font-weight: 600;
+  border: none;
+  border-bottom: 1px solid #ddd;
+}
+
+/* 날짜 셀 */
+.fc-daygrid-day-frame {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.fc-daygrid-day:hover {
+  background-color: #f3f0ff;
+  cursor: pointer;
+}
+
+/* 오늘 날짜 */
+.fc-day-today {
+  background-color: #eae7f8 !important;
+  border: 2px solid #7860c6;
+  border-radius: 10px;
+}
+
+/* 이벤트 */
+.fc-event {
+  color: #ffffff !important;        /* 글자색 흰색 고정 */
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  padding: 2px 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* 셀 간격 */
+.fc-scrollgrid-sync-table {
+  border-spacing: 6px;
+}
+
+/* 상단 툴바 제목 (예: June 2025) */
+.fc-toolbar-title {
+  color: #5e49b0; /* 진보라 */
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+/* 상단 버튼 (today, <, >) */
+.fc .fc-button {
+  background-color: #7860c6;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+/* 버튼 hover 시 */
+.fc .fc-button:hover {
+  background-color: #5e49b0;
+}
+
+/* 비활성화된 버튼 스타일 */
+.fc .fc-button:disabled {
+  background-color: #ccc;
+  color: #fff;
+  opacity: 0.6;
+}
+
+.fc-toolbar-title::after {
+  content: " 🐱";
+  margin-left: 6px;
+}
+
+/* 일요일: 빨간 글씨 */
+.fc-day-sun {
+  color: #d32f2f;
+  font-weight: 600;
+}
+
+/* 토요일: 파란 글씨 */
+.fc-day-sat {
+  color: #1976d2;
+  font-weight: 600;
+}
