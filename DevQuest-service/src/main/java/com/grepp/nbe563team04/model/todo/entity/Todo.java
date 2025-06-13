@@ -5,10 +5,8 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import lombok.*;
 
+@Data
 @Entity
-@Table(name = "todos")
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

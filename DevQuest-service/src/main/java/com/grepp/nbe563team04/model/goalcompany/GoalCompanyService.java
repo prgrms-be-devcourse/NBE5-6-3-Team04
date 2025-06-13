@@ -6,9 +6,9 @@ import com.grepp.nbe563team04.model.goal.entity.Goal;
 import com.grepp.nbe563team04.model.goalcompany.dto.GoalCompanyRequestDto;
 import com.grepp.nbe563team04.model.goalcompany.dto.GoalCompanyResponseDto;
 import com.grepp.nbe563team04.model.goalcompany.entity.GoalCompany;
+import com.grepp.nbe563team04.model.member.entity.Member;
 import com.grepp.nbe563team04.model.todo.TodoRepository;
-import com.grepp.nbe563team04.model.user.entity.User;
-import com.grepp.nbe563team04.model.user.UserRepository;
+import com.grepp.nbe563team04.model.member.MemberRepository;
 import java.time.temporal.ChronoUnit;
 
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ import java.util.List;
 public class GoalCompanyService {
 
     private final GoalCompanyRepository goalCompanyRepository;
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
     private final GoalRepository goalRepository;
     private final TodoRepository todoRepository;
     private final AchievementService achievementService;
@@ -31,12 +31,12 @@ public class GoalCompanyService {
     // 목표 기업 생성
     // 클라이언트로 부터 전달 받은 GoalCompanyRequestDto 를 GoalCompany(Entity)로 변환하여 저장하는 로직
     public String  createGoalCompany(GoalCompanyRequestDto dto, Long userId ) {
-        User user = userRepository.findById(userId) // user entity 불러오기
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        Member member = memberRepository.findById(userId) // member entity 불러오기
+                .orElseThrow(() -> new RuntimeException("Member not found"));
 
         // GoalCompany Entity 생성
         GoalCompany company = GoalCompany.builder()
-                .user(user)
+                .member(member)
                 .companyName(dto.getCompanyName())
                 .content(dto.getContent())
                 .status(dto.getStatus())
@@ -99,10 +99,10 @@ public class GoalCompanyService {
     }
 
     // 알림 생성 (D-3 남았을때 트리거 발생)
-    public List<GoalCompany> getUrgentGoals(User user) {
+    public List<GoalCompany> getUrgentGoals(Member member) {
         LocalDate today = LocalDate.now();
 
-        List<GoalCompany> companies = goalCompanyRepository.findAllByUser(user);
+        List<GoalCompany> companies = goalCompanyRepository.findAllByMember(member);
 
         return companies.stream()
             .filter(gc -> {
