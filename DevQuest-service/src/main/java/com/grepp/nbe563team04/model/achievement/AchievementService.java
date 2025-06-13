@@ -168,19 +168,19 @@ public class AchievementService {
     }
 
 
-    //추가
-    public List<AchievementDto> getAllAchievementsWithStatus(Long userId) {
-        List<Achievement> allAchievements = achieveRepository.findAll();
-        List<Long> achievedIds = usersAchieveRepository.findAchievedIdsByUserId(userId);
-        Set<Long> achievedSet = new HashSet<>(achievedIds);
-
-        return allAchievements.stream()
-                .map(a -> new AchievementDto(
-                        a.getName(),
-                        a.getDescription(),
-                        achievedSet.contains(a.getAchieveId())
-                ))
-                .collect(Collectors.toList());
-    }
+//    //추가
+//    public List<AchievementDto> getAllAchievementsWithStatus(Long userId) {
+//        List<Achievement> allAchievements = achieveRepository.findAll();
+//        List<Long> achievedIds = membersAchieveRepository.findAchievedIdsByUserId(userId);
+//        Set<Long> achievedSet = new HashSet<>(achievedIds);
+//
+//        return allAchievements.stream()
+//                .map(a -> new AchievementDto(
+//                        a.getName(),
+//                        a.getDescription(),
+//                        achievedSet.contains(a.getAchieveId())
+//                ))
+//                .collect(Collectors.toList());
+//    }
 
 }
