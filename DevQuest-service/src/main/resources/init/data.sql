@@ -122,4 +122,21 @@ INSERT INTO interest (type, interest_name, roadmap_url) VALUES
 #     (2, '배포 테스트', '2025-06-10 09:00:00', '2025-06-12 17:00:00', false);
 #
 
-
+# 관리자 페이지 차트확인용 - 회원 5명
+INSERT INTO user (level_id, user_image, email, password, nickname, role, exp)
+VALUES
+    (1, NULL, 'user1@mail.com', 'pass', 'User1', 'ROLE_USER', 100),
+    (1, NULL, 'user2@mail.com', 'pass', 'User2', 'ROLE_USER', 100),
+    (1, NULL, 'user3@mail.com', 'pass', 'User3', 'ROLE_USER', 100),
+    (1, NULL, 'user4@mail.com', 'pass', 'User4', 'ROLE_USER', 100),
+    (1, NULL, 'user5@mail.com', 'pass', 'User5', 'ROLE_USER', 100);
+# 관리자 페이지 차트확인용 - 회원 5명의 목표기업
+INSERT INTO goal_company (user_id, company_name, content, status)
+VALUES
+    (1, 'Toss', '핀테크 1위 도전', 'IN_PROGRESS'),
+    (1, 'Kakao', '카카오페이 백엔드', 'IN_PROGRESS'),
+    (2, 'Coupang', '로켓배송 백엔드', 'IN_PROGRESS'),
+    (3, 'Naver', '포털 커머스', 'IN_PROGRESS'),
+    (4, 'Kakao', '카카오톡 플랫폼', 'IN_PROGRESS'),
+    (4, 'Toss', '핀테크 관심', 'IN_PROGRESS'),
+    (5, 'Baemin', '배달서비스 AI', 'IN_PROGRESS');
