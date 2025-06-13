@@ -50,22 +50,31 @@
          target="_blank">#프레임워크</a>
     </div>
 
-    <!-- AI 데브 -->
-    <div class="ai-box">
+<!-------------------------------------------------------------------------------------------->
+    <!--06-12 12:34 작업용-->
+    <!--AI 데브-->
 
-      <div class="ai-header">
-        <img src="/img/dev.png" alt="AI 데브 캐릭터" class="ai-avatar" />
-        <h3 class="ai-title">AI 데브</h3>
-      </div>
-      <!-- AI 응답 표시 -->
-      <p id="aiFeedBack">미래의 개발자님 어서와요!</p>
-      <div class="reaction">
-      <!-- 긍정 버튼 -->
-      <button onclick="sendAiMessage('긍정적인 대답 및 네')" type="button" class="btn-positive" th:text="좋아"/>
-      <!-- 부정 버튼 -->
-      <button onclick="sendAiMessage('부정적인 대답 및 아니요')" type="button" class="btn-negative" th:text="힘들다"/>
-      </div>
-    </div>
+        <div class="ai-box">
+
+          <div class="ai-header">
+            <img src="/img/dev.png" alt="AI 데브 캐릭터" class="ai-avatar" />
+            <h3 class="ai-title"> AI 데브 </h3>
+          </div>
+
+          <!-- AI 응답 표시 -->
+          <p id="aiFeedBack">미래의 개발자님 어서와요!</p>
+
+          <!--사용자의 입력을 받음-->
+          <div class="reaction">
+          <input type="text" id = "userMessageInput" placeholder="질문을 입력하세요"/>
+            <button type="button" class="btn-positive"
+                    onclick="sendAiMessage(document.getElementById('userMessageInput').value)">
+              전송
+            </button>
+          </div>
+        </div>
+
+    <!-------------------------------------------------------------------------------------------->
 
     <!-- 진행률 -->
     <div class="goal-process">

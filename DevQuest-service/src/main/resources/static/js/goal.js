@@ -446,6 +446,8 @@ function closeTodoModal() {
   closeModal("todoModal");
 }
 
+//----------------------------------------------------------------------------------------------
+//작업용
 //Gemini 답장 메시지
 
 function sendAiMessage(message) {
@@ -473,6 +475,36 @@ function sendAiMessage(message) {
   });
 }
 
+//---------------------------------------------------------------------------------
+
+// 2025-06-12 12:33 백업용
+//Gemini 답장 메시지
+//
+// function sendAiMessage(message) {
+//   const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute(
+//       'content');
+//   const csrfHeader = document.querySelector(
+//       'meta[name="_csrf_header"]').getAttribute(
+//       'content');
+//
+//   fetch("/api/ai/feedback", {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//       [csrfHeader]: csrfToken
+//     },
+//     body: JSON.stringify({prompt: message})
+//   })
+//   .then(res => res.json())
+//   .then(data => {
+//     document.getElementById("aiFeedBack").textContent = data.reply;
+//   })
+//   .catch(err => {
+//     console.error("AI 응답 실패", err);
+//     alert("AI 응답 중 오류발생");
+//   });
+// }
+//
 
 // 드롭다운(수정, 삭제)
 document.addEventListener('DOMContentLoaded', () => {
