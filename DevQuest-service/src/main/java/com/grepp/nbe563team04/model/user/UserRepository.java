@@ -1,5 +1,6 @@
 package com.grepp.nbe563team04.model.user;
 
+import com.grepp.nbe563team04.model.user.dto.UserImageDto;
 import com.grepp.nbe563team04.model.user.entity.User;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-
     Optional<User> findByEmail(String email);
 
 //    @Query("SELECT u FROM User u LEFT JOIN FETCH u.userInterests WHERE u.userId = :id")
@@ -18,4 +18,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUserId(Long userId);
 
     Boolean existsByEmail(String email);
+
 }

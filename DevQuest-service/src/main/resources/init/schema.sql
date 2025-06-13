@@ -24,13 +24,11 @@ CREATE TABLE level (
 CREATE TABLE user (
                       user_id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                       level_id BIGINT NOT NULL,
-                      user_image VARCHAR(255),
                       email VARCHAR(255) NOT NULL,
                       password VARCHAR(255) NOT NULL,
                       nickname VARCHAR(255) NOT NULL,
                       role VARCHAR(255) NOT NULL,
                       exp INT NOT NULL,
-                      profile_image_url VARCHAR(255),
                       comment VARCHAR(255),
                       created_at TIMESTAMP NULL,
                       deleted_at TIMESTAMP NULL,

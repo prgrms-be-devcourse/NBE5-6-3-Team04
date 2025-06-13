@@ -1,4 +1,4 @@
-package com.grepp.nbe563team04.infra.util;
+package com.grepp.nbe563team04.infra.util.file;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -39,12 +39,12 @@ public class FileUtil {
     }
 
     private void uploadFile(MultipartFile file, FileDto fileDto) throws IOException {
-        File path = new File(filePath + fileDto.savePath());
+        File path = new File(filePath + fileDto.getSavePath());
         if (!path.exists()) {
             path.mkdirs();
         }
 
-        File target = new File(filePath + fileDto.savePath() + fileDto.renameFileName());
+        File target = new File(filePath + fileDto.getSavePath() + fileDto.getRenameFileName());
         file.transferTo(target);
     }
 
@@ -54,11 +54,7 @@ public class FileUtil {
     }
 
     private String createSavePath(String depth) {
-        LocalDate now = LocalDate.now();
-        return depth + "/" +
-                now.getYear() + "/" +
-                now.getMonth() + "/" +
-                now.getDayOfMonth() + "/";
+        return depth.endsWith("/") ? depth : depth + "/";
     }
 
     public void delete(String oldPath) throws IOException {

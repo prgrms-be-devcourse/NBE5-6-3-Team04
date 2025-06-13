@@ -35,10 +35,7 @@ public class User {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
-    private String profileImageUrl;
     private String nickname;
-    @Column(name = "user_image")
-    private String userImage = "default.png";
     @ManyToOne
     @JoinColumn(name = "level_id")
     private Level level;

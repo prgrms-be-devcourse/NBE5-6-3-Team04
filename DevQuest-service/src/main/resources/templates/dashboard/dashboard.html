@@ -65,11 +65,7 @@
     <div class="profile-card">
       <div class="profile-card">
         <div class="profile-info">
-          <img class="profile-img"
-               th:src="${dashboard.userImage != null && !dashboard.userImage.isEmpty()
-             ? '/images/profile/' + dashboard.userImage
-             : '/images/profile/default.png'}"
-               alt="프로필 이미지"/>
+          <img alt="프로필 이미지" class="profile-img" th:src="@{'/profile/' + ${image.renameFileName}}">
 
           <div class="level-info">
             <p class="level-title" th:text="${user.level.levelName}">레벨명</p>

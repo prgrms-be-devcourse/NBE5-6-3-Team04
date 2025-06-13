@@ -1,17 +1,15 @@
-upload:
-  path: C:/backend/NBE5-6-3-Team04/upload/
-
 remember-me:
   key: dladmldmlzl123
+
+upload:
+  path: C:/backend/NBE5-6-3-Team04/uploads/profile
 
 spring:
   application:
     name: NBE5-6-3-Team04
-
   web:
     resources:
-      static-locations: classpath:/static/, file:uploads/
-
+      static-locations: classpath:/static/, file:uploads/profile/
   servlet:
     multipart:
       max-file-size: 10MB

@@ -1,6 +1,10 @@
 package com.grepp.nbe563team04.model.user;
 
+import com.grepp.nbe563team04.infra.util.file.FileDto;
+import com.grepp.nbe563team04.infra.util.file.FileUtil;
 import com.grepp.nbe563team04.model.achievement.AchievementService;
+import com.grepp.nbe563team04.model.user.dto.UserImageDto;
+import com.grepp.nbe563team04.model.user.entity.UserImage;
 import com.grepp.nbe563team04.model.user.entity.UsersAchieve;
 import com.grepp.nbe563team04.model.auth.code.Role;
 import com.grepp.nbe563team04.model.auth.domain.Principal;
@@ -18,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import lombok.RequiredArgsConstructor;
@@ -40,6 +45,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final UserImageRepository userImageRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper mapper;
     private final LevelRepository levelRepository;
@@ -47,6 +53,7 @@ public class UserService implements UserDetailsService {
     private final UserInterestRepository userInterestRepository;
     private final AchievementService achievementService;
     private final UsersAchieveRepository usersAchieveRepository;
+    private final FileUtil fileUtil;
 
     @Transactional
     public Long signup(UserDto dto, Role role) {
@@ -63,6 +70,17 @@ public class UserService implements UserDetailsService {
         user.setDeletedAt(null);
 
         User savedUser = userRepository.save(user);
+
+        UserImage defaultImage = new UserImage();
+        defaultImage.setUser(savedUser);
+        defaultImage.setOriginFileName("default.png");
+        defaultImage.setRenameFileName("default.png");
+        defaultImage.setSavePath("C:/backend/NBE5-6-3-Team04/upload/profile/");
+        defaultImage.setCreatedAt(LocalDateTime.now());
+        defaultImage.setActivated(true);
+
+        userImageRepository.save(defaultImage);
+
         return savedUser.getUserId();
     }
 
@@ -87,8 +105,9 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void updateUser(String email, UserDto dto, MultipartFile file) throws IOException {
+    public void updateUser(String email, UserDto dto, List<MultipartFile> file) throws IOException {
         log.info(">> 수정 요청 진입: " + email);
+
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
 
@@ -100,15 +119,30 @@ public class UserService implements UserDetailsService {
             user.setPassword(hashed);
         }
 
-
+        // 파일 처리
         if (file != null && !file.isEmpty()) {
-            String uploadDir = System.getProperty("user.dir") + "/uploads/profile/";
-            String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();
-            Path filepath = Paths.get(uploadDir, filename);
-            Files.createDirectories(filepath.getParent());
-            Files.write(filepath, file.getBytes());
-            user.setUserImage(filename);
+            // 기존 이미지 비활성화 (선택)
+            List<UserImage> oldImages = userImageRepository.findByUserAndActivatedTrue(user);
+            for (UserImage old : oldImages) {
+                old.setActivated(false);
+            }
+            userImageRepository.saveAll(oldImages);
+
+            // 새 이미지 저장
+            List<FileDto> fileDtos = fileUtil.upload(file, "userImage");
+            FileDto fileDto = fileDtos.getFirst();
+
+            UserImage newImage = new UserImage();
+            newImage.setUser(user);
+            newImage.setOriginFileName(fileDto.getOriginFileName());
+            newImage.setRenameFileName(fileDto.getRenameFileName());
+            newImage.setSavePath(fileDto.getSavePath());
+            newImage.setCreatedAt(LocalDateTime.now());
+            newImage.setActivated(true);
+
+            userImageRepository.save(newImage);
         }
+
         userRepository.save(user);
     }
 

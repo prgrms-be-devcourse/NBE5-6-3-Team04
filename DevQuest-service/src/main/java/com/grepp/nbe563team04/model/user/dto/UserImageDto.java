@@ -1,6 +1,6 @@
 package com.grepp.nbe563team04.model.user.dto;
 
-import com.grepp.nbe563team04.infra.util.FileDto;
+import com.grepp.nbe563team04.infra.util.file.FileDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
