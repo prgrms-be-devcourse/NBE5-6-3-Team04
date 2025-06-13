@@ -18,10 +18,10 @@ function openModal() {
                 return;
             }
             list.innerHTML = data.map(a => `
-                 <div class="achievement-item">
-                    <span><strong>${a.name}</strong> : ${a.description}</span>
-                 </div>
-             `).join("");
+    <div class="achievement-item ${a.achieved ? 'achieved' : 'locked'}">
+        <span><strong>${a.name}</strong> : ${a.description}</span>
+    </div>
+`).join("");
         })
         .catch(error => {
             console.error(error);

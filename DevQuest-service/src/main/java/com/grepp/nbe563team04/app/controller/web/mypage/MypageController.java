@@ -44,10 +44,10 @@ public class MypageController {
 
     @GetMapping("mypage")
     public String index(@AuthenticationPrincipal Principal principal,
-        @RequestParam(required = false) String achievement,
-        @RequestParam(required = false) String name,
-        Model model,
-        CsrfToken csrfToken) {
+                        @RequestParam(required = false) String achievement,
+                        @RequestParam(required = false) String name,
+                        Model model,
+                        CsrfToken csrfToken) {
         String email = principal.getUsername();
         User user = userService.findByEmail(email);
         List<UsersAchieve> usersAchieves = userService.findAchieveByUserId(user.getUserId());

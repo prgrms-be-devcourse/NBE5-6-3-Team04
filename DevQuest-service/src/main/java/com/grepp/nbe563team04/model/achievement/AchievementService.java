@@ -13,7 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -163,4 +166,21 @@ public class AchievementService {
                         ua.getAchievement().getDescription()
                 )).toList();
     }
+
+
+    //추가
+    public List<AchievementDto> getAllAchievementsWithStatus(Long userId) {
+        List<Achievement> allAchievements = achieveRepository.findAll();
+        List<Long> achievedIds = usersAchieveRepository.findAchievedIdsByUserId(userId);
+        Set<Long> achievedSet = new HashSet<>(achievedIds);
+
+        return allAchievements.stream()
+                .map(a -> new AchievementDto(
+                        a.getName(),
+                        a.getDescription(),
+                        achievedSet.contains(a.getAchieveId())
+                ))
+                .collect(Collectors.toList());
+    }
+
 }

@@ -8,11 +8,17 @@ import lombok.NoArgsConstructor;
 public class AchievementDto {
     private String name;
     private String description;
+    private Boolean achieved;
 
     public AchievementDto(String name, String description) {
         this.name = name;
         this.description = description;
     }
 
-    // Getters (Lombok 써도 OK)
+    public AchievementDto(String name, String description, boolean achieved) {
+        this.name = name;
+        this.description = description;
+        this.achieved = achieved;
+    }
+
 }
