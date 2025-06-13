@@ -75,7 +75,7 @@ public class UserService implements UserDetailsService {
         defaultImage.setUser(savedUser);
         defaultImage.setOriginFileName("default.png");
         defaultImage.setRenameFileName("default.png");
-        defaultImage.setSavePath("C:/backend/NBE5-6-3-Team04/upload/profile/");
+        defaultImage.setSavePath("/");
         defaultImage.setCreatedAt(LocalDateTime.now());
         defaultImage.setActivated(true);
 
@@ -118,29 +118,35 @@ public class UserService implements UserDetailsService {
             String hashed = passwordEncoder.encode(dto.getPassword());
             user.setPassword(hashed);
         }
-
         // 파일 처리
         if (file != null && !file.isEmpty()) {
-            // 기존 이미지 비활성화 (선택)
-            List<UserImage> oldImages = userImageRepository.findByUserAndActivatedTrue(user);
-            for (UserImage old : oldImages) {
-                old.setActivated(false);
-            }
-            userImageRepository.saveAll(oldImages);
 
             // 새 이미지 저장
-            List<FileDto> fileDtos = fileUtil.upload(file, "userImage");
-            FileDto fileDto = fileDtos.getFirst();
+            List<FileDto> fileDtos = fileUtil.upload(file, "profile");
+            if (!fileDtos.isEmpty()) {
+                // 기존 이미지 비활성화 (선택)
+                List<UserImage> oldImages = userImageRepository.findByUserAndActivatedTrue(user);
+                for (UserImage old : oldImages) {
+                    old.setActivated(false);
+                }
+                userImageRepository.saveAll(oldImages);
 
-            UserImage newImage = new UserImage();
-            newImage.setUser(user);
-            newImage.setOriginFileName(fileDto.getOriginFileName());
-            newImage.setRenameFileName(fileDto.getRenameFileName());
-            newImage.setSavePath(fileDto.getSavePath());
-            newImage.setCreatedAt(LocalDateTime.now());
-            newImage.setActivated(true);
+                FileDto fileDto = fileDtos.getFirst();
 
-            userImageRepository.save(newImage);
+                UserImage newImage = new UserImage();
+                newImage.setUser(user);
+                newImage.setOriginFileName(fileDto.getOriginFileName());
+                newImage.setRenameFileName(fileDto.getRenameFileName());
+                newImage.setSavePath(fileDto.getSavePath());
+                newImage.setCreatedAt(LocalDateTime.now());
+                newImage.setActivated(true);
+
+                if (!user.isProfile()){
+                    user.setProfile(true);
+                }
+
+                userImageRepository.save(newImage);
+            }
         }
 
         userRepository.save(user);

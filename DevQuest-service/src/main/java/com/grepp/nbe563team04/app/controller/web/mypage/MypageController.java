@@ -108,7 +108,7 @@ public class MypageController {
                 .orElse(null);
         boolean isProfileComplete = updatedUser.getNickname() != null && !updatedUser.getNickname().isBlank()
                 && updatedUser.getComment() != null && !updatedUser.getComment().isBlank()
-                && latestImage != null && latestImage.getRenameFileName() != null;
+                && updatedUser.isProfile();
 
         if (isProfileComplete) {
             String achievedName = achievementService.giveTutorialAchievement(updatedUser.getUserId());

@@ -54,7 +54,7 @@ public class FileUtil {
     }
 
     private String createSavePath(String depth) {
-        return depth.endsWith("/") ? depth : depth + "/";
+        return "/";
     }
 
     public void delete(String oldPath) throws IOException {

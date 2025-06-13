@@ -28,6 +28,7 @@ public class UserDto {
     private LocalDate createdAt;
     private LocalDate deletedAt;
 
+
     public UserDto (User user) {
         this.userId = user.getUserId();
         this.role = user.getRole();

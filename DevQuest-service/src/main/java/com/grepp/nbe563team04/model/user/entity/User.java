@@ -41,6 +41,8 @@ public class User {
     private Level level;
     private Integer exp;
     private String comment;
+    @Column(name = "profile_activated")
+    private boolean profile;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserInterest> userInterests;
@@ -53,6 +55,8 @@ public class User {
     private LocalDate deletedAt;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GoalCompany> goalCompanies;
+
+
 
     // 경험치 추가 로직
     public void addXp(int amount) {

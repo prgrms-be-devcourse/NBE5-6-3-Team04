@@ -2,14 +2,14 @@ remember-me:
   key: dladmldmlzl123
 
 upload:
-  path: C:/backend/NBE5-6-3-Team04/uploads/profile
+  path: C:/backend/NBE5-6-3-Team04/DevQuest-service/upload/profile
 
 spring:
   application:
     name: NBE5-6-3-Team04
   web:
     resources:
-      static-locations: classpath:/static/, file:uploads/profile/
+      static-locations: classpath:/static/, file:/upload/profile/
   servlet:
     multipart:
       max-file-size: 10MB
