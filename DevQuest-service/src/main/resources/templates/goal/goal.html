@@ -17,7 +17,7 @@
   <!--========= 좌측 사이드바 ===========-->
   <aside class="sidebar">
     <div class="logo">
-      <span>DevQuest</span>
+      <a href="/admin/dashboard">DevQuest</a>
     </div>
     <h1 class="company-name" th:text="${company.companyName}">기업명 로딩 실패</h1>
     <span class="comment" th:text="${company.content}">한마디</span>
@@ -115,13 +115,17 @@
       </div>
     </div>
 
+<!--    캘린더 보기/ 목표 보기 버튼-->
     <div class="view-toggle-wrapper">
       <button onclick="showCalendar()" class="view-toggle-btn" data-type="calendar">📅 캘린더 보기</button>
       <button onclick="showGoalList()" class="view-toggle-btn" data-type="goal">📋 목표 보기</button>
+      <button onclick="showCompletedGoals()" class="view-toggle-btn" >🎯 완료된 목표 보기</button>
     </div>
 
+
+
     <!--  Goal List   -->
-    <div class="goal-list">
+    <div id="ongoingGoalsSection" class="goal-list">
       <div th:each="goal : ${goals}" th:if="${!goal.isDone}" class="goal-card">
         <div>
           <div class="card-header">
@@ -195,10 +199,6 @@
     </div>
 
 
-      <!-- 완료된 목표 보기 토글 버튼-->
-      <div class="completed-toggle-wrapper">
-        <button id="toggleCompletedBtn">완료된 목표 보기</button>
-      </div>
 
       <!-- 완료된 목표 목록 (초기에 숨김) -->
       <div id="completedGoalsSection" class="goal-list" style="display: none;">

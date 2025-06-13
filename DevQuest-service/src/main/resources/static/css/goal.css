@@ -484,23 +484,23 @@
     background-color: rgba(255, 98, 98, 0.5);
   }
 
-.completed-toggle-wrapper {
-  margin: 2em 0 0 0;
-  text-align: left;
-}
+/*.completed-toggle-wrapper {*/
+/*  margin: 2em 0 0 0;*/
+/*  text-align: left;*/
+/*}*/
 
-#toggleCompletedBtn {
-  padding: 8px 16px;
-  background-color: #566a7c;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
+/*#toggleCompletedBtn {*/
+/*  padding: 8px 16px;*/
+/*  background-color: #566a7c;*/
+/*  color: white;*/
+/*  border: none;*/
+/*  border-radius: 6px;*/
+/*  cursor: pointer;*/
+/*}*/
 
-#toggleCompletedBtn:hover {
-  background-color: #080909;
-}
+/*#toggleCompletedBtn:hover {*/
+/*  background-color: #080909;*/
+/*}*/
 
   .ccmModal {
     display: none;
@@ -683,15 +683,11 @@
     margin-bottom: 10px;
   }
 
-.todo-done .fc-event-title {
-  text-decoration: line-through;
-  color: gray !important;
-}
 
 .view-toggle-wrapper {
   display: flex;
-  gap: 10px;
-  margin-bottom: 1rem;
+  gap: 11px;
+  margin-bottom: 2rem;
 }
 
 .view-toggle-btn {
@@ -714,7 +710,19 @@
   color: white;
 }
 
+
+.todo-done .fc-event-title {
+  text-decoration: line-through;
+  color: gray !important;
+}
+
 /*풀캘린더 관련 설정*/
+
+
+#calendar {
+  min-height: 600px;
+  width: 100%;
+}
 
 /* 전체 폰트 */
 .fc {
@@ -812,3 +820,4 @@
   color: #1976d2;
   font-weight: 600;
 }
+
