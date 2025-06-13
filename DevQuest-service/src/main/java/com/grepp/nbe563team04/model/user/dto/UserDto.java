@@ -22,14 +22,12 @@ public class UserDto {
     private String password;
     private Role role;
     private String nickname;
-    private String userImage;
     private Level level;
     private Integer exp;
     private String comment;
     private LocalDate createdAt;
     private LocalDate deletedAt;
 
-    private MultipartFile userImageFile;
 
     public UserDto (User user) {
         this.userId = user.getUserId();

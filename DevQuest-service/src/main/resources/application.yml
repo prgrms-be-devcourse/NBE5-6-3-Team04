@@ -1,14 +1,15 @@
 remember-me:
   key: dladmldmlzl123
 
+upload:
+  path: C:/backend/NBE5-6-3-Team04/DevQuest-service/upload/profile
+
 spring:
   application:
     name: NBE5-6-3-Team04
-
   web:
     resources:
-      static-locations: classpath:/static/, file:uploads/
-
+      static-locations: classpath:/static/, file:/upload/profile/
   servlet:
     multipart:
       max-file-size: 10MB
@@ -32,7 +33,3 @@ gemini:
   base-url: https://generativelanguage.googleapis.com
   api-key: "AIzaSyDJ2t_TcJ7ZwV0AI5AePRiVdUtqhvnvkN4"
 
-#  spring:
-#    thymeleaf:
-#      prefix: classpath:/templates/
-#      suffix: .html

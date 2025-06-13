@@ -59,10 +59,11 @@ body {
 }
 
 .profile-img {
-    width: 100px;
-    height: 100px;
+    width: 180px;
+    height: 180px;
     border-radius: 50%;
-    margin: 20px auto;
+    display: block;
+    margin: 20px auto;  /* 위아래 여백 + 수평 가운데 정렬 */
 }
 
 .level-title {
