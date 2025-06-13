@@ -37,6 +37,7 @@ public class GoalApiController {
     }
 
     //  목표 단건 조회
+    // ResponseEntity 담아서 반환해야 한다. dto째로 던지는것보다. entity로 던지는
     @GetMapping("/{goalId}/select")
     public GoalResponseDto selectGoal(@PathVariable Long goalId) {
         return goalService.getGoalById(goalId);
