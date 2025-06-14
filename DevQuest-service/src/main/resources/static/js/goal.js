@@ -461,7 +461,8 @@ function sendAiMessage(message) {
   })
   .then(res => res.json())
   .then(data => {
-    document.getElementById("aiFeedBack").textContent = data.reply;
+    // document.getElementById("aiFeedBack").textContent = data.reply;
+    appendMessage("ai", data.reply); // 화면에 챗봇 추가
   })
   .catch(err => {
     console.error("AI 응답 실패", err);
@@ -471,34 +472,45 @@ function sendAiMessage(message) {
 
 //---------------------------------------------------------------------------------
 
-// 2025-06-12 12:33 백업용
-//Gemini 답장 메시지
-//
-// function sendAiMessage(message) {
-//   const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute(
-//       'content');
-//   const csrfHeader = document.querySelector(
-//       'meta[name="_csrf_header"]').getAttribute(
-//       'content');
-//
-//   fetch("/api/ai/feedback", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//       [csrfHeader]: csrfToken
-//     },
-//     body: JSON.stringify({prompt: message})
-//   })
-//   .then(res => res.json())
-//   .then(data => {
-//     document.getElementById("aiFeedBack").textContent = data.reply;
-//   })
-//   .catch(err => {
-//     console.error("AI 응답 실패", err);
-//     alert("AI 응답 중 오류발생");
-//   });
-// }
-//
+const inputBox = document.getElementById("userMessageInput");
+const chatHistory = document.getElementById("chatHistory");
+
+// Enter 전송, Shift+Enter 줄바꿈 + Auto Resize
+inputBox.addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    if (event.shiftKey) return; // 줄바꿈 허용
+
+    event.preventDefault(); // 기본 Enter 막기
+    handleUserInput(); // 전송 처리
+  }
+  autoResizeTextarea(this); // 입력 시 자동 높이 조절
+});
+
+function handleUserInput() {
+  const message = inputBox.value.trim();
+  if (message === "") return;
+
+  appendMessage("user", message); // 유저 메시지 화면 출력
+  sendAiMessage(message);
+  inputBox.value = "";  // 전송 후 입력창 비우기
+  autoResizeTextarea(inputBox);  // 높이 초기화
+}
+
+function appendMessage(sender, text) {
+  const p = document.createElement("p");
+  p.classList.add(sender);
+  p.textContent = (sender === "user" ? " 나: " : "AI Dev: ") + text;
+  chatHistory.appendChild(p);
+  chatHistory.scrollTop = chatHistory.scrollHeight; // 스크롤 아래로
+}
+
+function autoResizeTextarea(textarea) {
+  textarea.style.height = "auto"; // 초기화
+  textarea.style.height = (textarea.scrollHeight) + "px"; // 자동 높이 적용
+}
+
+
+//---------------------------------------------------------------------------------
 
 // 드롭다운(수정, 삭제)
 document.addEventListener('DOMContentLoaded', () => {

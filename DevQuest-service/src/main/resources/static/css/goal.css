@@ -153,6 +153,133 @@
   background-color: #e64509;
 }
 
+/* AI history *//* AI 전체 박스 ─ <div class="ai-box"> */
+.ai-box {
+  width: 87%;
+  margin-bottom: 10px;
+  padding: 1rem;
+  background-color: white;
+  border: 2px solid rgba(85, 67, 168, 0.47);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* AI 헤더 (아바타 + 타이틀) ─ <div class="ai-header"> */
+.ai-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3rem;
+  margin-bottom: 0.5rem;
+}
+
+/* AI 아바타 이미지 ─ <img class="ai-avatar"> */
+.ai-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* AI 타이틀 텍스트 ─ <h3 class="ai-title"> */
+.ai-title {
+  font-size: 11pt;
+  font-weight: 700;
+  color: #4a4a4a;
+  margin: 0;
+}
+
+/* AI 인사 메시지 ─ <p id="aiFeedBack"> */
+#aiFeedBack {
+  display: inline-block;
+  font-weight: bold;
+  background-color: #ebe1ff;
+  color: black;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  white-space: pre-line;
+  max-width: 100%;
+  max-height: 30vh;
+  overflow-y: auto;
+}
+
+/* 버튼 컨테이너 ─ <div class="reaction"> */
+.reaction {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 10px;
+  align-self: flex-end;
+}
+
+/* 전송 버튼 (초록색) ─ <button class="btn-positive"> */
+.btn-positive {
+  background-color: #89ca67;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-positive:hover {
+  background-color: #519502;
+}
+
+.btn-negative:hover {
+  background-color: #e64509;
+}
+
+/* 대화 메시지 스타일 ─ JS로 추가되는 <p class="user">, <p class="ai"> 공통 */
+.chat-history p {
+  margin: 6px 0;
+  padding: 10px 14px;
+  border-radius: 14px;
+  max-width: 80%;
+  word-break: break-word;
+  white-space: pre-line;
+  display: inline-block;
+}
+
+/* 사용자 메시지 (우측 정렬) ─ <p class="user"> */
+.chat-history .user {
+  background-color: #dcf8c6;
+  color: #333;
+  align-self: flex-end;
+  text-align: right;
+  border-bottom-right-radius: 0;
+  margin-left: auto;
+}
+
+/* AI 응답 메시지 (좌측 정렬) ─ <p class="ai"> */
+.chat-history .ai {
+  background-color: #e4e2ff;
+  color: #4a2fa7;
+  align-self: flex-start;
+  text-align: left;
+  border-bottom-left-radius: 0;
+  margin-right: auto;
+}
+
+/* 대화 전체 영역 ─ <div id="chatHistory" class="chat-history"> */
+.chat-history {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #f9f9ff;
+  overflow-y: auto;
+  max-height: 200px;
+  font-weight: bold;
+
+}
+
+
 /* goal 진행률 */
 
 .goal-process {

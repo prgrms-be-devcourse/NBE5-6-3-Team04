@@ -62,13 +62,17 @@
           </div>
 
           <!-- AI 응답 표시 -->
-          <p id="aiFeedBack">미래의 개발자님 어서와요!</p>
+          <!--chat history 누적-->
+          <div id="chatHistory" class="chat-history">
+<!--            <p id="aiFeedBack"></p>-->
+          </div>
 
           <!--사용자의 입력을 받음-->
-          <div class="reaction">
           <input type="text" id = "userMessageInput" placeholder="질문을 입력하세요"/>
+
+          <div class="reaction">
             <button type="button" class="btn-positive"
-                    onclick="sendAiMessage(document.getElementById('userMessageInput').value)">
+                    onclick="handleUserInput()">
               전송
             </button>
           </div>
@@ -76,6 +80,29 @@
 
     <!-------------------------------------------------------------------------------------------->
 
+    <!--06-13 11:25 백업용-->
+    <!--AI 데브-->
+
+<!--    <div class="ai-box">-->
+
+<!--      <div class="ai-header">-->
+<!--        <img src="/img/dev.png" alt="AI 데브 캐릭터" class="ai-avatar" />-->
+<!--        <h3 class="ai-title"> AI 데브 </h3>-->
+<!--      </div>-->
+
+<!--      &lt;!&ndash; AI 응답 표시 &ndash;&gt;-->
+<!--      <p id="aiFeedBack">미래의 개발자님 어서와요!</p>-->
+
+<!--      &lt;!&ndash;사용자의 입력을 받음&ndash;&gt;-->
+<!--      <div class="reaction">-->
+<!--        <input type="text" id = "userMessageInput" placeholder="질문을 입력하세요"/>-->
+<!--        <button type="button" class="btn-positive"-->
+<!--                onclick="sendAiMessage(document.getElementById('userMessageInput').value)">-->
+<!--          전송-->
+<!--        </button>-->
+<!--      </div>-->
+<!--    </div>-->
+    <!-------------------------------------------------------------------------------------------->
     <!-- 진행률 -->
     <div class="goal-process">
       <span class="progress-title">목표 진행률</span>
