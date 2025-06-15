@@ -7,6 +7,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,6 +28,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Member member = memberRepository.findByEmail(email)
             .orElseThrow(() -> new UsernameNotFoundException(email));
+
+        if (member.getDeletedAt() != null) {
+            throw new DisabledException("탈퇴한 사용자입니다.");
+        }
 
         // member 객체에서 직접 권한 추출
         List<SimpleGrantedAuthority> authorities = List.of(
