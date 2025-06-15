@@ -1,5 +1,7 @@
 package com.grepp.nbe563team04.infra.response;
 
+import com.grepp.nbe563team04.app.controller.api.auth.payload.TokenResponse;
+
 public record ApiResponse<T>(
         String code,
         String message,
@@ -20,5 +22,9 @@ public record ApiResponse<T>(
 
     public static <T> ApiResponse<T> error(ResponseCode code, T data) {
         return new ApiResponse<>(code.code(), code.message(), data);
+    }
+
+    public static ApiResponse<TokenResponse> error() {
+        return new ApiResponse<>("401", "UNAUTHORIZED", null);
     }
 }
