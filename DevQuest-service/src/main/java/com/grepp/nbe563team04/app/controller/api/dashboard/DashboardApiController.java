@@ -28,7 +28,7 @@ public class DashboardApiController {
     @GetMapping("/dashboard")
     public ResponseEntity<DashboardDto> getDashboardData(
         @AuthenticationPrincipal Principal principal) {
-        Member member = memberRepository.findById(principal.getUser().getUserId())
+        Member member = memberRepository.findById(principal.getMember().getUserId())
             .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
 
         DashboardDto dto = dashboardService.getDashboard(member);
