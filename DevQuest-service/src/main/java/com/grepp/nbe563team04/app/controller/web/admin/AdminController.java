@@ -12,7 +12,6 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -50,8 +49,7 @@ public class AdminController {
     @GetMapping("dashboard")
     public String dashboard(
         @AuthenticationPrincipal Principal principal,
-        Model model,
-        CsrfToken csrfToken) {
+        Model model) {
 
         // 로그인한 관리자 정보
         Member admin = memberService.findByEmail(principal.getUsername());
@@ -67,7 +65,6 @@ public class AdminController {
         model.addAttribute("activeUsers", activeUsers);
         model.addAttribute("deletedUsers", deletedUsers);
         model.addAttribute("adminUsers", adminUsers);
-        model.addAttribute("_csrf", csrfToken);
         model.addAttribute("nickname", principal.getMember().getNickname());
         // 대시보드 가입자/탈퇴자 추이 표 mock data
         model.addAttribute("labels", List.of("06-10", "06-11", "06-12", "06-13"));
@@ -83,8 +80,7 @@ public class AdminController {
     @GetMapping("member-management")
     public String userManagement(
         @AuthenticationPrincipal Principal principal,
-        Model model,
-        CsrfToken csrfToken) {
+        Model model) {
 
         // 로그인한 관리자 정보
         Member admin = memberService.findByEmail(principal.getUsername());
@@ -100,7 +96,6 @@ public class AdminController {
         model.addAttribute("activeUsers", activeUsers);
         model.addAttribute("deletedUsers", deletedUsers);
         model.addAttribute("adminUsers", adminUsers);
-        model.addAttribute("_csrf", csrfToken);
         model.addAttribute("nickname", principal.getMember().getNickname());
 
         log.info("닉네임: {}", principal.getMember().getNickname());
@@ -124,8 +119,7 @@ public class AdminController {
     @GetMapping("company-stats")
     public String showCompanyStatsPage(
         @AuthenticationPrincipal Principal principal,
-        Model model,
-        CsrfToken csrfToken) {
+        Model model) {
 
         // 로그인한 관리자 정보
         Member admin = memberService.findByEmail(principal.getUsername());

@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>마이페이지 수정 | DevQuest</title>
-    <meta name="_csrf" th:content="${_csrf.token}" />
-    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
     <link rel="stylesheet" th:href="@{/css/mypage/mypageUpdate.css}">
 </head>
 <body>
@@ -34,7 +32,6 @@
     </div>
 
     <form class="edit-box" method="post" action="/member/update" enctype="multipart/form-data">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
         <label for="userImageFile">프로필 이미지 업로드</label>
         <input type="file" id="userImageFile" name="userImageFile">
 
