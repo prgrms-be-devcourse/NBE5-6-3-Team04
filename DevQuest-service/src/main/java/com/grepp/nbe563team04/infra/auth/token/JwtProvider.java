@@ -67,10 +67,16 @@ public class JwtProvider {
         String id = UUID.randomUUID().toString();
         long now = new Date().getTime();
         Date atExpiresIn = new Date(now + atExpiration);
+
+        Member member = memberRepository.findByEmail(email)
+            .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+        List<String> authorities = List.of(member.getRole().name());
+
         String accessToken = Jwts.builder()
             .subject(email)
             .id(id)
             .expiration(atExpiresIn)
+            .claim("authorities", authorities)
             .signWith(getSecretKey())
             .compact();
 
