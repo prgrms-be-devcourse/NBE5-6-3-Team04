@@ -8,6 +8,9 @@ import com.grepp.nbe563team04.model.problem.entity.Problem;
 import com.grepp.nbe563team04.model.todo.dto.TodoRequestDto;
 import com.grepp.nbe563team04.model.todo.dto.TodoResponseDto;
 import com.grepp.nbe563team04.model.todo.entity.Todo;
+import com.grepp.nbe563team04.model.userProblemSolve.UserProblemSolveRepository;
+import com.grepp.nbe563team04.model.userProblemSolve.entity.UserProblemId;
+import com.grepp.nbe563team04.model.userProblemSolve.entity.UserProblemSolve;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,7 @@ public class TodoService {
     private final TodoRepository todoRepository;
     private final GoalRepository goalRepository;
     private final ProblemRepository problemRepository;
+    private final UserProblemSolveRepository userProblemSolveRepository;
 
     // 투두 생성
     @Transactional
@@ -118,10 +122,28 @@ public class TodoService {
         if (!todo.getGoal().getCompany().getMember().getUserId().equals(member.getUserId())) {
             throw new SecurityException("해당 사용자의 투두가 아닙니다.");
         }
+
         // 체크 상태 토글
-        todo.setIsDone(!todo.getIsDone()); // isChecked()는 boolean 필드 getter
+        todo.setIsDone(!todo.getIsDone());
         todoRepository.save(todo);
+
+        if (todo.getIsDone() && "PROBLEM_RECOMMEND".equals(todo.getSourceType()) && todo.getProblem() != null) {
+
+            Long userId = member.getUserId();
+            Long problemId = todo.getProblem().getId();
+
+            UserProblemId id = new UserProblemId(userId, problemId);
+
+            if (userProblemSolveRepository.existsById(id)) {
+                UserProblemSolve existing = userProblemSolveRepository.findById(id).get();
+                existing.setSolveCount(existing.getSolveCount() + 1);
+                userProblemSolveRepository.save(existing);
+            } else {
+                userProblemSolveRepository.save(new UserProblemSolve(id, member, todo.getProblem(), 1));
+            }
+        }
     }
+
 
     @Transactional
     public void createFromProblems(Long goalId, List<Long> problemIds) {
@@ -145,6 +167,9 @@ public class TodoService {
             todoRepository.save(todo);
         }
     }
+
+
+
 
 
 
