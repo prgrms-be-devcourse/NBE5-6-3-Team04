@@ -15,7 +15,7 @@ function deleteAccount() {
             if (!res.ok) throw new Error("탈퇴 실패");
 
             alert("탈퇴가 완료되었습니다.");
-            return post('/logout');
+            return post('/auth/logout');
         })
         .then(() => {
             window.location.href = "/user/withdraw-success";
@@ -30,6 +30,6 @@ window.addEventListener("DOMContentLoaded", () => {
     const isWithdrawSuccess = document.body.classList.contains("withdraw-success");
     if (!isWithdrawSuccess) return;
 
-    post('/logout')
+    post('/auth/logout')
         .catch(err => console.error("자동 로그아웃 실패:", err));
 });

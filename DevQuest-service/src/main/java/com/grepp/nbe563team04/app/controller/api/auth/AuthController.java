@@ -47,4 +47,11 @@ public class AuthController {
             .build();
         return ResponseEntity.ok(ApiResponse.success(tokenResponse));
     }
+
+    @PostMapping("logout")
+    public ResponseEntity<ApiResponse<Void>> logout(
+        HttpServletResponse response
+    ){
+        return ResponseEntity.ok(ApiResponse.noContent());
+    }
 }

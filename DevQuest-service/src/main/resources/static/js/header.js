@@ -3,7 +3,7 @@ function goToDashboard() {
 }
 
 function logout() {
-    fetch('/logout', {
+    fetch('/auth/logout', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
