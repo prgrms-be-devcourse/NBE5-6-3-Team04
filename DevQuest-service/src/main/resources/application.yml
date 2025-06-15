@@ -4,6 +4,11 @@ remember-me:
 upload:
   path: ${UPLOAD_PATH}
 
+jwt:
+  secret: ${JWT_SECRET}
+  access-expiration: ${JWT_ACCESS_EXPIRATION}
+  refresh-expiration: ${JWT_REFRESH_EXPIRATION}
+
 spring:
   application:
     name: NBE5-6-3-Team04

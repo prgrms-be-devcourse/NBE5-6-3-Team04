@@ -21,6 +21,9 @@ public class Nbe563Team04Application {
         System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
         System.setProperty("GEMINI_BASE_URL", dotenv.get("GEMINI_BASE_URL"));
         System.setProperty("GEMINI_API_KEY", dotenv.get("GEMINI_API_KEY"));
+        System.setProperty("JWT_SECRET", dotenv.get("JWT_SECRET"));
+        System.setProperty("JWT_ACCESS_EXPIRATION", dotenv.get("JWT_ACCESS_EXPIRATION"));
+        System.setProperty("JWT_REFRESH_EXPIRATION", dotenv.get("JWT_REFRESH_EXPIRATION"));
 
         SpringApplication.run(Nbe563Team04Application.class, args);
     }
