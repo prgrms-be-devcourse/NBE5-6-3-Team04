@@ -172,9 +172,9 @@ document.addEventListener("DOMContentLoaded", () => {
       document.querySelector("#problemModal h2").textContent = "추천 문제 생성";
       document.querySelector("#problemModal button[type='submit']").textContent = "추가";
 
+      selectProblem(goalId);
       form.onsubmit = function (e) {
         e.preventDefault();
-        // 여기에 실행할 함수 추가
       };
 
       document.getElementById("problemModal").style.display = "flex";
@@ -325,6 +325,43 @@ function createTodo() {
         console.error("에러 발생", err);
         alert("에러 발생");
       });
+}
+
+// 추천 문제 조회 함수
+function selectProblem() {
+  fetch('/problem/select', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      ...getCsrfHeaders()
+    }
+  })
+      .then(res => res.json())
+      .then(data => {
+        renderProblemList(data); // 여기서 문제 목록을 모달에 렌더링
+        document.getElementById("problemModal").style.display = "block";
+      })
+      .catch(err => {
+        console.error(err);
+        alert("문제 목록 조회 실패");
+      });
+}
+
+function renderProblemList(problems) {
+  const container = document.getElementById("problem-list");
+  container.innerHTML = ""; // 기존 내용 초기화
+
+  problems.forEach(p => {
+    const item = document.createElement("div");
+    item.className = "problem-item";
+    item.innerHTML = `
+      <label>
+        <input type="checkbox" name="problemId" value="${p.problemId}">
+        ${p.title} (${p.level})
+      </label>
+    `;
+    container.appendChild(item);
+  });
 }
 
 // 목표 수정 함수
