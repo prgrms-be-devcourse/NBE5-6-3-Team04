@@ -6,8 +6,10 @@ import com.grepp.nbe563team04.infra.auth.token.code.TokenType;
 import com.grepp.nbe563team04.infra.error.exceptions.CommonException;
 import com.grepp.nbe563team04.infra.response.ResponseCode;
 import com.grepp.nbe563team04.model.auth.token.RefreshTokenService;
+import com.grepp.nbe563team04.model.auth.token.UserBlackListRepository;
 import com.grepp.nbe563team04.model.auth.token.dto.AccessTokenDto;
 import com.grepp.nbe563team04.model.auth.token.entity.RefreshToken;
+import com.grepp.nbe563team04.model.auth.token.entity.UserBlackList;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
@@ -31,6 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtProvider jwtProvider;
     private final RefreshTokenService refreshTokenService;
+    private final UserBlackListRepository userBlackListRepository;
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
@@ -53,6 +56,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         Claims claims = jwtProvider.parseClaim(requestAccessToken);
+        if(userBlackListRepository.existsById(claims.getSubject())){
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         try {
             if (jwtProvider.validateToken(requestAccessToken)) {
@@ -85,6 +92,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         if (!storedRefreshToken.getToken().equals(refreshToken)) {
+            userBlackListRepository.save(new UserBlackList(authentication.getName()));
             throw new CommonException(ResponseCode.SECURITY_INCIDENT);
         }
 
