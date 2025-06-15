@@ -4,15 +4,10 @@ import com.grepp.nbe563team04.model.goalcompany.code.GoalStatus;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Getter @Setter
 public class ProblemRequestDto {
-// 클라이언트가 서버에 보내는 요청을 담는 dto
-    private long problemId;             // 생성 시엔 생략 가능
-
-
+    private List<Long> problemIds;
+    private Long goalId;
 }

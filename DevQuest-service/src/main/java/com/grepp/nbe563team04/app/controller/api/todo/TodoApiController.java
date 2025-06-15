@@ -85,4 +85,10 @@ public class TodoApiController {
 
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/from-problems")
+    public ResponseEntity<?> createTodosFromProblems(@RequestBody TodoRequestDto dto) {
+        todoService.createFromProblems(dto.getGoalId(), dto.getProblemIds());
+        return ResponseEntity.ok().build();
+    }
 }

@@ -50,6 +50,8 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.addEventListener("click", async () => {
       const goalId = btn.dataset.id;
 
+      const form = document.getElementById("goal-form");
+
       await fillGoalForm(goalId);
 
       form.setAttribute("data-id", goalId);
@@ -205,21 +207,27 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    fetch("/problem/save", {
+    const goalId = parseInt(form.goalId.value);
+
+    fetch("/todos/from-problems", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         ...getCsrfHeaders(),
       },
-      body: JSON.stringify({ problemIds: selectedIds })
+      body: JSON.stringify({
+        goalId: goalId,
+        problemIds: selectedIds
+      })
     })
         .then(res => {
           if (!res.ok) throw new Error("저장 실패");
-          return res.text(); // ✅ 이거로 바꿔!
+          return res.text();
         })
         .then(() => {
-          alert("추천 문제 저장 완료!");
+          alert("추천 문제 추가 완료!");
           document.getElementById("problemModal").style.display = "none";
+          location.reload(); // 필요 시 새로고침
         })
         .catch(err => {
           console.error(err);
@@ -227,6 +235,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
   };
 });
+
+
 
 
 
@@ -419,6 +429,7 @@ function renderProblemList(problems) {
       <td>${p.site}</td>
       <td>${p.title}</td>
       <td>${p.level}</td>
+      <td>${p.solveCount}</td> 
       <td></td>
     `;
     tbody.appendChild(row);

@@ -35,7 +35,7 @@ public class ProblemApiController {
     public ResponseEntity<?> getAllProblems( @AuthenticationPrincipal Principal principal) { // json -> dto 자동 변환
         Long userId = principal.getUser().getUserId();
 
-        List<ProblemResponseDto> problems = problemService.getAllProblems();
+        List<ProblemResponseDto> problems = problemService.getAllProblemsWithSolveCount(userId);
 
         return ResponseEntity.ok(problems);
     }

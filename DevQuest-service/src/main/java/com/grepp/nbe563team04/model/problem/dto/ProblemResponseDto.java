@@ -15,6 +15,6 @@ public class ProblemResponseDto {
     private Integer level;
     private String url;
     private String site;
-//    private int solvedCount;
+    private Integer solveCount =0;
 }
 
