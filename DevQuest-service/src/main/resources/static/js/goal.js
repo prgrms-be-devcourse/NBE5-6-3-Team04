@@ -443,13 +443,10 @@ function closeTodoModal() {
 //----------------------------------------------------------------------------------------------
 //작업용
 //Gemini 답장 메시지
-
+// ───────────── Gemini 답장 메시지 전송 ─────────────
 function sendAiMessage(message) {
-  const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute(
-      'content');
-  const csrfHeader = document.querySelector(
-      'meta[name="_csrf_header"]').getAttribute(
-      'content');
+  const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+  const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
 
   fetch("/api/ai/feedback", {
     method: "POST",
@@ -457,12 +454,11 @@ function sendAiMessage(message) {
       "Content-Type": "application/json",
       [csrfHeader]: csrfToken
     },
-    body: JSON.stringify({prompt: message})
+    body: JSON.stringify({ prompt: message })
   })
   .then(res => res.json())
   .then(data => {
-    // document.getElementById("aiFeedBack").textContent = data.reply;
-    appendMessage("ai", data.reply); // 화면에 챗봇 추가
+    appendMessage("ai", data.reply);
   })
   .catch(err => {
     console.error("AI 응답 실패", err);
@@ -470,44 +466,67 @@ function sendAiMessage(message) {
   });
 }
 
-//---------------------------------------------------------------------------------
-
+// ───────────── 채팅 입력 처리 및 자동 리사이징 ─────────────
 const inputBox = document.getElementById("userMessageInput");
 const chatHistory = document.getElementById("chatHistory");
 
-// Enter 전송, Shift+Enter 줄바꿈 + Auto Resize
 inputBox.addEventListener("keydown", function (event) {
   if (event.key === "Enter") {
     if (event.shiftKey) return; // 줄바꿈 허용
-
-    event.preventDefault(); // 기본 Enter 막기
-    handleUserInput(); // 전송 처리
+    event.preventDefault();     // 기본 Enter 동작 막기
+    handleUserInput();
   }
-  autoResizeTextarea(this); // 입력 시 자동 높이 조절
+  autoResizeTextarea(this);
 });
 
 function handleUserInput() {
   const message = inputBox.value.trim();
   if (message === "") return;
 
-  appendMessage("user", message); // 유저 메시지 화면 출력
+  appendMessage("user", message);
   sendAiMessage(message);
-  inputBox.value = "";  // 전송 후 입력창 비우기
-  autoResizeTextarea(inputBox);  // 높이 초기화
+  inputBox.value = "";
+  autoResizeTextarea(inputBox);
 }
 
 function appendMessage(sender, text) {
   const p = document.createElement("p");
   p.classList.add(sender);
-  p.textContent = (sender === "user" ? " 나: " : "AI Dev: ") + text;
+  p.textContent = (sender === "user" ? " 나: " : "AI데브: ") + text;
   chatHistory.appendChild(p);
-  chatHistory.scrollTop = chatHistory.scrollHeight; // 스크롤 아래로
+  chatHistory.scrollTop = chatHistory.scrollHeight;
 }
 
 function autoResizeTextarea(textarea) {
-  textarea.style.height = "auto"; // 초기화
-  textarea.style.height = (textarea.scrollHeight) + "px"; // 자동 높이 적용
+  textarea.style.height = "auto";
+  textarea.style.height = textarea.scrollHeight + "px";
 }
+
+// ───────────── 모달 열기/닫기 애니메이션 처리 ─────────────
+const modal = document.getElementById("chatModal");
+const modalContent = document.querySelector(".chat-modal-content");
+const openBtn = document.getElementById("openChatBtn");
+const closeBtn = document.getElementById("closeChatBtn");
+
+openBtn.addEventListener("click", () => {
+  modal.style.display = "block";
+  modalContent.style.animation = "slideUp 0.4s ease forwards";
+});
+
+function closeModalWithAnimation() {
+  modalContent.style.animation = "slideDown 0.3s ease forwards";
+  modalContent.addEventListener("animationend", () => {
+    modal.style.display = "none";
+  }, { once: true }); // 이벤트 중복 방지
+}
+
+closeBtn.addEventListener("click", closeModalWithAnimation);
+
+window.addEventListener("click", (event) => {
+  if (event.target === modal) {
+    closeModalWithAnimation();
+  }
+});
 
 
 //---------------------------------------------------------------------------------
