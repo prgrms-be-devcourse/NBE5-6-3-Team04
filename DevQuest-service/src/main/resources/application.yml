@@ -1,8 +1,10 @@
-remember-me:
-  key: ${REMEMBER_ME_KEY}
-
 upload:
   path: ${UPLOAD_PATH}
+
+jwt:
+  secret: ${JWT_SECRET}
+  access-expiration: ${JWT_ACCESS_EXPIRATION}
+  refresh-expiration: ${JWT_REFRESH_EXPIRATION}
 
 spring:
   application:

@@ -3,8 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>DevQuest Dashboard</title>
-  <meta name="_csrf" th:content="${_csrf.token}"/>
-  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
   <link rel="stylesheet" th:href="@{/css/common.css}">
   <link rel="stylesheet" th:href="@{/css/header.css}">
   <link rel="stylesheet" th:href="@{/css/dashboard.css}">
@@ -86,7 +84,6 @@
     <!--  알림 토글  -->
     <div class="toggle-box">
       <form th:action="@{/dashboard/notification-toggle}" method="post">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <input type="checkbox"
                name="notification"
                th:checked="${dashboard.notificationOn}" onchange="this.form.submit()">
@@ -245,15 +242,6 @@
 
 
   <script>
-    const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-
-    function getCsrfHeaders() {
-      return {
-        [csrfHeader]: csrfToken
-      };
-    }
-
     document.addEventListener("DOMContentLoaded", () => {
       const form = document.getElementById("create-form");
 
@@ -308,8 +296,7 @@
       fetch('/companies/create', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          ...getCsrfHeaders()
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
       })
@@ -345,9 +332,6 @@
       if (confirm("정말 삭제하시겠습니까?")) {
         fetch(`/companies/${companyId}/delete`, {
           method: 'DELETE',
-          headers: {
-            ...getCsrfHeaders()
-          }
         })
         .then(res => {
           if (res.ok) {
@@ -397,8 +381,7 @@
       fetch(`/companies/${companyId}/update`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
-          ...getCsrfHeaders()
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
       })
