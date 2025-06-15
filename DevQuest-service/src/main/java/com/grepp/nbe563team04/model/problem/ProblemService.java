@@ -31,7 +31,8 @@ public class ProblemService {
                         p.getId(),
                         p.getTitle(),
                         p.getLevel(),
-                        p.getUrl()
+                        p.getUrl(),
+                        p.getSite()
                 ))
                 .toList();
     }

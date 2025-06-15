@@ -585,6 +585,9 @@
 
 
 
+
+
+
   .modal-content {
     display: flex;
     flex-direction: column;
@@ -846,5 +849,126 @@
 .fc-day-sat {
   color: #1976d2;
   font-weight: 600;
+}
+
+
+
+/* 추천 문제 */
+/* ===== 폰트 & 기본 설정 ===== */
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+}
+
+/* ===== 모달 ===== */
+.modal-problem {
+  width: 90vw;
+  max-width: 1400px;
+  height: 80vh;
+  overflow-y: auto;
+  padding: 24px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  margin: auto;
+}
+
+/* ===== 테이블 ===== */
+.problem-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.problem-table thead {
+  background-color: #f5f7fa;
+  font-weight: bold;
+  color: #333;
+}
+
+.problem-table th,
+.problem-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+  vertical-align: middle;
+}
+
+/* hover 효과 */
+.problem-table tbody tr:hover {
+  background-color: #f9fcff;
+  transition: background-color 0.2s ease-in-out;
+}
+
+/* 체크박스 정렬 */
+.problem-table td:first-child {
+  text-align: center;
+  width: 48px;
+}
+.problem-table td:first-child input[type="checkbox"] {
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+.problem-table th:nth-child(0),
+.problem-table td:nth-child(0) {
+  width: 50px;
+  text-align: center;
+  white-space: nowrap;
+  color: #666;
+}
+.problem-table th:nth-child(1),
+.problem-table td:nth-child(1) {
+  width: 120px;
+  text-align: center;
+  white-space: nowrap;
+  color: #666;
+}
+
+/* 문제 번호 */
+.problem-table th:nth-child(2),
+.problem-table td:nth-child(2) {
+  width: 100px;
+  text-align: center;
+}
+
+/* 사이트 */
+.problem-table th:nth-child(3),
+.problem-table td:nth-child(3) {
+  width: 120px;
+  text-align: center;
+  white-space: nowrap;
+  color: #666;
+}
+
+/* 문제 제목 */
+.problem-table th:nth-child(4),
+.problem-table td:nth-child(4) {
+  weight: 200px;
+  word-break: keep-all;
+}
+
+/* 레벨 */
+.problem-table th:nth-child(5),
+.problem-table td:nth-child(5) {
+  width: 60px;
+  text-align: center;
+  font-weight: bold;
+  color: #444;
+}
+
+/* 푼 횟수 */
+.problem-table th:nth-child(6),
+.problem-table td:nth-child(6) {
+  width: 100px;
+  text-align: center;
+  color: #666;
 }
 

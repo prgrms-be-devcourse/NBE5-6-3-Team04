@@ -173,9 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.querySelector("#problemModal button[type='submit']").textContent = "추가";
 
       selectProblem(goalId);
-      form.onsubmit = function (e) {
-        e.preventDefault();
-      };
+
 
       document.getElementById("problemModal").style.display = "flex";
     });
@@ -191,6 +189,47 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("problemModal").style.display = "none";
   });
 });
+
+// 추천 문제 생성 버튼 클릭 이벤트 리스너
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("problem-form");
+
+  form.onsubmit = function (e) {
+    e.preventDefault();
+
+    const checked = Array.from(form.querySelectorAll('input[name="problemId"]:checked'));
+    const selectedIds = checked.map(cb => parseInt(cb.value));
+
+    if (selectedIds.length === 0) {
+      alert("문제를 하나 이상 선택하세요.");
+      return;
+    }
+
+    fetch("/problem/save", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...getCsrfHeaders(),
+      },
+      body: JSON.stringify({ problemIds: selectedIds })
+    })
+        .then(res => {
+          if (!res.ok) throw new Error("저장 실패");
+          return res.text(); // ✅ 이거로 바꿔!
+        })
+        .then(() => {
+          alert("추천 문제 저장 완료!");
+          document.getElementById("problemModal").style.display = "none";
+        })
+        .catch(err => {
+          console.error(err);
+          alert("에러 발생: " + err.message);
+        });
+  };
+});
+
+
+
 
 
 
@@ -349,20 +388,45 @@ function selectProblem() {
 
 function renderProblemList(problems) {
   const container = document.getElementById("problem-list");
-  container.innerHTML = ""; // 기존 내용 초기화
+  container.innerHTML = "";
+
+  const table = document.createElement("table");
+  table.className = "problem-table";
+
+  // 헤더 만들기
+  table.innerHTML = `
+    <thead>
+      <tr>
+        <th>선택</th>
+        <th>문제 번호</th>
+        <th>사이트</th>
+        <th>문제 제목</th>
+        <th>레벨</th>
+        <th>푼 횟수</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  `;
+
+  const tbody = table.querySelector("tbody");
 
   problems.forEach(p => {
-    const item = document.createElement("div");
-    item.className = "problem-item";
-    item.innerHTML = `
-      <label>
-        <input type="checkbox" name="problemId" value="${p.problemId}">
-        ${p.title} (${p.level})
-      </label>
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td><input type="checkbox" name="problemId" value="${p.problemId}"></td>
+      <td>${p.problemId}</td>
+      <td>${p.site}</td>
+      <td>${p.title}</td>
+      <td>${p.level}</td>
+      <td></td>
     `;
-    container.appendChild(item);
+    tbody.appendChild(row);
   });
+
+  container.appendChild(table);
 }
+
 
 // 목표 수정 함수
 function updateGoal(goalId) {
