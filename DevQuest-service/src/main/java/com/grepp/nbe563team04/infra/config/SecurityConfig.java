@@ -46,6 +46,16 @@ public class SecurityConfig {
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
+            .exceptionHandling(exception -> exception
+                .accessDeniedHandler((request, response, accessDeniedException) -> {
+                    // Referer 말고 고정된 경로로
+                    response.sendRedirect("/access-denied");
+                })
+                .authenticationEntryPoint((request, response, authException) -> {
+                    String referer = request.getHeader("Referer");
+                    response.sendRedirect(referer != null ? referer : "/signin");
+                })
+            )
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/css/**", "/js/**", "/img/**", "/api/member/exists/*",
                     "/member/interests", "/member/withdraw-success").permitAll()
