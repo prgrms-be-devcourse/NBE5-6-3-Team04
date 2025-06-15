@@ -14,7 +14,6 @@ public class Nbe563Team04Application {
             .load();
 
         // 시스템 환경변수 등록
-        System.setProperty("REMEMBER_ME_KEY", dotenv.get("REMEMBER_ME_KEY"));
         System.setProperty("UPLOAD_PATH", dotenv.get("UPLOAD_PATH"));
         System.setProperty("DB_URL", dotenv.get("DB_URL"));
         System.setProperty("DB_USERNAME", dotenv.get("DB_USERNAME"));
