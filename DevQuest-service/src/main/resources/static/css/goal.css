@@ -381,6 +381,31 @@
     color: white;
   }
 
+/* add-recommend-btn 추가 버튼 */
+.add-recommend-btn {
+  padding: 5px 10px;
+  font-size: 11px;
+  font-weight: bolder;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.2;
+  color: white;
+  background-color: rgb(136, 115, 193);
+  border: transparent;
+  transition: background-color 0.2s ease;
+}
+
+
+.add-recommend-btn:hover {
+  background-color: #5a37c9;
+  color: white;
+}
+
+
 
 .todo-list-container {
   max-height: 100%;

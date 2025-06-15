@@ -1,11 +1,8 @@
-package com.grepp.nbe563team04.model.proplem.entity;
+package com.grepp.nbe563team04.model.problem.entity;
 
-import com.grepp.nbe563team04.model.goalCategory.entity.GoalCategory;
-import com.grepp.nbe563team04.model.goalcompany.entity.GoalCompany;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
