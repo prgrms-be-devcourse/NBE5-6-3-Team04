@@ -46,7 +46,7 @@ public class DashboardController {
     // 대시보드
     @GetMapping("/dashboard")
     public String dashboard(@AuthenticationPrincipal Principal principal, Model model, CsrfToken csrfToken) {
-        Member member = memberRepository.findById(principal.getUser().getUserId())
+        Member member = memberRepository.findById(principal.getMember().getUserId())
             .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
         MemberImage image = memberImageRepository.findTopByMemberAndActivatedOrderByCreatedAtDesc(member, true)
                 .orElse(null);
@@ -67,7 +67,7 @@ public class DashboardController {
     // 알림 토글
     @PostMapping("/dashboard/notification-toggle")
     public String toggleNotification(@AuthenticationPrincipal Principal principal) {
-        dashboardService.toggleNotification(principal.getUser());
+        dashboardService.toggleNotification(principal.getMember());
         return "redirect:/dashboard";
     }
 

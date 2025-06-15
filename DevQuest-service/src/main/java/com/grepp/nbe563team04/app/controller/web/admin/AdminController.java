@@ -68,13 +68,13 @@ public class AdminController {
         model.addAttribute("deletedUsers", deletedUsers);
         model.addAttribute("adminUsers", adminUsers);
         model.addAttribute("_csrf", csrfToken);
-        model.addAttribute("nickname", principal.getUser().getNickname());
+        model.addAttribute("nickname", principal.getMember().getNickname());
         // 대시보드 가입자/탈퇴자 추이 표 mock data
         model.addAttribute("labels", List.of("06-10", "06-11", "06-12", "06-13"));
         model.addAttribute("joinCounts", List.of(3, 5, 2, 4));
         model.addAttribute("leaveCounts", List.of(1, 0, 2, 1));
 
-        log.info("닉네임: {}", principal.getUser().getNickname());
+        log.info("닉네임: {}", principal.getMember().getNickname());
 
         return "admin/dashboard";
     }
@@ -101,9 +101,9 @@ public class AdminController {
         model.addAttribute("deletedUsers", deletedUsers);
         model.addAttribute("adminUsers", adminUsers);
         model.addAttribute("_csrf", csrfToken);
-        model.addAttribute("nickname", principal.getUser().getNickname());
+        model.addAttribute("nickname", principal.getMember().getNickname());
 
-        log.info("닉네임: {}", principal.getUser().getNickname());
+        log.info("닉네임: {}", principal.getMember().getNickname());
 
         return "member-management";
     }
@@ -130,7 +130,7 @@ public class AdminController {
         // 로그인한 관리자 정보
         Member admin = memberService.findByEmail(principal.getUsername());
 
-        model.addAttribute("nickname", principal.getUser().getNickname());
+        model.addAttribute("nickname", principal.getMember().getNickname());
         // model.addAttribute("data", data);
         return "admin/company-stats";
     }
