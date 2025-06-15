@@ -10,7 +10,7 @@ function post(url) {
 function deleteAccount() {
     if (!confirm("정말 탈퇴하시겠습니까?")) return;
 
-    post('/user/delete')
+    post('/member/delete')
         .then(res => {
             if (!res.ok) throw new Error("탈퇴 실패");
 
@@ -18,7 +18,7 @@ function deleteAccount() {
             return post('/auth/logout');
         })
         .then(() => {
-            window.location.href = "/user/withdraw-success";
+            window.location.href = "/member/withdraw-success";
         })
         .catch(err => {
             console.error(err);
