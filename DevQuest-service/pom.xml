@@ -30,6 +30,12 @@
         <java.version>21</java.version>
     </properties>
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-openfeign-core -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-openfeign-core</artifactId>
+            <version>4.3.0</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
