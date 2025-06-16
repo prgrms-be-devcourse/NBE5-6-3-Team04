@@ -180,6 +180,7 @@ public class AchievementService {
                 .map(a -> new AchievementDto(
                         a.getName(),
                         a.getDescription(),
+                        a.getImageUrl(),
                         achievedSet.contains(a.getAchieveId())
                 ))
                 .sorted((a1, a2) -> Boolean.compare(!a1.getAchieved(), !a2.getAchieved()))

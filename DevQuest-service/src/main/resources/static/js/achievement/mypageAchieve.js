@@ -17,11 +17,16 @@ function openModal() {
                 list.innerHTML = "<p>데이터 형식 오류</p>";
                 return;
             }
-            list.innerHTML = data.map(a => `
-  <div class="achievement-item ${a.achieved ? 'achieved' : 'locked'}" data-tooltip="${a.description}">
-        <span><strong>${a.name}</strong> : ${a.description}</span>
-  </div>
-`).join("");
+            list.innerHTML = `
+        <div class="achievement-grid">
+            ${data.map(a => `
+                <div class="achievement-card ${a.achieved ? '' : 'locked'}" data-tooltip="${a.description}">
+                    <img src="${a.imageUrl}" alt="${a.name}">
+                    <p>${a.name}</p>
+                </div>
+            `).join("")}
+        </div>
+    `;
         })
         .catch(error => {
             console.error(error);

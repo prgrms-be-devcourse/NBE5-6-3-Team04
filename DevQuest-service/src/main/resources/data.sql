@@ -25,20 +25,20 @@ INSERT INTO level (level_name, xp) VALUES
                                        ('신화 개발자', 90);
 
 INSERT INTO achievement (name, description, image_url) VALUES
-                                                ('튜토리얼을 끝냈어요!', '첫 시작을 축하합니다! 프로필을 완성했어요.', '/upload/achievement/튜토리얼을 끝냈어요.png'),
-                                                ('회사를 정해브렀어~', '목표 기업을 정해 진로에 한 발자국 다가갔어요.', '/upload/achievement/회사를 정해브렀어~.png'),
-                                                ('\'J\'로 가는 길.', '처음으로 할 일을 완료했어요! 멋져요.', '/upload/achievement/J로 가는 길.png'),
-                                                ('목표를 포착했다!', '진로를 위해 목표를 설정했어요!', '/upload/achievement/목표를 포착했다.png'),
-                                                ('\'J\'스러운 사람', '다양한 목표를 세워 전진 중! 3개의 목표 기업을 정했어요.', '/upload/achievement/J스러운 사람.png'),
-                                                ('초보 개발자 두두등장', '첫 성장의 발판! 이제 시작이에요.', '/upload/achievement/초보 개발자 두두등장.png'),
-                                                ('성장 중입니다', '당신은 더 이상 초보가 아니에요.', '/upload/achievement/성장 중입니다.png'),
-                                                ('전설의 지원자', '궁극의 개발자 여정을 완수했습니다. 🎉', '/upload/achievement/전설의 지원자.png'),
-                                                ('7일의 기적', '대단해요! 일주일 동안 쉬지 않았군요.', '/upload/achievement/7일의 기적.png'),
-                                                ('계속해서 도전 중!', '목표를 향한 열정이 느껴져요!', '/upload/achievement/계속해서 도전 중!.png'),
-                                                ('정리왕 등장', '완벽주의자도 울고 갈 체크 마스터!', '/upload/achievement/정리왕 등장.png'),
-                                                ('꾸준함의 상징', '진정한 노력가는 당신!', '/upload/achievement/꾸준함의 상징.png'),
-                                                ('몰아치기 장인', '놀라워요! 오늘 정말 열일했네요.', '/upload/achievement/몰아치기 장인.png'),
-                                                ('알림 개시자', '알림 기능을 켰어요! 준비 완료~', '/upload/achievement/알림개시자.png');
+                                                ('튜토리얼을 끝냈어요!', '첫 시작을 축하합니다! 프로필을 완성했어요.', '/img/achievement/튜토리얼을 끝냈어요.png'),
+                                                ('회사를 정해브렀어~', '목표 기업을 정해 진로에 한 발자국 다가갔어요.', '/img/achievement/회사를 정해브렀어~.png'),
+                                                ('\'J\'로 가는 길.', '처음으로 할 일을 완료했어요! 멋져요.', '/img/achievement/J로 가는 길.png'),
+                                                ('목표를 포착했다!', '진로를 위해 목표를 설정했어요!', '/img/achievement/목표를 포착했다.png'),
+                                                ('\'J\'스러운 사람', '다양한 목표를 세워 전진 중! 3개의 목표 기업을 정했어요.', '/img/achievement/J스러운 사람.png'),
+                                                ('초보 개발자 두두등장', '첫 성장의 발판! 이제 시작이에요.', '/img/achievement/초보 개발자 두두등장.png'),
+                                                ('성장 중입니다', '당신은 더 이상 초보가 아니에요.', '/img/achievement/성장 중입니다.png'),
+                                                ('전설의 지원자', '궁극의 개발자 여정을 완수했습니다. 🎉', '/img/achievement/전설의 지원자.png'),
+                                                ('7일의 기적', '대단해요! 일주일 동안 쉬지 않았군요.', '/img/achievement/7일의 기적.png'),
+                                                ('계속해서 도전 중!', '목표를 향한 열정이 느껴져요!', '/img/achievement/계속해서 도전 중!.png'),
+                                                ('정리왕 등장', '완벽주의자도 울고 갈 체크 마스터!', '/img/achievement/정리왕 등장.png'),
+                                                ('꾸준함의 상징', '진정한 노력가는 당신!', '/img/achievement/꾸준함의 상징.png'),
+                                                ('몰아치기 장인', '놀라워요! 오늘 정말 열일했네요.', '/img/achievement/몰아치기 장인.png'),
+                                                ('알림 개시자', '알림 기능을 켰어요! 준비 완료~', '/img/achievement/알림개시자.png');
 
 -- 관심분야 (ROLE) 데이터 --
 INSERT INTO interest (type, interest_name, roadmap_url) VALUES
