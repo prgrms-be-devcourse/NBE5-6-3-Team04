@@ -17,10 +17,11 @@ function openModal() {
                 list.innerHTML = "<p>데이터 형식 오류</p>";
                 return;
             }
+
             list.innerHTML = `
         <div class="achievement-grid">
             ${data.map(a => `
-                <div class="achievement-card ${a.achieved ? '' : 'locked'}" data-tooltip="${a.description}">
+                <div class="achievement-card ${a.achieved ?  'achieved' : 'locked'}">
                     <img src="${a.imageUrl}" alt="${a.name}">
                     <p>${a.name}</p>
                 </div>

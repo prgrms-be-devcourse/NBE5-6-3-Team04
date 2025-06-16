@@ -1,3 +1,11 @@
+@keyframes spinY {
+    0% {
+        transform: rotateY(0deg);
+    }
+    100% {
+        transform: rotateY(360deg);
+    }
+}
 body {
     margin: 0;
     padding: 0;
@@ -197,75 +205,51 @@ button {
     display: none;
 }
 
-.achievement-item {
-    width: 90%; /* 또는 고정폭 예: 500px */
-    max-width: 500px;
-    margin-bottom: 20px;
-    font-size: 15px;
-    line-height: 1.6;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #ddd;
-    cursor: default;
-    position: relative;
-}
-
-.achievement-item:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-}
-
-/* 획득한 업적 (활성화) */
-.achievement-item.achieved {
-    background-color: #f0f8ff;
-    border-left: 4px solid #7c4dff;
-    color: #333;
-    font-weight: bold;
-}
-
-/* 미획득한 업적 (비활성화) */
-.achievement-item.locked {
-    background-color: #f5f5f5;
-    color: #aaa;
-    opacity: 0.6;
-    font-style: italic;
-}
-
-
 .more-button-wrapper {
     margin-top: 16px; /* 버튼과 업적 목록 사이 간격 확보 */
 }
 .achievement-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 16px;
-    padding: 16px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    padding: 24px;
+    justify-items: center;
 }
 
 .achievement-card {
+    background: none; /* 배경 없애고 이미지 중심으로 */
+    border-radius: 12px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #fff;
-    border-radius: 12px;
-    padding: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    transition: transform 0.2s;
+    margin-bottom: 16px;
+    perspective: 1000px;
+    transform-style: preserve-3d;
 }
 
 .achievement-card img {
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
-    margin-bottom: 8px;
+    width: 100%;        /* 카드 영역을 가득 채움 */
+    max-width: 130px;   /* 최대 크기 제한 */
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 50%;
+    transform-style: preserve-3d;
+    backface-visibility: visible;
+    transition: transform 0.3s ease;
+
+}
+
+.achievement-card.achieved img {
+    animation: spinY 3s linear infinite;
 }
 
 .achievement-card.locked img {
-    filter: grayscale(100%) opacity(50%);
+    filter: grayscale(100%) opacity(25%);
 }
 
 .achievement-card p {
-    margin: 0;
-    font-size: 14px;
-    font-weight: bold;
+    margin-top: 8px;
+    font-size: 15px;
+    font-weight: 700; /* ✅ 더 진하게 */
     text-align: center;
 }
