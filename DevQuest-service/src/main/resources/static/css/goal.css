@@ -983,72 +983,57 @@ body {
   font-size: 14px;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(128, 0, 128, 0.1); /* 연한 보라 그림자 */
-  margin-top: 1rem;
+  box-shadow: 0 4px 10px rgba(128, 0, 255, 0.1); /* 보라 그림자 */
 }
 
 .problem-table th,
 .problem-table td {
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #c7a8ff;  /* 가로선 (보라색) */
+  border-right: 1px solid #e5ccff;   /* 세로선 (옅은 보라) */
   padding: 12px 16px;
   text-align: left;
+  color: #3e206d;
 }
 
-.problem-table thead th {
-  background-color: #f3e8ff; /* 연보라 배경 */
+.problem-table th:last-child,
+.problem-table td:last-child {
+  border-right: none; /* 마지막 열에는 오른쪽 선 제거 */
+}
+
+.problem-table thead {
+  background-color: #f5f0ff; /* 연보라 배경 */
   font-weight: bold;
-  cursor: pointer;
-  position: relative;
-  user-select: none;
-  color: #5e2ca5; /* 진보라 글씨 */
+  color: #5e35b1; /* 진보라 텍스트 */
 }
 
-.problem-table thead th:hover {
-  background-color: #e8d6ff; /* hover 시 더 진한 보라 */
+.problem-table tr:hover {
+  background-color: #f3eaff; /* hover시 옅은 보라 */
 }
 
-/* 정렬 중인 열 강조 */
-.problem-table th.active-sort {
-  background-color: #d1b3ff;
-  color: #4a148c;
-}
-
-/* 정렬 아이콘 (▲▼) 위치 고정 */
-.problem-table th::after {
-  content: attr(data-sort-icon);
-  position: absolute;
-  right: 10px;
-  font-size: 12px;
-}
-
-.pagination {
-  margin-top: 1rem;
-  text-align: center;
+.problem-table td:first-child input[type="checkbox"] {
+  transform: scale(1.2);
+  accent-color: #7e57c2; /* 체크박스 보라색 */
 }
 
 .pagination button {
-  margin: 0 4px;
+  background-color: #e0d4ff;
+  color: #4b0082;
+  border: none;
+  margin: 2px;
   padding: 6px 12px;
-  border: 1px solid #ccc;
-  background-color: white;
-  cursor: pointer;
   border-radius: 6px;
-  font-size: 14px;
-  transition: background-color 0.2s ease;
-  color: #5e2ca5;
-}
-
-.pagination button:hover {
-  background-color: #f3e8ff;
-  border-color: #caa0ff;
+  cursor: pointer;
 }
 
 .pagination button.active {
-  background-color: #7b2cbf;
+  background-color: #9575cd;
   color: white;
-  font-weight: bold;
-  border-color: #7b2cbf;
 }
+
+.pagination button:hover {
+  background-color: #b39ddb;
+}
+
 
 #itemsPerPage {
   padding: 4px 8px;
@@ -1061,4 +1046,6 @@ body {
   width: auto; /* 너무 넓어지지 않도록 */
   max-width: 150px;
 }
+
+
 
