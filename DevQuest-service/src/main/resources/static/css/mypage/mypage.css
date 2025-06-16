@@ -201,13 +201,38 @@ button {
     overflow-y: auto;
     max-height: 460px;
 }
+
 #achievementList::-webkit-scrollbar {
     display: none;
+}
+
+.badge {
+    position: relative;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background-image: var(--img-url);
+    background-size: cover;
+    background-position: center;
+    transform-style: preserve-3d;
+}
+
+.badge-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    background-image: inherit;
 }
 
 .more-button-wrapper {
     margin-top: 16px; /* 버튼과 업적 목록 사이 간격 확보 */
 }
+
 .achievement-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -239,11 +264,11 @@ button {
 
 }
 
-.achievement-card.achieved img {
+.achievement-card.achieved .badge {
     animation: spinY 3s linear infinite;
 }
 
-.achievement-card.locked img {
+.achievement-card.locked .badge {
     filter: grayscale(100%) opacity(25%);
 }
 
@@ -253,3 +278,4 @@ button {
     font-weight: 700; /* ✅ 더 진하게 */
     text-align: center;
 }
+

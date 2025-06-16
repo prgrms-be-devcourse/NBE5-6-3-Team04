@@ -18,16 +18,27 @@ function openModal() {
                 return;
             }
 
+            const thicknessLayers = Array.from({ length: 7 }, (_, i) => {
+                const offset = -3 + i; // -3px ~ +3px 간격으로
+                return `<div class="badge-layer" style="transform: translateZ(${offset}px);"></div>`;
+            }).join("");
+
             list.innerHTML = `
-        <div class="achievement-grid">
-            ${data.map(a => `
-                <div class="achievement-card ${a.achieved ?  'achieved' : 'locked'}">
-                    <img src="${a.imageUrl}" alt="${a.name}">
-                    <p>${a.name}</p>
-                </div>
-            `).join("")}
+  <div class="achievement-grid">
+    ${data.map(a => `
+      <div class="achievement-card ${a.achieved ? 'achieved' : 'locked'}">
+        <div 
+          class="badge" 
+          style="--img-url: url('${a.imageUrl}');"
+          title="${a.name}"
+        >
+          ${a.achieved ? thicknessLayers : ""}
         </div>
-    `;
+        <p>${a.name}</p>
+      </div>
+    `).join("")}
+  </div>
+`;
         })
         .catch(error => {
             console.error(error);
