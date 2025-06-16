@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-//목표 불러오기 함수
+//목표 불러오기  함수
 function fillGoalForm(goalId) {
   fetch(`/goals/${goalId}/select`)
       .then(res => res.json())
