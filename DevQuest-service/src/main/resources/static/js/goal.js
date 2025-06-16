@@ -1,14 +1,3 @@
-const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute(
-    'content');
-const csrfHeader = document.querySelector(
-    'meta[name="_csrf_header"]').getAttribute('content');
-
-function getCsrfHeaders() {
-  return {
-    [csrfHeader]: csrfToken
-  };
-}
-
 // 이벤트 모음
 
 // 목표 완료 이벤트
@@ -28,8 +17,7 @@ function handleGoalCompleteClick(event) {
 // 목표 완료 함수
 function goalComplete(goalId) {
   fetch(`/goals/${goalId}/complete`, {
-    method: 'POST',
-    headers: {...getCsrfHeaders()}
+    method: 'POST'
   })
       .then(response => response.json())
       .then(data => {
@@ -195,8 +183,7 @@ function createGoal() {
   fetch(`/goals/${companyId}/create`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
-      ...getCsrfHeaders()
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify(data)
   }).then(res => {
@@ -229,8 +216,7 @@ function updateGoal(e) {
   fetch(`/goals/${goalId}/update`, {
     method: 'PUT',
     headers: {
-      'Content-Type': 'application/json',
-      ...getCsrfHeaders()
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify(data)
   }).then(res => {
@@ -251,10 +237,7 @@ function updateGoal(e) {
 function deleteGoal(goalId) {
   if (confirm("정말 삭제하시겠습니까?")) {
     fetch(`/goals/${goalId}/delete`, {
-      method: 'DELETE',
-      headers: {
-        ...getCsrfHeaders()
-      }
+      method: 'DELETE'
     }).then(res => {
       if (res.ok) {
         alert("삭제 완료!");
@@ -308,8 +291,7 @@ function createTodo() {
   fetch(`/todos/${goalId}/create`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
-      ...getCsrfHeaders()
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify(data)
   })
@@ -344,8 +326,7 @@ function updateTodo(todoId) {
   fetch(`/todos/${todoId}/update`, {
     method: 'PUT',
     headers: {
-      'Content-Type': 'application/json',
-      ...getCsrfHeaders()
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify(data)
   })
@@ -368,10 +349,7 @@ function updateTodo(todoId) {
 function deleteTodo(todoId) {
   if (confirm("정말 삭제하시겠습니까?")) {
     fetch(`/todos/${todoId}/delete`, {
-      method: 'DELETE',
-      headers: {
-        ...getCsrfHeaders()
-      }
+      method: 'DELETE'
     })
     .then(res => {
       if (res.ok) {
@@ -391,10 +369,7 @@ function deleteTodo(todoId) {
 // 투두 완료 toggle 함수
 function toggleTodoStatus(todoId) {
   fetch(`/todos/${todoId}/toggle-check`, {
-    method: 'POST',
-    headers: {
-      ...getCsrfHeaders()
-    }
+    method: 'POST'
   })
       .then(res => {
         if (!res.ok) throw new Error("업적 확인 실패");
@@ -443,17 +418,10 @@ function closeTodoModal() {
 //Gemini 답장 메시지
 
 function sendAiMessage(message) {
-  const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute(
-      'content');
-  const csrfHeader = document.querySelector(
-      'meta[name="_csrf_header"]').getAttribute(
-      'content');
-
   fetch("/api/ai/feedback", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
-      [csrfHeader]: csrfToken
+      "Content-Type": "application/json"
     },
     body: JSON.stringify({prompt: message})
   })

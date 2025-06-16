@@ -36,7 +36,7 @@ public class GoalController {
     // 목표기업 단일 조회(진행률 조회 포함)
     @GetMapping("/companies/{companyId}/select")
     public String companyDetail(@AuthenticationPrincipal Principal principal,@PathVariable Long companyId, Model model) {
-        Member detachedMember = principal.getUser();
+        Member detachedMember = principal.getMember();
 
         Member managedMember = memberRepository.findById(detachedMember.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));

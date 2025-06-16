@@ -21,7 +21,7 @@ public class GoalApiController {
     //  목표 생성
     @PostMapping("/{companyId}/create")
     public ResponseEntity<?> createGoal(@RequestBody GoalRequestDto dto, @AuthenticationPrincipal Principal principal) {
-        Long userId = principal.getUser().getUserId();
+        Long userId = principal.getMember().getUserId();
         String achievementName = goalService.createGoal(dto, userId);// 로그인된 유저 ID 꺼내기
 
         if (achievementName != null) {
@@ -62,7 +62,7 @@ public class GoalApiController {
             @PathVariable Long goalId,
             @AuthenticationPrincipal Principal principal) {
 
-        Map<String, Object> result = goalService.completeGoal(goalId, principal.getUser());
+        Map<String, Object> result = goalService.completeGoal(goalId, principal.getMember());
 
         return ResponseEntity.ok(result);
     }
