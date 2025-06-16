@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 public class AchievementDto {
     private String name;
     private String description;
+    private String imageUrl;
     private Boolean achieved;
 
     public AchievementDto(String name, String description) {
@@ -21,4 +22,10 @@ public class AchievementDto {
         this.achieved = achieved;
     }
 
+    public AchievementDto(String name, String description, String imageUrl, Boolean achieved) {
+        this.name = name;
+        this.description = description;
+        this.imageUrl = imageUrl;
+        this.achieved = achieved;
+    }
 }
