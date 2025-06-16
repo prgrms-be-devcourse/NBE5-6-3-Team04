@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>DevQuest Dashboard</title>
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <link rel="stylesheet" th:href="@{/css/goal.css}">
     <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" th:href="@{/css/achievement/congratulation.css}">
@@ -17,7 +15,7 @@
   <!--========= 좌측 사이드바 ===========-->
   <aside class="sidebar">
     <div class="logo">
-      <a href="/admin/dashboard">DevQuest</a>
+      <a href="/dashboard">DevQuest</a>
     </div>
     <h1 class="company-name" th:text="${company.companyName}">기업명 로딩 실패</h1>
     <span class="comment" th:text="${company.content}">한마디</span>
@@ -104,13 +102,14 @@
     </div>
   </aside>
 
+
   <!--========== 목표 영역 ============-->
   <main class="main-content">
     <div class="menu">
       <a th:href="@{/dashboard}" th:text="대시보드"/>
     <a th:href="@{/member/mypage}" th:text="마이페이지"/>
       <div>
-      <form id="logoutForm" th:action="@{/logout}" method="post"></form>
+      <form id="logoutForm" th:action="@{/auth/logout}" method="post"></form>
       <span onclick="document.getElementById('logoutForm').submit()">로그아웃</span>
       </div>
     </div>
@@ -128,6 +127,7 @@
     <div id="ongoingGoalsSection" class="goal-list">
       <div th:each="goal : ${goals}" th:if="${!goal.isDone}" class="goal-card">
         <div>
+
           <div class="card-header">
             <p class="goal-name" th:text="${goal.koreanName}" th:style="'color:' + (${goal.color} != null ? ${goal.color} : '#000000')">목표명</p>
             <span class="status" th:text="${goal.isDone}? '완료' : '진행 중'">진행 상태</span>
@@ -143,14 +143,18 @@
               </ul>
             </div>
           </div>
+
+          <!--  투두 생성/추천문제 생성 버튼          -->
           <div class="plus-todo">
-            <button type="button" class="add-todo-btn" th:attr="data-goal-id=${goal.goalId}">TODO
-              +
-            </button>
+            <button type="button" class="add-todo-btn" th:attr="data-goal-id=${goal.goalId}">TODO +</button>
+            <button type="button" class="add-recommend-btn" th:attr="data-goal-id=${goal.goalId}" th:if="${goal.categoryName}==CODING_TEST">추천 문제 +</button>
           </div>
+
+
+
         </div>
 
-        <!-- 목표 카드 -->
+        <!-- 투두 목록 -->
         <div class="todo-list-container">
           <ul>
             <li class="todo-item" th:each="todo : ${todoMap[goal.goalId]}">
@@ -164,18 +168,12 @@
 
 
               <div class="todo-actions">
-                <button type="button" class="update-todo-btn" th:attr="data-id=${todo.todoId}">수정
-                </button>
-                <button type="button" class="delete-todo-btn" th:attr="data-id=${todo.todoId}">삭제
-                </button>
+                <button type="button" class="update-todo-btn" th:attr="data-id=${todo.todoId}">수정</button>
+                <button type="button" class="delete-todo-btn" th:attr="data-id=${todo.todoId}">삭제</button>
               </div>
             </li>
           </ul>
         </div>
-<!--        <div class="goal-actions">-->
-<!--          <button type="button" class="update-goal-btn" th:attr="data-id=${goal.goalId}">수정</button>-->
-<!--          <button type="button" class="delete-goal-btn" th:attr="data-id=${goal.goalId}">삭제</button>-->
-<!--        </div>-->
       </div>
 
       <!-- 목표 생성 카드 -->
@@ -197,7 +195,6 @@
         <div id='calendar'>
         </div>
     </div>
-
 
 
       <!-- 완료된 목표 목록 (초기에 숨김) -->
@@ -226,10 +223,12 @@
       </div>
   </main>
 
+<!--  모달 모음 -->
+
   <!-- 목표  생성 모달 -->
   <div id="goalModal" class="modal modal-large" style="display: none;">
     <div class="modal-content">
-      <span class="close" onclick="closeModal('goalModal')">&times;</span>
+      <span class="close" id="goalModalClose">&times;</span>
       <h2>목표 생성</h2>
       <form id="goal-form" th:attr="data-company-id=${company.companyId}">
         <select name="categoryName">
@@ -250,7 +249,7 @@
   <!-- 투두 생성 모달 -->
   <div id="todoModal" class="modal modal-small" style="display: none;">
     <div class="modal-content">
-      <span class="close" onclick="closeModal('todoModal')">&times;</span>
+      <span class="close" id="todoModalClose">&times;</span>
       <h2>todo 생성</h2>
       <form id="todo-form">
         <input type="text" name="title" placeholder="할 일을 입력해주세요" required><br><br>
@@ -258,18 +257,32 @@
         <input type="text" name="url" placeholder="(선택)주소를 입력해주세요" ><br><br>
         <input type="hidden" name="goalId">
         <button type="submit">추가</button>
-
         <input type="hidden" name="endDate">
         <input type="hidden" name="isDone">
       </form>
     </div>
   </div>
+
+  <!-- 문제추천 생성 모달 -->
+  <div id="problemModal" class="modal  modal-problem" style="display: none;">
+    <div class="modal-content">
+      <span class="close" id="recommendModalClose">&times;</span>
+      <h2>추천 문제 생성</h2>
+      <form id="problem-form">
+        <input type="hidden" name="goalId" value="">
+        <div id="problem-list"></div>
+        <button type="submit">추가</button>
+      </form>
+    </div>
+  </div>
+
     <div th:replace="~{fragments/achievement-modal :: achievementModal}"></div>
     <div th:replace="~{fragments/levelup-modal.html :: levelUpModal}"></div>
 
   <script src="/js/goal.js"></script>
 </div>
 </body>
+
 <script defer src="/js/achievement/congratulation.js"></script>
 <script
         src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>

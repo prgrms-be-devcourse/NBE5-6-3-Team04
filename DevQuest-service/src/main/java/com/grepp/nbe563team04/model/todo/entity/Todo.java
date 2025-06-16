@@ -1,6 +1,7 @@
 package com.grepp.nbe563team04.model.todo.entity;
 
 import com.grepp.nbe563team04.model.goal.entity.Goal;
+import com.grepp.nbe563team04.model.problem.entity.Problem;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import lombok.*;
@@ -33,4 +34,12 @@ public class Todo {
 
     @Column(name = "is_done")
     private Boolean isDone;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "problem_id")
+    private Problem problem; // 어떤 문제로 생성된 투두인지 (nullable 가능)
+
+    @Column(name = "source_type")
+    private String sourceType; // 예: "PROBLEM_RECOMMEND", "USER"
+
 }

@@ -1,38 +1,63 @@
 package com.grepp.nbe563team04.model.auth;
 
-import com.grepp.nbe563team04.model.auth.domain.Principal;
-import com.grepp.nbe563team04.model.member.MemberRepository;
-import com.grepp.nbe563team04.model.member.entity.Member;
-import java.util.ArrayList;
-import java.util.List;
+import com.grepp.nbe563team04.infra.auth.token.JwtProvider;
+import com.grepp.nbe563team04.infra.auth.token.code.GrantType;
+import com.grepp.nbe563team04.model.auth.token.RefreshTokenRepository;
+import com.grepp.nbe563team04.model.auth.token.UserBlackListRepository;
+import com.grepp.nbe563team04.model.auth.token.dto.AccessTokenDto;
+import com.grepp.nbe563team04.model.auth.token.dto.TokenResponseDto;
+import com.grepp.nbe563team04.model.auth.token.entity.RefreshToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@Transactional(readOnly = true)
-public class AuthService implements UserDetailsService {
+@Transactional
+public class AuthService {
 
-    private final MemberRepository memberRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final AuthenticationManager authenticationManager;
+    private final UserBlackListRepository userBlackListRepository;
+    private final JwtProvider jwtProvider;
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        // 이메일로 사용자 검색
-        Member member = memberRepository.findByEmail(email)
-            .orElseThrow(() -> new UsernameNotFoundException(email));
+    /**
+     * 일반 로그인 처리 (이메일/비밀번호 검증 후 토큰 발급)
+     * 1. 사용자 인증 단계
+     */
+    public TokenResponseDto signin(String email, String password){
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(email, password);
+        // loadUserByUsername + password 검증 후 authentication 반환
+        Authentication authentication = authenticationManager.authenticate(authToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return processTokenSignin(email);
+    }
 
-        // 사용자 권한 설정
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + member.getRole().name()));
 
-        // Principal 클래스가 UserDetails를 구현하고 있어야 함
-        return Principal.createPrincipal(member, authorities);
+    /**
+     * JWT 토큰 발급 및 RefreshToken 저장
+     * 2. 인증된 사용자에게 JWT 토큰 발급
+     */
+    public TokenResponseDto processTokenSignin(String username) {
+        // 블랙리스트에서 제거
+        userBlackListRepository.deleteById(username);
+
+        AccessTokenDto dto = jwtProvider.generateAccessToken(username);
+        RefreshToken refreshToken = new RefreshToken(username, dto.getId());
+        refreshTokenRepository.save(refreshToken);
+
+        return TokenResponseDto.builder()
+            .accessToken(dto.getToken())
+            .refreshToken(refreshToken.getToken())
+            .atExpiresIn(jwtProvider.getAtExpiration())
+            .rtExpiresIn(jwtProvider.getRtExpiration())
+            .grantType(GrantType.BEARER)
+            .build();
     }
 }

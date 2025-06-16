@@ -69,20 +69,26 @@ public class TodoApiController {
     @PostMapping("/{todoId}/toggle-check")
     public ResponseEntity<Map<String, String>> toggleTodoCheck(@PathVariable Long todoId,
                                                                @AuthenticationPrincipal Principal principal) {
-        todoService.toggleCheck(todoId, principal.getUser());
+        todoService.toggleCheck(todoId, principal.getMember());
 
         Map<String, String> response = new HashMap<>();
         // 업적 부여 결과 체크
-        String firstAchievement = achievementService.giveTodoFirstCheckAchievement(principal.getUser().getUserId());
+        String firstAchievement = achievementService.giveTodoFirstCheckAchievement(principal.getMember().getUserId());
         if (firstAchievement != null) {
             response.put("achievementName", firstAchievement);
         }
 
-        String fiveDoneAchievement = achievementService.giveTodoFiveCheckAchievement(principal.getUser().getUserId());
+        String fiveDoneAchievement = achievementService.giveTodoFiveCheckAchievement(principal.getMember().getUserId());
         if (fiveDoneAchievement != null) {
             response.put("achievementName", fiveDoneAchievement); // 덮어씀 → 마지막 업적 모달 표시
         }
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/from-problems")
+    public ResponseEntity<?> createTodosFromProblems(@RequestBody TodoRequestDto dto) {
+        todoService.createFromProblems(dto.getGoalId(), dto.getProblemIds());
+        return ResponseEntity.ok().build();
     }
 }

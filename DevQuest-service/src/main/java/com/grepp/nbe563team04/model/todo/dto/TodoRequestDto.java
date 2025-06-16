@@ -1,6 +1,8 @@
 package com.grepp.nbe563team04.model.todo.dto;
 
 import java.time.LocalDate;
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,4 +16,6 @@ public class TodoRequestDto {
     private LocalDate startDate;
     private LocalDate endDate;
     private Boolean isDone;        // 기본값 false로 서버에서 처리 가능
+    private List<Long> problemIds;  // 선택된 문제 ID 목록
+    private String sourceType;      // 예: "PROBLEM_RECOMMEND"
 }
