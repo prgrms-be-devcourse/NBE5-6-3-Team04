@@ -584,9 +584,13 @@
   }
 
 
-
-
-
+.modal-content select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
 
   .modal-content {
     display: flex;
