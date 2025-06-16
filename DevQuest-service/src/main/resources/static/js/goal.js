@@ -381,47 +381,137 @@ function selectProblem() {
       });
 }
 
+// 추천 문제 조회 함수
+function selectProblem() {
+  fetch('/problem/select', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+      .then(res => res.json())
+      .then(data => {
+        renderProblemList(data); // 여기서 문제 목록을 모달에 렌더링
+        document.getElementById("problemModal").style.display = "block";
+      })
+      .catch(err => {
+        console.error(err);
+        alert("문제 목록 조회 실패");
+      });
+}
+
+
+let currentProblems = [];
+let currentSort = { key: null, ascending: true };
+
 function renderProblemList(problems) {
-  const container = document.getElementById("problem-list");
-  container.innerHTML = "";
+  currentProblems = problems; // 정렬 시 다시 사용
 
-  const table = document.createElement("table");
-  table.className = "problem-table";
+  const selectElement = document.getElementById("itemsPerPage");
+  let currentPage = 1;
 
-  // 헤더 만들기
-  table.innerHTML = `
-    <thead>
-      <tr>
-        <th>선택</th>
-        <th>문제 번호</th>
-        <th>사이트</th>
-        <th>문제 제목</th>
-        <th>레벨</th>
-        <th>푼 횟수</th>
-      </tr>
-    </thead>
-    <tbody>
-    </tbody>
-  `;
+  function renderSortIcon(key) {
+    if (currentSort.key !== key) return '';
+    return currentSort.ascending ? ' ▲' : ' ▼';
+  }
 
-  const tbody = table.querySelector("tbody");
+  function renderPage(page) {
+    const itemsPerPage = parseInt(selectElement.value);
+    const container = document.getElementById("problem-list");
+    container.innerHTML = "";
 
-  problems.forEach(p => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td><input type="checkbox" name="problemId" value="${p.problemId}"></td>
-      <td>${p.problemId}</td>
-      <td>${p.site}</td>
-      <td>${p.title}</td>
-      <td>${p.level}</td>
-      <td>${p.solveCount}</td> 
-      <td></td>
+    const table = document.createElement("table");
+    table.className = "problem-table";
+
+    table.innerHTML = `
+      <thead>
+        <tr>
+          <th>선택</th>
+          <th onclick="sortProblems('problemId')">문제 번호${renderSortIcon('problemId')}</th>
+          <th onclick="sortProblems('site')">사이트${renderSortIcon('site')}</th>
+          <th onclick="sortProblems('title')">문제 제목${renderSortIcon('title')}</th>
+          <th onclick="sortProblems('level')">레벨${renderSortIcon('level')}</th>
+          <th onclick="sortProblems('solveCount')">푼 횟수${renderSortIcon('solveCount')}</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
     `;
-    tbody.appendChild(row);
+
+    const tbody = table.querySelector("tbody");
+
+    const start = (page - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const currentItems = currentProblems.slice(start, end);
+
+    currentItems.forEach(p => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td><input type="checkbox" name="problemId" value="${p.problemId}"></td>
+        <td>${p.problemId}</td>
+        <td>${p.site}</td>
+        <td>${p.title}</td>
+        <td>${p.level}</td>
+        <td>${p.solveCount}</td>
+      `;
+      tbody.appendChild(row);
+    });
+
+    container.appendChild(table);
+    renderPagination(page, itemsPerPage);
+  }
+
+  function renderPagination(activePage, itemsPerPage) {
+    const pagination = document.createElement("div");
+    pagination.className = "pagination";
+
+    const totalPages = Math.ceil(currentProblems.length / itemsPerPage);
+
+    for (let i = 1; i <= totalPages; i++) {
+      const btn = document.createElement("button");
+      btn.textContent = i;
+      btn.className = i === activePage ? "active" : "";
+      btn.addEventListener("click", () => {
+        currentPage = i;
+        renderPage(currentPage);
+      });
+      pagination.appendChild(btn);
+    }
+
+    document.getElementById("problem-list").appendChild(pagination);
+  }
+
+  selectElement.addEventListener("change", () => {
+    currentPage = 1;
+    renderPage(currentPage);
   });
 
-  container.appendChild(table);
+  window.sortProblems = function (key) {
+    if (currentSort.key === key) {
+      currentSort.ascending = !currentSort.ascending;
+    } else {
+      currentSort.key = key;
+      currentSort.ascending = true;
+    }
+
+    currentProblems.sort((a, b) => {
+      if (typeof a[key] === "string") {
+        return currentSort.ascending
+            ? a[key].localeCompare(b[key])
+            : b[key].localeCompare(a[key]);
+      } else {
+        return currentSort.ascending
+            ? a[key] - b[key]
+            : b[key] - a[key];
+      }
+    });
+
+    currentPage = 1;
+    renderPage(currentPage);
+  };
+
+  renderPage(currentPage);
 }
+
 
 
 // 목표 수정 함수
