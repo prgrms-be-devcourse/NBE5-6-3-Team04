@@ -401,7 +401,7 @@ function renderProblemList(problems) {
 
   const itemsPerPage = parseInt(selectElement.value);
 
-  // 🔍 검색 필터 적용
+  //  검색 필터 적용
   const filtered = problems.filter(p =>
       p.title.toLowerCase().includes(searchInput.value.toLowerCase())
   );
@@ -430,7 +430,7 @@ function renderProblemList(problems) {
   const tbody = table.querySelector("tbody");
 
   currentItems.forEach(p => {
-    const isChecked = checkedProblemIds.has(p.problemId); // ✅ 체크 상태 유지
+    const isChecked = checkedProblemIds.has(p.problemId); //  체크 상태 유지
     const row = document.createElement("tr");
     row.innerHTML = `
       <td><input type="checkbox" name="problemId" value="${p.problemId}" ${isChecked ? "checked" : ""}></td>
@@ -569,8 +569,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-
-
 
 
 // 목표 수정 함수
