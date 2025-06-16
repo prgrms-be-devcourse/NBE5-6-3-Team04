@@ -161,15 +161,15 @@
 
               <input type="checkbox"
                      th:checked="${todo.isDone}"
-                     th:attr="data-id=${todo.todoId}"
+                     th:attr="data-todo-id=${todo.todoId}"
                      class="todo-checkbox">
 
               <a class="todo-content" th:href="${todo.url}" th:text="${todo.content}">투두 내용</a>
 
 
               <div class="todo-actions">
-                <button type="button" class="update-todo-btn" th:attr="data-id=${todo.todoId}">수정</button>
-                <button type="button" class="delete-todo-btn" th:attr="data-id=${todo.todoId}">삭제</button>
+                <button type="button" class="update-todo-btn" th:attr="data-todo-id=${todo.todoId}">수정</button>
+                <button type="button" class="delete-todo-btn" th:attr="data-todo-id=${todo.todoId}">삭제</button>
               </div>
             </li>
           </ul>
@@ -294,6 +294,8 @@
 </body>
 
 <script  src="/js/goal/goal-service.js"></script>
+<script  src="/js/goal/todo-service.js"></script>
+<script  src="/js/goal/recommend-problem.js"></script>
 <script  src="/js/goal/goal.js"></script>
 
 <script defer src="/js/achievement/congratulation.js"></script>
