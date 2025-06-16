@@ -1,79 +1,5 @@
 
 
-//  modal 닫기 함수 => 삭제 예정
-function closeModal(Modal) {
-  document.getElementById(Modal).style.display = "none";
-}
-
-// modal 관련 이벤트 리스너 모음
-
-// '목표 생성' modal 열기 이벤트 리스너
-document.addEventListener("DOMContentLoaded", function () {
-  document.querySelector(".goal-create-btn").addEventListener("click", () => {
-    const form = document.getElementById("goal-form");
-    form.reset();
-    form.removeAttribute("data-id");
-    document.querySelector("#goalModal h2").textContent = "목표 추가";
-    document.querySelector("#goalModal button[type='submit']").textContent = "추가";
-    form.onsubmit = function (e) {
-     e.preventDefault(); // 폼 제출시 페이지가 새로고침 되는것을 방지
-     createGoal(); // 추가 버튼 눌렀을때 실행되는 함수
-    };
-    document.getElementById("goalModal").style.display = "flex";
-  });
-});
-
-// '목표 생성' modal 닫기 이벤트 리스너
-document.addEventListener("DOMContentLoaded", function () {
-  const goalClose = document.getElementById("goalModalClose");
-  goalClose.addEventListener("click", function () {
-    const form = document.getElementById("goal-form");
-    form.reset();
-    document.getElementById("goalModal").style.display = "none";
-  });
-});
-
-// '목표 수정' modal 열기 이벤트 리스너
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".update-btn").forEach(btn => {
-    btn.addEventListener("click", async () => {
-      const goalId = btn.dataset.id;
-
-      const form = document.getElementById("goal-form");
-
-      await fillGoalForm(goalId);
-
-      form.setAttribute("data-id", goalId);
-      document.querySelector("#goalModal h2").textContent = "목표 수정";
-      document.querySelector("#goalModal button[type='submit']").textContent = "수정";
-
-      form.onsubmit = function (e) {
-        e.preventDefault();
-        updateGoal(goalId);
-      };
-      document.getElementById("goalModal").style.display = "flex";
-    });
-  });
-});
-
-//목표 불러오기  함수
-function fillGoalForm(goalId) {
-  fetch(`/goals/${goalId}/select`)
-      .then(res => res.json())
-      .then(data => {
-        const form = document.getElementById("goal-form");
-        form.title.value = data.title;        // null-safe 처리 (에러 방지)
-        form.startDate.value = data.startDate ?? '';
-        form.endDate.value = data.endDate ?? '';
-        form.isDone.value = data.isDone ? "true" : "false";
-        form.categoryName.value = data.categoryName;
-      })
-      .catch(err => {
-        console.error("목표 불러오기 실패", err);
-        alert("수정할 데이터를 불러오지 못했습니다.");
-      });
-}
-
 
 // '투두 추가' modal 열기 이벤트 리스너
 document.addEventListener("DOMContentLoaded", () => {
@@ -150,7 +76,7 @@ function fillTodoForm(todoId) {
 }
 
 
-// 추천 문제 생성 modal 열기 이벤트 리스너 = > 실행 함수 추가 필요
+// 추천 문제 생성 modal 열기 이벤트 리스너
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".add-recommend-btn").forEach(btn => {
     btn.addEventListener("click", (event) => {
@@ -272,14 +198,7 @@ function goalComplete(goalId) {
 }
 
 
-// 목표 삭제 이벤트 리스너
-document.addEventListener("DOMContentLoaded", () => {
-  const btn = document.querySelector(".delete-btn");
-  btn.addEventListener("click", () => {
-    const goalId = btn.dataset.id;
-    deleteGoal(goalId);
-  });
-});
+
 
 // 투두 삭제 이벤트 리스너
 document.addEventListener("DOMContentLoaded", () => {
@@ -291,38 +210,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// 목표 생성 함수
-function createGoal() {
-  const form = document.getElementById("goal-form");
-  const companyId = form.dataset.companyId; // 필요시 상위에서 설정
 
-  const data = {
-    companyId: companyId,
-    title: form.categoryName.value,
-    categoryName: form.categoryName.value,
-    startDate: form.startDate.value,
-    endDate: form.endDate.value
-  };
-
-  fetch(`/goals/${companyId}/create`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  }).then(res => {
-    if (res.ok) {
-      alert("등록 완료!");
-      closeModal("goalModal");
-      location.reload();
-    } else {
-      alert("등록 실패");
-    }
-  }).catch(err => {
-    console.error(err);
-    alert("에러 발생");
-  });
-}
 
 // 투두 생성 함수
 function createTodo() {
@@ -350,7 +238,7 @@ function createTodo() {
       .then(res => {
         if (res.ok) {
           alert("투두 추가 완료!");
-          closeModal("todoModal");
+          document.getElementById(todoModal).style.display = "none";
           location.reload();
         } else {
           alert("추가 실패");
@@ -571,37 +459,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// 목표 수정 함수
-function updateGoal(goalId) {
-  const form = document.getElementById("goal-form");
 
-  const data = {
-    title: form.categoryName.value,
-    categoryName: form.categoryName.value,
-    startDate: form.startDate.value,
-    endDate: form.endDate.value,
-    isDone: form.isDone.value === "true"
-  };
-
-  fetch(`/goals/${goalId}/update`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  }).then(res => {
-    if (res.ok) {
-      alert("수정 완료!");
-      closeModal("goalModal");
-      location.reload();
-    } else {
-      alert("수정 실패");
-    }
-  }).catch(err => {
-    console.error(err);
-    alert("수정 중 오류 발생");
-  });
-}
 
 // 투두 수정 함수
 function updateTodo(todoId) {
@@ -626,7 +484,7 @@ function updateTodo(todoId) {
       .then(res => {
         if (res.ok) {
           alert("수정 완료!");
-          closeModal("todoModal");
+          document.getElementById(todoModal).style.display = "none";
           location.reload();
         } else {
           alert("수정 실패");
@@ -638,27 +496,7 @@ function updateTodo(todoId) {
       });
 }
 
-// 목표 삭제 함수
-function deleteGoal(goalId) {
-  if (confirm("정말 삭제하시겠습니까?")) {
-    fetch(`/goals/${goalId}/delete`, {
-      method: 'DELETE',
-      headers: {
 
-      }
-    }).then(res => {
-      if (res.ok) {
-        alert("삭제 완료!");
-        location.reload();
-      } else {
-        alert("삭제 실패");
-      }
-    }).catch(err => {
-      console.error(err);
-      alert("에러 발생");
-    });
-  }
-}
 
 // 투두 삭제 함수
 function deleteTodo(todoId) {
@@ -825,7 +663,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initialView: 'dayGridMonth',
     events: '/companies/' + companyId + '/events',
     eventClick: function(info) {
-      info.jsEvent.preventDefault(); // ✅ 기본 링크 이동 막기
+      info.jsEvent.preventDefault(); //  기본 링크 이동 막기
       window.open(info.event.url, '_blank');    // 새 창에서만 열리게
     }
 
