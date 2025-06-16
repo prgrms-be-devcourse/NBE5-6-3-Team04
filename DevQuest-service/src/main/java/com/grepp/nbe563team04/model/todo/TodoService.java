@@ -3,9 +3,14 @@ package com.grepp.nbe563team04.model.todo;
 import com.grepp.nbe563team04.model.goal.entity.Goal;
 import com.grepp.nbe563team04.model.goal.GoalRepository;
 import com.grepp.nbe563team04.model.member.entity.Member;
+import com.grepp.nbe563team04.model.problem.ProblemRepository;
+import com.grepp.nbe563team04.model.problem.entity.Problem;
 import com.grepp.nbe563team04.model.todo.dto.TodoRequestDto;
 import com.grepp.nbe563team04.model.todo.dto.TodoResponseDto;
 import com.grepp.nbe563team04.model.todo.entity.Todo;
+import com.grepp.nbe563team04.model.userProblemSolve.UserProblemSolveRepository;
+import com.grepp.nbe563team04.model.userProblemSolve.entity.UserProblemId;
+import com.grepp.nbe563team04.model.userProblemSolve.entity.UserProblemSolve;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,20 +25,14 @@ public class TodoService {
 
     private final TodoRepository todoRepository;
     private final GoalRepository goalRepository;
+    private final ProblemRepository problemRepository;
+    private final UserProblemSolveRepository userProblemSolveRepository;
 
     // 투두 생성
     @Transactional
     public void create(TodoRequestDto dto) {
-        Goal goal = goalRepository.findById(dto.getGoalId())
-                .orElseThrow(() -> new RuntimeException("해당 목표가 존재하지 않습니다."));
+        Goal goal = goalRepository.findById(dto.getGoalId()).orElseThrow(() -> new RuntimeException("해당 목표가 존재하지 않습니다."));
 
-//        Todo todo = Todo.builder()
-//                .goal(goal)
-//                .content(dto.getContent())
-//                .startDate(dto.getStartDate())
-//                .endDate(dto.getEndDate())
-//                .isDone(dto.getIsDone() != null ? dto.getIsDone() : false)
-//                .build();
 
         Todo todo = Todo.builder()
                 .goal(goal)
@@ -42,6 +41,7 @@ public class TodoService {
                 .startDate(dto.getStartDate() != null ? dto.getStartDate() : LocalDate.now())
                 .endDate(dto.getEndDate())
                 .isDone(dto.getIsDone() != null ? dto.getIsDone() : false)
+                .sourceType("USER")
                 .build();
 
         todoRepository.save(todo);
@@ -122,8 +122,58 @@ public class TodoService {
         if (!todo.getGoal().getCompany().getMember().getUserId().equals(member.getUserId())) {
             throw new SecurityException("해당 사용자의 투두가 아닙니다.");
         }
+
         // 체크 상태 토글
-        todo.setIsDone(!todo.getIsDone()); // isChecked()는 boolean 필드 getter
+        todo.setIsDone(!todo.getIsDone());
         todoRepository.save(todo);
+
+        if (todo.getIsDone() && "PROBLEM_RECOMMEND".equals(todo.getSourceType()) && todo.getProblem() != null) {
+
+            Long userId = member.getUserId();
+            Long problemId = todo.getProblem().getId();
+
+            UserProblemId id = new UserProblemId(userId, problemId);
+
+            if (userProblemSolveRepository.existsById(id)) {
+                UserProblemSolve existing = userProblemSolveRepository.findById(id).get();
+                existing.setSolveCount(existing.getSolveCount() + 1);
+                userProblemSolveRepository.save(existing);
+            } else {
+                userProblemSolveRepository.save(new UserProblemSolve(id, member, todo.getProblem(), 1));
+            }
+        }
     }
+
+
+    @Transactional
+    public void createFromProblems(Long goalId, List<Long> problemIds) {
+        Goal goal = goalRepository.findById(goalId)
+                .orElseThrow(() -> new RuntimeException("해당 목표가 존재하지 않습니다."));
+
+        List<Problem> problems = problemRepository.findAllById(problemIds);
+
+        for (Problem problem : problems) {
+            Todo todo = Todo.builder()
+                    .goal(goal)
+                    .problem(problem)
+                    .content(problem.getTitle())
+                    .url(problem.getUrl())
+                    .startDate(LocalDate.now())
+                    .endDate(LocalDate.now().plusDays(1))
+                    .isDone(false)
+                    .sourceType("PROBLEM_RECOMMEND")
+                    .build();
+
+            todoRepository.save(todo);
+        }
+    }
+
+
+
+
+
+
+
+
+
 }
