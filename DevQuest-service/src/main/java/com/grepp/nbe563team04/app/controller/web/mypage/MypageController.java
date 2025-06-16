@@ -60,6 +60,7 @@ public class MypageController {
         model.addAttribute("progressPercent", progress);
         model.addAttribute("userAchieve", membersAchieves);
         model.addAttribute("_csrf", csrfToken);
+
         return "mypage/mypage";
     }
 
@@ -140,6 +141,6 @@ public class MypageController {
     @ResponseBody
     public List<AchievementDto> getUserAchievements(@AuthenticationPrincipal Principal principal) {
         Member member = memberService.findByEmail(principal.getUsername());
-        return achievementService.getUserAchievements(member.getUserId());
+        return achievementService.getSortedAchievementsWithStatus(member.getUserId());
     }
 }

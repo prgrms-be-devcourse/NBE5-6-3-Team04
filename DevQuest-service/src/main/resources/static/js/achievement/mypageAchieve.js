@@ -4,7 +4,7 @@ function openModal() {
     const list = document.getElementById("achievementList");
     list.innerHTML = "<p>불러오는 중...</p>";
 
-    fetch("/user/achievements")
+    fetch("/member/achievements")
         .then(response => {
             if (!response.ok) {
                 throw new Error("업적 데이터를 불러오지 못했습니다.");
@@ -18,10 +18,10 @@ function openModal() {
                 return;
             }
             list.innerHTML = data.map(a => `
-    <div class="achievement-item ${a.achieved ? 'achieved' : 'locked'}">
-        <span><strong>${a.name}</strong> : ${a.description}</span>
-    </div>
-`).join("");
+              <div class="achievement-item ${a.achieved ? 'achieved' : 'locked'}">
+                    <span><strong>${a.name}</strong> : ${a.description}</span>
+              </div>
+            `).join("");
         })
         .catch(error => {
             console.error(error);
@@ -29,6 +29,12 @@ function openModal() {
         });
 }
 
+function outsideModalClick(event) {
+    const modalContent = document.querySelector(".ccmModal-content");
+    if (!modalContent.contains(event.target)) {
+        closeListModal();
+    }
+}
 function closeListModal() {
     const modal = document.getElementById("achievementListModal");
     if (modal) modal.style.display = "none";

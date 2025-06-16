@@ -19,4 +19,7 @@ public interface MembersAchieveRepository extends JpaRepository<MembersAchieve, 
 
     @Query("SELECT ma FROM MembersAchieve ma JOIN FETCH ma.achievement WHERE ma.member.userId = :userId")
     List<MembersAchieve> findWithAchievementByUserId(@Param("userId") Long userId);
+
+    @Query("SELECT ma.achievement.achieveId FROM MembersAchieve ma WHERE ma.member.userId = :userId")
+    List<Long> findAchievedIdsByUserId(@Param("userId") Long userId);
 }

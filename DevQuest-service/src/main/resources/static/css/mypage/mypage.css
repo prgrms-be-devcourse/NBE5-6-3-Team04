@@ -185,11 +185,16 @@ button {
 }
 
 #achievementList {
-    padding: 10px 0;
+    padding: 10px;
     display: flex;
     flex-direction: column;
-    align-items: center; /* 가운데 정렬 핵심 */
+    align-items: stretch; /* ← 전체 너비 차지 */
     text-align: left;
+    overflow-y: auto;
+    max-height: 460px;
+}
+#achievementList::-webkit-scrollbar {
+    display: none;
 }
 
 .achievement-item {
@@ -205,6 +210,22 @@ button {
 .achievement-item:last-child {
     border-bottom: none;
     margin-bottom: 0;
+}
+
+/* 획득한 업적 (활성화) */
+.achievement-item.achieved {
+    background-color: #f0f8ff;
+    border-left: 4px solid #7c4dff;
+    color: #333;
+    font-weight: bold;
+}
+
+/* 미획득한 업적 (비활성화) */
+.achievement-item.locked {
+    background-color: #f5f5f5;
+    color: #aaa;
+    opacity: 0.6;
+    font-style: italic;
 }
 
 .achievement-item strong {

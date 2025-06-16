@@ -168,19 +168,22 @@ public class AchievementService {
     }
 
 
-//    //추가
-//    public List<AchievementDto> getAllAchievementsWithStatus(Long userId) {
-//        List<Achievement> allAchievements = achieveRepository.findAll();
-//        List<Long> achievedIds = membersAchieveRepository.findAchievedIdsByUserId(userId);
-//        Set<Long> achievedSet = new HashSet<>(achievedIds);
-//
-//        return allAchievements.stream()
-//                .map(a -> new AchievementDto(
-//                        a.getName(),
-//                        a.getDescription(),
-//                        achievedSet.contains(a.getAchieveId())
-//                ))
-//                .collect(Collectors.toList());
-//    }
+    public List<AchievementDto> getSortedAchievementsWithStatus(Long userId) {
+        List<Achievement> allAchievements = achieveRepository.findAll();
+        List<Long> achievedIds = membersAchieveRepository.findAchievedIdsByUserId(userId);
+        Set<Long> achievedSet = new HashSet<>(achievedIds);
+
+        log.info("💡 전체 업적 수: {}", allAchievements.size());
+        log.info("💡 사용자 획득 업적 ID: {}", achievedSet);
+
+        return allAchievements.stream()
+                .map(a -> new AchievementDto(
+                        a.getName(),
+                        a.getDescription(),
+                        achievedSet.contains(a.getAchieveId())
+                ))
+                .sorted((a1, a2) -> Boolean.compare(!a1.getAchieved(), !a2.getAchieved()))
+                .collect(Collectors.toList());
+    }
 
 }
