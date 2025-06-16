@@ -159,7 +159,7 @@ public class TodoService {
                     .content(problem.getTitle())
                     .url(problem.getUrl())
                     .startDate(LocalDate.now())
-                    .endDate(LocalDate.now().plusDays(3))
+                    .endDate(LocalDate.now().plusDays(1))
                     .isDone(false)
                     .sourceType("PROBLEM_RECOMMEND")
                     .build();

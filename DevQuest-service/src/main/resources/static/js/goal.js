@@ -1,15 +1,4 @@
 
-// ✅ 공통 유틸리티 + CSRF 설정
-const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-
-function getCsrfHeaders() {
-  return {
-    [csrfHeader]: csrfToken
-  };
-}
-
-
 
 //  modal 닫기 함수 => 삭제 예정
 function closeModal(Modal) {
@@ -212,8 +201,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fetch("/todos/from-problems", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        ...getCsrfHeaders(),
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
         goalId: goalId,
@@ -259,7 +247,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function goalComplete(goalId) {
   fetch(`/goals/${goalId}/complete`, {
     method: 'POST',
-    headers: {...getCsrfHeaders()}
+    headers: {}
   })
       .then(response => response.json())
       .then(data => {
@@ -319,8 +307,7 @@ function createGoal() {
   fetch(`/goals/${companyId}/create`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
-      ...getCsrfHeaders()
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify(data)
   }).then(res => {
@@ -356,8 +343,7 @@ function createTodo() {
   fetch(`/todos/${goalId}/create`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
-      ...getCsrfHeaders()
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify(data)
   })
@@ -381,8 +367,7 @@ function selectProblem() {
   fetch('/problem/select', {
     method: 'GET',
     headers: {
-      'Content-Type': 'application/json',
-      ...getCsrfHeaders()
+      'Content-Type': 'application/json'
     }
   })
       .then(res => res.json())
@@ -454,8 +439,7 @@ function updateGoal(goalId) {
   fetch(`/goals/${goalId}/update`, {
     method: 'PUT',
     headers: {
-      'Content-Type': 'application/json',
-      ...getCsrfHeaders()
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify(data)
   }).then(res => {
@@ -488,8 +472,7 @@ function updateTodo(todoId) {
   fetch(`/todos/${todoId}/update`, {
     method: 'PUT',
     headers: {
-      'Content-Type': 'application/json',
-      ...getCsrfHeaders()
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify(data)
   })
@@ -514,7 +497,7 @@ function deleteGoal(goalId) {
     fetch(`/goals/${goalId}/delete`, {
       method: 'DELETE',
       headers: {
-        ...getCsrfHeaders()
+
       }
     }).then(res => {
       if (res.ok) {
@@ -536,7 +519,7 @@ function deleteTodo(todoId) {
     fetch(`/todos/${todoId}/delete`, {
       method: 'DELETE',
       headers: {
-        ...getCsrfHeaders()
+
       }
     })
         .then(res => {
@@ -565,7 +548,7 @@ document.addEventListener("DOMContentLoaded", () => {
       fetch(`/todos/${todoId}/toggle-check`, {
         method: 'POST',
         headers: {
-          ...getCsrfHeaders()
+
         }
       })
           .then(res => {
@@ -716,8 +699,7 @@ function sendAiMessage(message) {
   fetch("/api/ai/feedback", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
-      [csrfHeader]: csrfToken
+      "Content-Type": "application/json"
     },
     body: JSON.stringify({prompt: message})
   })

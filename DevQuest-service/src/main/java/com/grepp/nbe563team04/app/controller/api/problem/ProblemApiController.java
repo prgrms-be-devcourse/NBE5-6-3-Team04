@@ -33,7 +33,7 @@ public class ProblemApiController {
     // 추천문제 불러오기
     @GetMapping("/select")
     public ResponseEntity<?> getAllProblems( @AuthenticationPrincipal Principal principal) { // json -> dto 자동 변환
-        Long userId = principal.getUser().getUserId();
+        Long userId = principal.getMember().getUserId();
 
         List<ProblemResponseDto> problems = problemService.getAllProblemsWithSolveCount(userId);
 
@@ -43,7 +43,7 @@ public class ProblemApiController {
     // 추천 문제 선택 후 저장 하기
     @PostMapping("/save")
     public ResponseEntity<?> saveUserSolvedProblems(@RequestBody UserProblemSolveRequestDto dto, @AuthenticationPrincipal Principal principal) {
-        Long userId = principal.getUser().getUserId();
+        Long userId = principal.getMember().getUserId();
 
         userProblemSolveService.saveAll(userId, dto.getProblemIds());
         return ResponseEntity.ok("저장 완료");
