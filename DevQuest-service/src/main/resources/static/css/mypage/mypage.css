@@ -205,6 +205,8 @@ button {
     line-height: 1.6;
     padding-bottom: 10px;
     border-bottom: 1px solid #ddd;
+    cursor: default;
+    position: relative;
 }
 
 .achievement-item:last-child {
@@ -226,6 +228,29 @@ button {
     color: #aaa;
     opacity: 0.6;
     font-style: italic;
+}
+/* 툴팁 박스 */
+.achievement-item::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 100;
+}
+
+/* 마우스 올리면 툴팁 표시 */
+.achievement-item:hover::after {
+    opacity: 1;
 }
 
 .achievement-item strong {
