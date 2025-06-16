@@ -213,7 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
           return res.text();
         })
         .then(() => {
-          alert("추천 문제 추가 완료!");
+          // alert("추천 문제 추가 완료!");
           document.getElementById("problemModal").style.display = "none";
           location.reload(); // 필요 시 새로고침
         })
@@ -389,6 +389,9 @@ function selectProblem() {
       });
 }
 
+// 체크된 문제 기억용 전역 변수
+let checkedProblemIds = new Set();
+
 // 문제 리스트 렌더링 함수
 function renderProblemList(problems) {
   const selectElement = document.getElementById("itemsPerPage");
@@ -427,15 +430,26 @@ function renderProblemList(problems) {
   const tbody = table.querySelector("tbody");
 
   currentItems.forEach(p => {
+    const isChecked = checkedProblemIds.has(p.problemId); // ✅ 체크 상태 유지
     const row = document.createElement("tr");
     row.innerHTML = `
-      <td><input type="checkbox" name="problemId" value="${p.problemId}"></td>
+      <td><input type="checkbox" name="problemId" value="${p.problemId}" ${isChecked ? "checked" : ""}></td>
       <td>${p.problemId}</td>
       <td>${p.site}</td>
       <td>${p.title}</td>
       <td>${p.level}</td>
       <td>${p.solveCount}</td>
     `;
+
+    const checkbox = row.querySelector("input[type='checkbox']");
+    checkbox.addEventListener("change", () => {
+      if (checkbox.checked) {
+        checkedProblemIds.add(p.problemId);
+      } else {
+        checkedProblemIds.delete(p.problemId);
+      }
+    });
+
     tbody.appendChild(row);
   });
 
@@ -495,11 +509,12 @@ window.sortProblems = function (key) {
   renderProblemList(currentProblems);
 };
 
-// 이벤트 연결 (검색, 페이지당 개수 변경)
 document.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById("problemSearch");
   const selectElement = document.getElementById("itemsPerPage");
+  const problemForm = document.getElementById("problem-form");
 
+  //  검색 입력 이벤트
   if (searchInput) {
     searchInput.addEventListener("input", () => {
       currentPage = 1;
@@ -507,14 +522,53 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // 페이지당 항목 수 변경 이벤트
   if (selectElement) {
     selectElement.addEventListener("change", () => {
       currentPage = 1;
       renderProblemList(currentProblems);
     });
   }
-});
 
+  //  form 제출 이벤트
+  if (problemForm) {
+    problemForm.addEventListener("submit", e => {
+      e.preventDefault();
+
+      const goalId = parseInt(problemForm.goalId.value);
+      const selectedIds = Array.from(checkedProblemIds);
+
+      if (selectedIds.length === 0) {
+        alert("문제를 하나 이상 선택하세요.");
+        return;
+      }
+
+      fetch("/todos/from-problems", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          goalId: goalId,
+          problemIds: selectedIds
+        })
+      })
+          .then(res => {
+            if (!res.ok) throw new Error("저장 실패");
+            return res.text();
+          })
+          .then(() => {
+            alert("추천 문제 추가 완료!");
+            document.getElementById("problemModal").style.display = "none";
+            location.reload();
+          })
+          .catch(err => {
+            console.error(err);
+            alert("에러 발생: " + err.message);
+          });
+    });
+  }
+});
 
 
 
