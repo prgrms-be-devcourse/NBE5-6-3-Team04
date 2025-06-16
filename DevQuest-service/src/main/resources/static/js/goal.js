@@ -362,155 +362,160 @@ function createTodo() {
       });
 }
 
-// 추천 문제 조회 함수
-function selectProblem() {
-  fetch('/problem/select', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-      .then(res => res.json())
-      .then(data => {
-        renderProblemList(data); // 여기서 문제 목록을 모달에 렌더링
-        document.getElementById("problemModal").style.display = "block";
-      })
-      .catch(err => {
-        console.error(err);
-        alert("문제 목록 조회 실패");
-      });
-}
-
-// 추천 문제 조회 함수
-function selectProblem() {
-  fetch('/problem/select', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-      .then(res => res.json())
-      .then(data => {
-        renderProblemList(data); // 여기서 문제 목록을 모달에 렌더링
-        document.getElementById("problemModal").style.display = "block";
-      })
-      .catch(err => {
-        console.error(err);
-        alert("문제 목록 조회 실패");
-      });
-}
 
 
+// 전역 변수로 상태 유지
 let currentProblems = [];
 let currentSort = { key: null, ascending: true };
+let currentPage = 1;
 
-function renderProblemList(problems) {
-  currentProblems = problems; // 정렬 시 다시 사용
-
-  const selectElement = document.getElementById("itemsPerPage");
-  let currentPage = 1;
-
-  function renderSortIcon(key) {
-    if (currentSort.key !== key) return '';
-    return currentSort.ascending ? ' ▲' : ' ▼';
-  }
-
-  function renderPage(page) {
-    const itemsPerPage = parseInt(selectElement.value);
-    const container = document.getElementById("problem-list");
-    container.innerHTML = "";
-
-    const table = document.createElement("table");
-    table.className = "problem-table";
-
-    table.innerHTML = `
-      <thead>
-        <tr>
-          <th>선택</th>
-          <th onclick="sortProblems('problemId')">문제 번호${renderSortIcon('problemId')}</th>
-          <th onclick="sortProblems('site')">사이트${renderSortIcon('site')}</th>
-          <th onclick="sortProblems('title')">문제 제목${renderSortIcon('title')}</th>
-          <th onclick="sortProblems('level')">레벨${renderSortIcon('level')}</th>
-          <th onclick="sortProblems('solveCount')">푼 횟수${renderSortIcon('solveCount')}</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    `;
-
-    const tbody = table.querySelector("tbody");
-
-    const start = (page - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    const currentItems = currentProblems.slice(start, end);
-
-    currentItems.forEach(p => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td><input type="checkbox" name="problemId" value="${p.problemId}"></td>
-        <td>${p.problemId}</td>
-        <td>${p.site}</td>
-        <td>${p.title}</td>
-        <td>${p.level}</td>
-        <td>${p.solveCount}</td>
-      `;
-      tbody.appendChild(row);
-    });
-
-    container.appendChild(table);
-    renderPagination(page, itemsPerPage);
-  }
-
-  function renderPagination(activePage, itemsPerPage) {
-    const pagination = document.createElement("div");
-    pagination.className = "pagination";
-
-    const totalPages = Math.ceil(currentProblems.length / itemsPerPage);
-
-    for (let i = 1; i <= totalPages; i++) {
-      const btn = document.createElement("button");
-      btn.textContent = i;
-      btn.className = i === activePage ? "active" : "";
-      btn.addEventListener("click", () => {
-        currentPage = i;
-        renderPage(currentPage);
-      });
-      pagination.appendChild(btn);
+// 추천 문제 조회 함수
+function selectProblem() {
+  fetch('/problem/select', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
     }
+  })
+      .then(res => res.json())
+      .then(data => {
+        currentProblems = data;
+        renderProblemList(currentProblems);
+        document.getElementById("problemModal").style.display = "block";
+      })
+      .catch(err => {
+        console.error(err);
+        alert("문제 목록 조회 실패");
+      });
+}
 
-    document.getElementById("problem-list").appendChild(pagination);
-  }
+// 문제 리스트 렌더링 함수
+function renderProblemList(problems) {
+  const selectElement = document.getElementById("itemsPerPage");
+  const searchInput = document.getElementById("problemSearch");
+  const container = document.getElementById("problem-list");
+  container.innerHTML = "";
 
-  selectElement.addEventListener("change", () => {
-    currentPage = 1;
-    renderPage(currentPage);
+  const itemsPerPage = parseInt(selectElement.value);
+
+  // 🔍 검색 필터 적용
+  const filtered = problems.filter(p =>
+      p.title.toLowerCase().includes(searchInput.value.toLowerCase())
+  );
+
+  const start = (currentPage - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  const currentItems = filtered.slice(start, end);
+
+  const table = document.createElement("table");
+  table.className = "problem-table";
+
+  table.innerHTML = `
+    <thead>
+      <tr>
+        <th>선택</th>
+        <th onclick="sortProblems('problemId')">문제 번호${renderSortIcon('problemId')}</th>
+        <th onclick="sortProblems('site')">사이트${renderSortIcon('site')}</th>
+        <th onclick="sortProblems('title')">문제 제목${renderSortIcon('title')}</th>
+        <th onclick="sortProblems('level')">레벨${renderSortIcon('level')}</th>
+        <th onclick="sortProblems('solveCount')">푼 횟수${renderSortIcon('solveCount')}</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  `;
+
+  const tbody = table.querySelector("tbody");
+
+  currentItems.forEach(p => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td><input type="checkbox" name="problemId" value="${p.problemId}"></td>
+      <td>${p.problemId}</td>
+      <td>${p.site}</td>
+      <td>${p.title}</td>
+      <td>${p.level}</td>
+      <td>${p.solveCount}</td>
+    `;
+    tbody.appendChild(row);
   });
 
-  window.sortProblems = function (key) {
-    if (currentSort.key === key) {
-      currentSort.ascending = !currentSort.ascending;
-    } else {
-      currentSort.key = key;
-      currentSort.ascending = true;
-    }
-
-    currentProblems.sort((a, b) => {
-      if (typeof a[key] === "string") {
-        return currentSort.ascending
-            ? a[key].localeCompare(b[key])
-            : b[key].localeCompare(a[key]);
-      } else {
-        return currentSort.ascending
-            ? a[key] - b[key]
-            : b[key] - a[key];
-      }
-    });
-
-    currentPage = 1;
-    renderPage(currentPage);
-  };
-
-  renderPage(currentPage);
+  container.appendChild(table);
+  renderPagination(filtered.length, itemsPerPage);
 }
+
+// 페이지네이션 렌더링
+function renderPagination(totalItems, itemsPerPage) {
+  const pagination = document.createElement("div");
+  pagination.className = "pagination";
+
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  for (let i = 1; i <= totalPages; i++) {
+    const btn = document.createElement("button");
+    btn.textContent = i;
+    btn.className = i === currentPage ? "active" : "";
+    btn.addEventListener("click", () => {
+      currentPage = i;
+      renderProblemList(currentProblems);
+    });
+    pagination.appendChild(btn);
+  }
+
+  document.getElementById("problem-list").appendChild(pagination);
+}
+
+// 정렬 아이콘 렌더링
+function renderSortIcon(key) {
+  if (currentSort.key !== key) return '';
+  return currentSort.ascending ? ' ▲' : ' ▼';
+}
+
+// 정렬 함수 전역 등록
+window.sortProblems = function (key) {
+  if (currentSort.key === key) {
+    currentSort.ascending = !currentSort.ascending;
+  } else {
+    currentSort.key = key;
+    currentSort.ascending = true;
+  }
+
+  currentProblems.sort((a, b) => {
+    if (typeof a[key] === "string") {
+      return currentSort.ascending
+          ? a[key].localeCompare(b[key])
+          : b[key].localeCompare(a[key]);
+    } else {
+      return currentSort.ascending
+          ? a[key] - b[key]
+          : b[key] - a[key];
+    }
+  });
+
+  currentPage = 1;
+  renderProblemList(currentProblems);
+};
+
+// 이벤트 연결 (검색, 페이지당 개수 변경)
+document.addEventListener("DOMContentLoaded", () => {
+  const searchInput = document.getElementById("problemSearch");
+  const selectElement = document.getElementById("itemsPerPage");
+
+  if (searchInput) {
+    searchInput.addEventListener("input", () => {
+      currentPage = 1;
+      renderProblemList(currentProblems);
+    });
+  }
+
+  if (selectElement) {
+    selectElement.addEventListener("change", () => {
+      currentPage = 1;
+      renderProblemList(currentProblems);
+    });
+  }
+});
+
+
 
 
 
