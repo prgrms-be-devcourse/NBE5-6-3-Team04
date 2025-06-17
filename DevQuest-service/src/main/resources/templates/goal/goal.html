@@ -48,22 +48,33 @@
          target="_blank">#프레임워크</a>
     </div>
 
-    <!-- AI 데브 -->
-    <div class="ai-box">
+    <!-------------------------------------------------------------------------------------------->
+    <!--AI 데브-->
+    <!-- 모달 여는 버튼 -->
+    <button id="openChatBtn">AI데브 와 대화하기</button>
 
-      <div class="ai-header">
-        <img src="/img/dev.png" alt="AI 데브 캐릭터" class="ai-avatar" />
-        <h3 class="ai-title">AI 데브</h3>
-      </div>
-      <!-- AI 응답 표시 -->
-      <p id="aiFeedBack">미래의 개발자님 어서와요!</p>
-      <div class="reaction">
-      <!-- 긍정 버튼 -->
-      <button onclick="sendAiMessage('긍정적인 대답 및 네')" type="button" class="btn-positive" th:text="좋아"/>
-      <!-- 부정 버튼 -->
-      <button onclick="sendAiMessage('부정적인 대답 및 아니요')" type="button" class="btn-negative" th:text="힘들다"/>
+    <!-- 챗봇 모달 -->
+    <div id="chatModal" class="chat-modal">
+      <div class="chat-modal-content">
+        <span class="close" id="closeChatBtn">&times;</span>
+        <div class="ai-box">
+          <div class="ai-header">
+            <img src="/img/dev.png" alt="AI 데브 캐릭터" class="ai-avatar" />
+            <h3 class="ai-title">AI 데브</h3>
+          </div>
+          <div id="chatHistory" class="chat-history"></div> <!--대화목록-->
+
+          <div class="chat-input-wrapper">
+            <input type="text" id="userMessageInput" placeholder="AI 데브에게 말해봐!" />
+            <div class="reaction">
+              <button type="button" class="send-btn" id="sendBtn" onclick="handleUserInput()">전송</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+    <!-------------------------------------------------------------------------------------------->
+
 
     <!-- 진행률 -->
     <div class="goal-process">
