@@ -25,10 +25,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.cache.annotation.EnableCaching;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
+@EnableCaching
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -57,12 +59,13 @@ public class SecurityConfig {
                 })
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/css/**", "/js/**", "/img/**", "/api/member/exists/*",
+                .requestMatchers("/css/**", "/js/**", "/img/**", "/api/member/**",
                     "/member/interests", "/member/withdraw-success").permitAll()
                 .requestMatchers("/", "/serviceInfo", "/signin", "/signup", "/admin/signup")
                 .anonymous() // 회원가입, 로그인 접근 권한
                 .requestMatchers(HttpMethod.POST, "member/signin", "/auth/signin").permitAll()
-                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/admin/**", "/api/admin/company/**").hasRole("ADMIN")
+
                 .requestMatchers("/member/**", "/dashboard/**", "/api/dashboard/**",
                     "/todos/**", "/companies/**", "/goals/**", "/images/profile/**","/api/ai/feedback").hasRole("USER") // 사용자페이지 접근 권한
                 .anyRequest().authenticated()

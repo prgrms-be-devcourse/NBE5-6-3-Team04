@@ -26,6 +26,18 @@ public class MemberInterestService {
     }
 
     /**
+     * 모든 활성 회원의 언어 관심도를 한 번에 조회 (N+1 문제 해결)
+     * @return 모든 회원의 언어 관심도 목록
+     */
+    public List<String> getAllMemberTopLangs() {
+        log.info("getAllMemberTopLangs 호출됨");
+        // 모든 활성 회원의 언어 관심도를 한 번에 조회
+        List<String> allLangs = memberInterestRepository.findAllActiveMemberTopLangs();
+        log.info("전체 회원 언어 관심도 조회 완료 - 총 {}개", allLangs.size());
+        return allLangs;
+    }
+
+    /**
      * 사용자의 상위 6개 언어 관심도 점수를 조회합니다.
      * 관심도 점수는 해당 언어를 선택한 전체 사용자 수를 기준으로 계산됩니다.
      * @param email 사용자 이메일

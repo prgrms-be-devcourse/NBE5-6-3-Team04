@@ -1,244 +1,248 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>기업명 별칭 관리 - DevQuest</title>
-    <!--cdn-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- sidenav -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <!--css-->
-    <link rel="stylesheet" href="/css/common.css">
-    <link rel="stylesheet" href="/css/admin/header.css">
-    <link rel="stylesheet" href="/css/admin/adminDashboard.css">
-    <style>
-        .alias-table th, .alias-table td { vertical-align: middle; }
-        .action-buttons { white-space: nowrap; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>기업명 별칭 관리 - DevQuest</title>
+  <!--cdn-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css"
+        rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- sidenav -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <!--css-->
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/admin/header.css">
+  <link rel="stylesheet" href="/css/admin/adminDashboard.css">
+  <style>
+    .alias-table th, .alias-table td {
+      vertical-align: middle;
+    }
+
+    .action-buttons {
+      white-space: nowrap;
+    }
+  </style>
 </head>
 <body>
 <div th:replace="~{fragments/admin-header :: header}"></div>
 <div th:replace="~{fragments/admin-sidenav :: sidenav}"></div>
 
 <main style="margin-top:3rem;">
-    <div class="container mt-4">
-        <h2 class="mb-4">기업명 별칭 관리</h2>
-        <!-- 별칭 추가 폼 -->
-        <h5 class="card-title">새 별칭 추가</h5>
-        <div class="card mb-4">
-            <div class="card-body">
-                <form id="aliasForm" class="row g-3">
-                    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-                    <div class="col-md-5">
-                        <label for="originalName" class="form-label">원본 기업명</label>
-                        <input type="text" class="form-control" id="originalName" name="originalName" required>
-                    </div>
-                    <div class="col-md-5">
-                        <label for="aliasName" class="form-label">별칭</label>
-                        <input type="text" class="form-control" id="aliasName" name="aliasName" required>
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label">&nbsp;</label>
-                        <button type="submit" class="btn btn-primary w-100">추가</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <!-- 별칭 목록 테이블 -->
-        <h5 class="card-title">별칭 목록</h5>
-        <div class="card">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover alias-table">
-                        <thead>
-                            <tr>
-                                <th>원본 기업명</th>
-                                <th>별칭</th>
-                                <th>작업</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="alias : ${aliases}">
-                                <td th:text="${alias.normalizedCompany?.normalizedName}"></td>
-                                <td th:text="${alias.aliasName}"></td>
-                                <td class="action-buttons">
-                                    <button class="btn btn-sm btn-outline-primary edit-btn" 
-                                            th:data-id="${alias.id}"
-                                            th:data-original="${alias.normalizedCompany?.normalizedName}"
-                                            th:data-alias="${alias.aliasName}">
-                                        <i class="bi bi-pencil"></i> 수정
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-danger delete-btn" 
-                                            th:data-id="${alias.id}">
-                                        <i class="bi bi-trash"></i> 삭제
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+  <h4 class="mb-4">기업 유사어 관리</h4>
+  <div class="container mt-4">
+    <!-- 별칭 추가 폼 -->
+    <h5 class="card-title">새 별칭 추가</h5>
+    <div class="card mb-4">
+      <div class="card-body">
+        <form id="aliasForm" class="row g-3">
+          <div class="col-md-5">
+            <label for="originalName" class="form-label">기업명(한글)</label>
+            <input type="text" class="form-control" id="originalName" name="originalName" required>
+          </div>
+          <div class="col-md-5">
+            <label for="aliasName" class="form-label">별칭</label>
+            <input type="text" class="form-control" id="aliasName" name="aliasName" required>
+          </div>
+          <div class="col-md-2 btn-wrapper">
+            <label class="form-label">&nbsp;</label>
+            <button type="submit" class="btn btn-small add-btn">추가</button>
+          </div>
+        </form>
+      </div>
     </div>
-    <!-- 수정 모달 -->
-    <div class="modal fade" id="editModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">별칭 수정</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editForm">
-                        <input type="hidden" id="editId" name="id">
-                        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-                        <div class="mb-3">
-                            <label for="editOriginalName" class="form-label">원본 기업명</label>
-                            <input type="text" class="form-control" id="editOriginalName" name="originalName" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editAliasName" class="form-label">별칭</label>
-                            <input type="text" class="form-control" id="editAliasName" name="aliasName" required>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                    <button type="button" class="btn btn-primary" id="saveEditBtn">저장</button>
-                </div>
-            </div>
+    <!-- 별칭 목록 테이블 -->
+    <h5 class="card-title">별칭 목록</h5>
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover alias-table">
+            <thead>
+            <tr>
+              <th class="col-company">기업명(한글)</th>
+              <th class="col-alias">별칭</th>
+              <th class="col-action">작업</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="alias : ${aliases}">
+              <td th:text="${alias.normalizedCompany?.normalizedName}"></td>
+              <td th:text="${alias.aliasName}"></td>
+              <td class="action-buttons">
+                <button class="btn btn-small edit-btn"
+                        th:data-id="${alias.id}"
+                        th:data-original="${alias.normalizedCompany?.normalizedName}"
+                        th:data-alias="${alias.aliasName}">
+                  <i class="material-icons left">edit</i>수정
+                </button>
+                <button class="btn btn-small delete-btn"
+                        th:data-id="${alias.id}">
+                  <i class="material-icons left">delete</i>삭제
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
         </div>
+      </div>
     </div>
+  </div>
+  <!-- 수정 모달 -->
+  <div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">별칭 수정</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editForm">
+            <input type="hidden" id="editId" name="id">
+            <div class="mb-3">
+              <label for="editOriginalName" class="form-label">기업명(한글)</label>
+              <input type="text" class="form-control" id="editOriginalName" name="originalName"
+                     required>
+            </div>
+            <div class="mb-3">
+              <label for="editAliasName" class="form-label">별칭</label>
+              <input type="text" class="form-control" id="editAliasName" name="aliasName" required>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+          <button type="button" class="btn btn-primary" id="saveEditBtn">저장</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const elems = document.querySelectorAll('.sidenav');
-        if (window.M && M.Sidenav) M.Sidenav.init(elems, {
-            onOpenStart: function() {
-                document.querySelector('.top-header').style.display = 'none';
-            },
-            onCloseEnd: function() {
-                document.querySelector('.top-header').style.display = '';
-            }
-        });
-    });
+  document.addEventListener('DOMContentLoaded', function () {
+    const elems = document.querySelectorAll('.sidenav');
+    if (window.M && M.Sidenav) {
+      M.Sidenav.init(elems, {
+        onOpenStart: function () {
+          document.querySelector('.top-header').style.display = 'none';
+        },
+        onCloseEnd: function () {
+          document.querySelector('.top-header').style.display = '';
+        }
+      });
+    }
+  });
 </script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const csrfToken = document.querySelector('input[name="_csrf"]').value;
-        const aliasForm = document.getElementById('aliasForm');
-        const editModal = new bootstrap.Modal(document.getElementById('editModal'));
-        const editForm = document.getElementById('editForm');
-        const saveEditBtn = document.getElementById('saveEditBtn');
+  document.addEventListener('DOMContentLoaded', function () {
+    const aliasForm = document.getElementById('aliasForm');
+    const editModal = new bootstrap.Modal(document.getElementById('editModal'));
+    const editForm = document.getElementById('editForm');
+    const saveEditBtn = document.getElementById('saveEditBtn');
 
-        // 별칭 추가
-        aliasForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const formData = new FormData(aliasForm);
-            const data = {
-                originalName: formData.get('originalName'),
-                aliasName: formData.get('aliasName')
-            };
+    // 별칭 추가
+    aliasForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const formData = new FormData(aliasForm);
+      const data = {
+        originalName: formData.get('originalName'),
+        aliasName: formData.get('aliasName')
+      };
 
-            try {
-                const response = await fetch('/api/admin/company/stats/aliases', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    body: JSON.stringify(data)
-                });
-
-                if (response.ok) {
-                    location.reload();
-                } else {
-                    alert('별칭 추가에 실패했습니다.');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('별칭 추가 중 오류가 발생했습니다.');
-            }
+      try {
+        const response = await fetch('/api/admin/company/stats/aliases', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
         });
 
-        // 수정 버튼 클릭
-        document.querySelectorAll('.edit-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const id = this.dataset.id;
-                const originalName = this.dataset.original;
-                const aliasName = this.dataset.alias;
-
-                document.getElementById('editId').value = id;
-                document.getElementById('editOriginalName').value = originalName;
-                document.getElementById('editAliasName').value = aliasName;
-                editModal.show();
-            });
-        });
-
-        // 수정 저장
-        saveEditBtn.addEventListener('click', async function() {
-            const formData = new FormData(editForm);
-            const id = formData.get('id');
-            const data = {
-                originalName: formData.get('originalName'),
-                aliasName: formData.get('aliasName')
-            };
-
-            try {
-                const response = await fetch(`/api/admin/company/stats/aliases/${id}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    body: JSON.stringify(data)
-                });
-
-                if (response.ok) {
-                    location.reload();
-                } else {
-                    alert('별칭 수정에 실패했습니다.');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('별칭 수정 중 오류가 발생했습니다.');
-            }
-        });
-
-        // 삭제 버튼 클릭
-        document.querySelectorAll('.delete-btn').forEach(btn => {
-            btn.addEventListener('click', async function() {
-                if (!confirm('정말로 이 별칭을 삭제하시겠습니까?')) {
-                    return;
-                }
-
-                const id = this.dataset.id;
-                try {
-                    const response = await fetch(`/api/admin/company/stats/aliases/${id}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'X-CSRF-TOKEN': csrfToken
-                        }
-                    });
-
-                    if (response.ok) {
-                        location.reload();
-                    } else {
-                        alert('별칭 삭제에 실패했습니다.');
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert('별칭 삭제 중 오류가 발생했습니다.');
-                }
-            });
-        });
+        if (response.ok) {
+          location.reload();
+        } else {
+          alert('별칭 추가에 실패했습니다.');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('별칭 추가 중 오류가 발생했습니다.');
+      }
     });
+
+    // 수정 버튼 클릭
+    document.querySelectorAll('.edit-btn').forEach(btn => {
+      btn.addEventListener('click', function () {
+        const id = this.dataset.id;
+        const originalName = this.dataset.original;
+        const aliasName = this.dataset.alias;
+
+        document.getElementById('editId').value = id;
+        document.getElementById('editOriginalName').value = originalName;
+        document.getElementById('editAliasName').value = aliasName;
+        editModal.show();
+      });
+    });
+
+    // 수정 저장
+    saveEditBtn.addEventListener('click', async function () {
+      const formData = new FormData(editForm);
+      const id = formData.get('id');
+      const data = {
+        originalName: formData.get('originalName'),
+        aliasName: formData.get('aliasName')
+      };
+
+      try {
+        const response = await fetch(`/api/admin/company/stats/aliases/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+          location.reload();
+        } else {
+          alert('별칭 수정에 실패했습니다.');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('별칭 수정 중 오류가 발생했습니다.');
+      }
+    });
+
+    // 삭제 버튼 클릭
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', async function () {
+        if (!confirm('정말로 이 별칭을 삭제하시겠습니까?')) {
+          return;
+        }
+
+        const id = this.dataset.id;
+        try {
+          const response = await fetch(`/api/admin/company/stats/aliases/${id}`, {
+            method: 'DELETE'
+          });
+
+          if (response.ok) {
+            location.reload();
+          } else {
+            alert('별칭 삭제에 실패했습니다.');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('별칭 삭제 중 오류가 발생했습니다.');
+        }
+      });
+    });
+  });
 </script>
 </body>
 </html> 

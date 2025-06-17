@@ -16,6 +16,7 @@ import lombok.ToString;
 @NoArgsConstructor // 기본 생성자
 @AllArgsConstructor // 모든 필드를 받는 생성자
 public class MemberDto {
+
     private Long userId;
     private String email;
     private String password;
@@ -26,6 +27,7 @@ public class MemberDto {
     private String comment;
     private LocalDate createdAt;
     private LocalDate deletedAt;
+    private String profileImageUrl;
 
 
     public MemberDto(Member member) {
@@ -39,5 +41,14 @@ public class MemberDto {
         this.deletedAt = member.getDeletedAt();
     }
 
+    // admin-dashboard 내 Top5 Member 이미지 표시
+    public static MemberDto from(Member member) {
+        MemberDto dto = new MemberDto();
+        dto.userId = member.getUserId();
+        dto.nickname = member.getNickname();
+        dto.level = member.getLevel();
+        dto.profileImageUrl = "/admin/dashboard/image/" + member.getUserId();
+        return dto;
+    }
 
 }

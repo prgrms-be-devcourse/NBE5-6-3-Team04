@@ -293,7 +293,6 @@
         <label >해결된 문제 포함하기 : </label>
         <input type="checkbox" id="includeSolved" class="custom-checkbox"><br><br>
         <input type="text" id="problemSearch" placeholder="문제 제목 검색..." /><br><br>
-
         <input type="hidden" name="goalId" value="">
         <div id="problem-list"></div>
         <button type="submit">추가</button>
@@ -303,8 +302,6 @@
 
     <div th:replace="~{fragments/achievement-modal :: achievementModal}"></div>
     <div th:replace="~{fragments/levelup-modal.html :: levelUpModal}"></div>
-
-
     <script src="/js/achievement/mypageAchieve.js"></script>
 
 </div>
@@ -318,6 +315,7 @@
 
 <script defer src="/js/achievement/congratulation.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
 <script defer src="/js/level/level.js"></script>
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js'></script>
 </html>

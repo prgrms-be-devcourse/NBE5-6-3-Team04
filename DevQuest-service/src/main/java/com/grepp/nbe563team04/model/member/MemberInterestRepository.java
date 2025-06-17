@@ -12,6 +12,9 @@ import org.springframework.stereotype.Repository;
 public interface MemberInterestRepository extends JpaRepository<MemberInterest, Long> {
 
     @Query("SELECT mi FROM MemberInterest mi WHERE mi.member = :member")
+    List<MemberInterest> findByMember(@Param("member") Member member);
+
+    @Query("SELECT mi FROM MemberInterest mi WHERE mi.member = :member")
     List<MemberInterest> findByUser(@Param("member") Member member);
 
     @Query("SELECT mi.interest.interestName FROM MemberInterest mi WHERE mi.member.userId = :userId AND mi.interest.type = 'ROLE'")
@@ -22,4 +25,14 @@ public interface MemberInterestRepository extends JpaRepository<MemberInterest, 
 
     @Query("SELECT mi.interest.interestName FROM MemberInterest mi WHERE mi.member.userId = :userId AND mi.interest.type = 'SKILL'")
     List<String> findTop6SkillsByUserId(@Param("userId") Long userId);
+
+    /**
+     * 모든 활성 회원의 언어 관심도를 한 번에 조회 (N+1 문제 해결)
+     * @return 모든 활성 회원의 언어 관심도 목록
+     */
+    @Query("SELECT mi.interest.interestName FROM MemberInterest mi " +
+           "JOIN mi.member m " +
+           "WHERE mi.interest.type = 'SKILL' " +
+           "AND m.deletedAt IS NULL")
+    List<String> findAllActiveMemberTopLangs();
 }
