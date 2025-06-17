@@ -1,0 +1,74 @@
+body {
+  background-color: #f4f4f4;
+  font-family: 'Noto Sans KR', sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-header {
+  position: absolute;         
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  z-index: 9999;
+}
+
+.logo-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.logo {
+  font-size: 29px;
+  font-weight: 700;
+  color: #3F2296;
+  margin-bottom: 0.3rem;
+}
+
+.menu-icon {
+  font-size: 24px;
+  color: #333;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+}
+
+.top-menu {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+  margin-left: auto;
+}
+
+.menu-item {
+  font-size: 14px;
+  cursor: pointer;
+  color: #666;
+  font-weight: 500;
+  margin-left: 1rem;
+}
+
+header, .top-bar, .top-menu {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+로그아웃 버튼 우측 정렬 및 동일 여백
+.logout {
+  font-size: 1rem;
+  color: #aaa;
+  cursor: pointer;
+  margin-top: 0.3rem; 
+}
+
+.logout:hover {
+  color: #333;
+}
