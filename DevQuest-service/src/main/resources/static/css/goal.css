@@ -71,6 +71,7 @@
 /* AI 박스 전체 */
 /* ai-box를 모달에 맞게 채움 */
 .ai-box {
+  position: relative; /* 기준 부모 설정 */
   width: 87%;
   margin-bottom: 10px;
   padding: 1rem;
@@ -390,6 +391,61 @@
   background-color: #c1b2f2;
 }
 
+/* ✅ 성격 선택 모달 */
+.personality-modal {
+  position: absolute;
+  bottom: 60px; /* 버튼 기준 위로 */
+  left: 0;      /* 버튼 기준 왼쪽으로 */
+  transform: translateX(-320px); /* ← 원하는 위치만큼 왼쪽으로 이동 (적절히 조절 가능) */
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  background: #ffffff;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 9999;
+  width: 300px;
+}
+
+.personality-modal.visible {
+  display: flex;
+}
+
+.personality-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.personality-option {
+  padding: 6px 8px;
+  font-size: 0.8rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+.personality-option.active {
+  background-color: #6d84ef;
+  color: white;
+  font-weight: bold;
+}
+
+.spice-options {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+
+
+/*성격선택 모달*/
+.personality-modal {
+  background-color: #ece3ff; /* 확인용 배경 */
+}
 /*---------------------------------------------*/
 
 

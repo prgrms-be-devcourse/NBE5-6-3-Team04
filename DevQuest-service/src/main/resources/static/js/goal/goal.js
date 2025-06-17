@@ -131,29 +131,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-//Gemini 답장 메시지
-
 document.addEventListener("DOMContentLoaded", () => {
-  // DOM 요소 초기화
   const inputBox = document.getElementById("userMessageInput");
   const chatHistory = document.getElementById("chatHistory");
   const modal = document.getElementById("chatModal");
   const openBtn = document.getElementById("openChatBtn");
   const closeBtn = document.getElementById("closeChatBtn");
+  const personalityBtn = document.getElementById("togglePersonalityBtn");
+  const personalityModal = document.getElementById("personalityModal");
 
   let isModalOpen = false;
+  let personalityTimer = null;
+  let selectedPersonality = null;
 
-  // 채팅 입력 처리 및 자동 리사이징
+  // 채팅 입력 처리
   inputBox.addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
-      if (event.shiftKey) return; // 줄바꿈 허용
-      event.preventDefault();     // 기본 Enter 동작 막기
+      if (event.shiftKey) return;
+      event.preventDefault();
       handleUserInput();
     }
     autoResizeTextarea(this);
   });
 
-  // 전송 버튼 클릭
   document.getElementById("sendBtn").addEventListener("click", handleUserInput);
 
   function handleUserInput() {
@@ -174,7 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       body: JSON.stringify({
         prompt: message,
-        mode : isRudeMode ? "rude" : "kind"
+        personality: selectedPersonality
       })
     })
     .then(res => res.json())
@@ -230,7 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
     el.style.height = (el.scrollHeight + 2) + "px";
   }
 
-  // 모달 열기
+  // 모달 열고 닫기
   openBtn.addEventListener("click", () => {
     if (!isModalOpen) {
       modal.style.display = "block";
@@ -241,10 +241,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // 모달 닫기
   closeBtn.addEventListener("click", closeModalWithAnimation);
 
-  // 모달 바깥 클릭 시 닫기
   window.addEventListener("click", (e) => {
     if (
         isModalOpen &&
@@ -257,24 +255,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function closeModalWithAnimation() {
     modal.style.animation = "slideDownRight 0.3s ease forwards";
-    modal.addEventListener(
-        "animationend",
-        () => {
-          modal.style.display = "none";
-          isModalOpen = false;
-        },
-        { once: true }
-    );
+    modal.addEventListener("animationend", () => {
+      modal.style.display = "none";
+      isModalOpen = false;
+    }, { once: true });
   }
+
+  // MBTI 모달 hover 제어
+  personalityBtn.addEventListener("mouseenter", () => {
+    personalityModal.classList.add("visible");
+  });
+
+  personalityBtn.addEventListener("mouseleave", () => {
+    personalityTimer = setTimeout(() => {
+      personalityModal.classList.remove("visible");
+    }, 400);
+  });
+
+  personalityModal.addEventListener("mouseenter", () => {
+    clearTimeout(personalityTimer);
+  });
+
+  personalityModal.addEventListener("mouseleave", () => {
+    personalityModal.classList.remove("visible");
+  });
+
+  // 성격 선택
+  document.querySelectorAll(".personality-option").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".personality-option").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      selectedPersonality = btn.textContent;
+      console.log("선택된 성격:", selectedPersonality);
+    });
+  });
 });
 
-//성격변환 버튼
-let isRudeMode = false;
 
-document.getElementById("togglePersonalityBtn").addEventListener("click", () => {
-  isRudeMode = !isRudeMode;
-  const btn = document.getElementById("togglePersonalityBtn");
-  btn.textContent = isRudeMode ? "순한맛 AI로 설정" : "매운맛 AI로 설정";
-  alert(isRudeMode ? "상당히 매운맛 완료!" : "순한맛 AI 로 복귀");
-});
 
+//===========================
