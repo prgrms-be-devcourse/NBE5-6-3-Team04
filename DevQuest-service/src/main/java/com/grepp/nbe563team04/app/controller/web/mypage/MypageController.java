@@ -43,8 +43,6 @@ public class MypageController {
 
     @GetMapping("mypage")
     public String index(@AuthenticationPrincipal Principal principal,
-        @RequestParam(required = false) String achievement,
-        @RequestParam(required = false) String name,
         Model model) {
         String email = principal.getUsername();
         Member member = memberService.findByEmail(email);
