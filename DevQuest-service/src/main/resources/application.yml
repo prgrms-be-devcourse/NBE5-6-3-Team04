@@ -40,3 +40,6 @@ spring:
 gemini:
   base-url: ${GEMINI_BASE_URL}
   api-key: ${GEMINI_API_KEY}
+
+mail:
+  service-url: http://localhost:8081

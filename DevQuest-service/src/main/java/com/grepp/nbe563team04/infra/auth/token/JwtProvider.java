@@ -136,4 +136,19 @@ public class JwtProvider {
             .map(Cookie::getValue).findFirst()
             .orElse(null);
     }
+
+    // 서버 간 통신용 토큰 발급
+    public String generateServerToken() {
+        String id = UUID.randomUUID().toString();
+        long now = System.currentTimeMillis();
+        Date expiresAt = new Date(now + atExpiration);
+
+        return Jwts.builder()
+            .subject("DevQuest-service")
+            .id(id)
+            .expiration(expiresAt)
+            .claim("authorities", List.of("ROLE_SERVER")) // 서버 권한
+            .signWith(getSecretKey())
+            .compact();
+    }
 }

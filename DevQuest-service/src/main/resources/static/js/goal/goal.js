@@ -38,7 +38,6 @@ function goalComplete(goalId) {
       });
 }
 
-
 // 목표진행률 상 완료 목표 버튼
 document.addEventListener('DOMContentLoaded', () => {
   const toggleBtn = document.getElementById('toggleDoneGoalsBtn');
@@ -128,11 +127,6 @@ function showCompletedGoals() {
   document.querySelector('.calendar').style.display = 'none';
   document.querySelector('#completedGoalsSection').style.display = 'flex';
 }
-
-
-
-
-
 
 //Gemini 답장 메시지
 
@@ -267,6 +261,3 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
 });
-
-
-

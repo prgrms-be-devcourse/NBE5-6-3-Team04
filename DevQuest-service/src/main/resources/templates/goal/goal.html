@@ -293,7 +293,6 @@
         <label >해결된 문제 포함하기 : </label>
         <input type="checkbox" id="includeSolved" class="custom-checkbox"><br><br>
         <input type="text" id="problemSearch" placeholder="문제 제목 검색..." /><br><br>
-
         <input type="hidden" name="goalId" value="">
         <div id="problem-list"></div>
         <button type="submit">추가</button>
@@ -303,8 +302,6 @@
 
     <div th:replace="~{fragments/achievement-modal :: achievementModal}"></div>
     <div th:replace="~{fragments/levelup-modal.html :: levelUpModal}"></div>
-
-
     <script src="/js/achievement/mypageAchieve.js"></script>
 
 </div>

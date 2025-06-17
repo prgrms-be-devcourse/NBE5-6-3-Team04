@@ -79,10 +79,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // 전역 변수로 상태 유지
 let currentProblems = []; //현재 문제들
+
 let checkedProblemIds = new Set();// 체크된 문제들
 let currentSort = { key: null, ascending: true };
 let currentPage = 1;
-
 
 // 추천 문제 조회 함수
 function selectProblem() {
@@ -176,6 +176,7 @@ function renderProblemList(problems) {
 }
 
 // 페이지네이션 렌더링
+
 // function renderPagination(totalItems, itemsPerPage) {
 //     const pagination = document.createElement("div");
 //     pagination.className = "pagination";
@@ -197,6 +198,7 @@ function renderProblemList(problems) {
 // }
 
 // 페이지네이션 렌더링(블록 방식 페이지네이션)
+
 function renderPagination(totalItems, itemsPerPage) {
     const pagination = document.createElement("div");
     pagination.className = "pagination";
@@ -262,12 +264,12 @@ function renderPagination(totalItems, itemsPerPage) {
         });
         pagination.appendChild(lastBtn);
     }
-
     document.getElementById("problem-list").appendChild(pagination);
 }
 
 // 정렬 아이콘 렌더링
 function renderSortIcon(key) {
+
     if (currentSort.key !== key) return ''; // 자신과 키가 다르면 아이콘 붙이지 않음
     return currentSort.ascending ? ' ▲' : ' ▼'; // 자신의 값이 true면 ▲ / false 면 ▼
 }
@@ -276,6 +278,7 @@ function renderSortIcon(key) {
 window.sortProblems = function (key) {
     if (currentSort.key === key) {
         currentSort.ascending = !currentSort.ascending; // 정렬 방향 반전
+
     } else {
         currentSort.key = key;
         currentSort.ascending = true;

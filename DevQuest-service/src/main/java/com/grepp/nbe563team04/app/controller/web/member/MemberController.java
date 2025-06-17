@@ -97,10 +97,9 @@ public class MemberController {
             .map(Long::parseLong)
             .collect(Collectors.toList());
 
-        log.info("여기까지 왔다");
-
         Long userId = memberService.signup(signupForm.toDto(), Role.ROLE_USER);
         memberService.receiveInterest(userId, roleId, skillIds);
+        memberService.sendSignupCompleteMail(signupForm);
 
         session.removeAttribute("signupForm");
         return "member/signupSuccess";
