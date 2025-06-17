@@ -16,11 +16,13 @@ import com.grepp.nbe563team04.model.member.dto.MemberDto;
 
 import com.grepp.nbe563team04.model.member.entity.MemberInterest;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -240,5 +242,19 @@ public class MemberService implements UserDetailsService {
         UserDetails updatedUser = new Principal(member); // 새 User로 Principal 재생성
         Authentication newAuth = new UsernamePasswordAuthenticationToken(updatedUser, auth.getCredentials(), auth.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(newAuth);
+    }
+
+    // admin-dashbaord Top5 member 조회
+    public List<Member> getTop5MembersByLevel() {
+        return memberRepository.findAll().stream()
+            .filter(member -> member.getRole() != Role.ROLE_ADMIN) // 관리자 제외
+            .sorted(Comparator.comparingInt(Member::getExp).reversed())
+            .limit(5)
+            .collect(Collectors.toList());
+    }
+
+    public Member findById(Long userId) {
+        return memberRepository.findById(userId)
+            .orElseThrow(() -> new EntityNotFoundException("해당 유저를 찾을 수 없습니다."));
     }
 }

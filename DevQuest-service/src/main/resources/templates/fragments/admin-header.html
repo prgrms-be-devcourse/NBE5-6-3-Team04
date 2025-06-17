@@ -2,22 +2,23 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 <div th:fragment="header">
-  <!-- 상단 헤더: 로고+햄버거+로그아웃 -->
   <div class="top-header">
-    <div class="logo-col" style="align-items: flex-start;">
-      <div class="logo">
-        <a href="/admin/dashboard">DevQuest</a>
-      </div>
-      <!-- 햄버거 메뉴 버튼: 로고 아래에 3.5rem 여백 -->
-      <a href="#" data-target="slide-out" class="sidenav-trigger" style="margin-top:3.5rem;">
-        <i class="material-icons menu-icon">menu</i>
-      </a>
+    <!-- 로고 -->
+    <div class="logo">
+      <a href="/admin/dashboard">DevQuest</a>
     </div>
+
+    <!-- 로그아웃 -->
     <div class="top-menu">
       <form id="logoutForm" th:action="@{/auth/logout}" method="post"></form>
       <span class="logout" onclick="document.getElementById('logoutForm').submit()">로그아웃</span>
     </div>
+
   </div>
+  <!-- 햄버거 메뉴 -->
+  <a href="#" data-target="slide-out" class="sidenav-trigger">
+    <i class="material-icons menu-icon">menu</i>
+  </a>
 </div>
 </body>
 </html>
