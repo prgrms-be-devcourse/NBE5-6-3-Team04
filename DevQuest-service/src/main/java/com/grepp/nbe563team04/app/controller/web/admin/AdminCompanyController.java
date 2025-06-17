@@ -78,7 +78,7 @@ public class AdminCompanyController {
 
         // 로그인한 관리자 정보
         Member admin = memberService.findByEmail(principal.getUsername());
-        model.addAttribute("nickname", principal.getUser().getNickname());
+        model.addAttribute("nickname", principal.getMember().getNickname());
 
         // 모든 기업명 별칭 목록 조회
         List<CompanyAlias> aliases = companyAliasRepository.findAll();
@@ -152,7 +152,7 @@ public class AdminCompanyController {
     @GetMapping("/colors")
     public String showCompanyColorsPage(@AuthenticationPrincipal Principal principal, Model model, CsrfToken csrfToken) {
         Member admin = memberService.findByEmail(principal.getUsername());
-        model.addAttribute("nickname", principal.getUser().getNickname());
+        model.addAttribute("nickname", principal.getMember().getNickname());
         List<NormalizedCompany> companies = normalizedCompanyRepository.findAll().stream().limit(5).collect(Collectors.toList());
         model.addAttribute("companies", companies);
         return "admin/company-colors";
