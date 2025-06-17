@@ -66,14 +66,14 @@ public class TodoService {
     // 투두 수정
     @Transactional
     public void update(Long todoId, TodoRequestDto dto) {
-        Todo todo = todoRepository.findById(todoId)
-                .orElseThrow(() -> new RuntimeException("해당 투두가 존재하지 않습니다."));
+        Todo todo = todoRepository.findById(todoId).orElseThrow(() -> new RuntimeException("해당 투두가 존재하지 않습니다."));
 
         todo.setUrl(dto.getUrl());
         todo.setContent(dto.getContent());
         todo.setStartDate(dto.getStartDate());
         todo.setEndDate(dto.getEndDate());
         todo.setIsDone(dto.getIsDone());
+
     }
 
     // 투두 삭제
@@ -159,7 +159,7 @@ public class TodoService {
                     .content(problem.getTitle())
                     .url(problem.getUrl())
                     .startDate(LocalDate.now())
-                    .endDate(LocalDate.now().plusDays(1))
+                    .endDate(LocalDate.now().plusDays(0)) // 추천 문제로직을 통해 만들어지는 투두는 0일로 만들어짐
                     .isDone(false)
                     .sourceType("PROBLEM_RECOMMEND")
                     .build();
