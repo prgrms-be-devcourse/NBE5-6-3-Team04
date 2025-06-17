@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>DevQuest 업적 관리</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/admin/header.css">
+  <link rel="stylesheet" href="/css/admin/adminDashboard.css">
+</head>
+<body>
+<!-- 관리자 헤더 -->
+<div th:replace="~{fragments/admin-header :: header}"></div>
+<!-- 관리자 사이드네브 -->
+<div th:replace="~{fragments/admin-sidenav :: sidenav}"></div>
+
+<main style="margin-top:3rem;">
+  <div class="container mt-4">
+    <h2 class="mb-4">업적 관리</h2>
+    <div class="card">
+      <div class="card-body">
+        <p>업적 관리 기능이 여기에 표시됩니다.</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Materialize JS 및 사이드네브 초기화 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const elems = document.querySelectorAll('.sidenav');
+    if (window.M && M.Sidenav) M.Sidenav.init(elems, {
+      onOpenStart: function() {
+        document.querySelector('.top-header').style.display = 'none';
+      },
+      onCloseEnd: function() {
+        document.querySelector('.top-header').style.display = '';
+      }
+    });
+  });
+</script>
+</body>
+</html> 
