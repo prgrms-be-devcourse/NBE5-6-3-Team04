@@ -172,7 +172,10 @@ document.addEventListener("DOMContentLoaded", () => {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ prompt: message })
+      body: JSON.stringify({
+        prompt: message,
+        mode : isRudeMode ? "rude" : "kind"
+      })
     })
     .then(res => res.json())
     .then(data => {
@@ -265,7 +268,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-//
+//성격변환 버튼
+let isRudeMode = false;
 
-
+document.getElementById("togglePersonalityBtn").addEventListener("click", () => {
+  isRudeMode = !isRudeMode;
+  const btn = document.getElementById("togglePersonalityBtn");
+  btn.textContent = isRudeMode ? "순한맛 AI로 설정" : "매운맛 AI로 설정";
+  alert(isRudeMode ? "상당히 매운맛 완료!" : "순한맛 AI 로 복귀");
+});
 

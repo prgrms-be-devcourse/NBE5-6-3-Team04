@@ -375,7 +375,20 @@
   background-color: #6d4ce9;
 }
 
-
+/*성격변환 버튼 스타일*/
+#togglePersonalityBtn {
+  background-color: #e4d4ff;
+  color: #4a2fa7;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+#togglePersonalityBtn:hover {
+  background-color: #c1b2f2;
+}
 
 /*---------------------------------------------*/
 

@@ -8,4 +8,5 @@ import lombok.Setter;
 @Setter
 public class GeminiInputDto {
     private String prompt;
+    private String mode; //  kind or rude
 }
