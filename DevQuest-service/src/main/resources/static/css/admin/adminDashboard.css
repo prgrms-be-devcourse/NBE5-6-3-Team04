@@ -5,14 +5,14 @@ body {
   padding: 0;
   min-height: 100vh;
   display: flex;
-  flex-direction: column; /* 콘텐츠가 위에서 아래로 */
+  flex-direction: column;
 }
 
 .container {
   background-color: rgba(255, 255, 255, 0.5);
   padding: 40px;
   width: 100%;
-  max-width: 1000px; /* 적절한 고정 너비 */
+  max-width: 1000px;
   margin: 40px auto;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
@@ -235,22 +235,12 @@ body nav.top-bar, header nav{
   border-radius: 10px;
 }
 
-/*.dashboard-charts-row {*/
-/*  display: flex;*/
-/*  flex-wrap: wrap;*/
-/*  justify-content: space-between;*/
-/*  gap: 1.5rem;*/
-/*  max-width: 1200px;*/
-/*  margin: 0 auto;*/
-/*  padding: 0 1rem;*/
-/*}*/
-
 .dashboard-charts-row {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 1.5rem;
-  max-width: 1500px;   /* ✅ 3개 충분히 들어가게 */
+  max-width: 1500px;
   margin: 0 auto;
   padding: 0 1rem;
 }
@@ -258,8 +248,8 @@ body nav.top-bar, header nav{
 .dashboard-chart-card {
   flex: 1 1 calc(33.333% - 1.5rem);
   min-width: 0;
-  max-width: unset !important;   /* ✅ 이거 꼭 추가 */
-  width: 100% !important;        /* ✅ 강제로 유동폭 */
+  max-width: unset !important;
+  width: 100% !important;
   box-sizing: border-box;
 }
 
@@ -508,4 +498,94 @@ canvas {
 .dashboard-summary-card,
 .top-level-card {
   min-width: 300px;
+}
+
+/*기업 유사어 관리*/
+.alias-table th,
+.alias-table td {
+  text-align: center;
+  padding-left: 1rem;
+}
+.alias-table th:nth-child(1),
+.alias-table td:nth-child(1) {
+  text-align: center;
+  padding-left: 1rem;
+}
+
+.alias-table th:nth-child(2),
+.alias-table td:nth-child(2) {
+  text-align: center;
+  padding-left: 1rem;
+}
+
+.alias-table th:nth-child(3),
+.alias-table td:nth-child(3) {
+  text-align: center;
+}
+
+.alias-table th.col-company {
+  width: 40%;
+  text-align: center;
+}
+
+.alias-table th.col-alias {
+  width: 30%;
+  text-align: center;
+}
+
+.alias-table th.col-action {
+  width: 30%;
+  text-align: center;
+}
+
+.alias-table td.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.add-btn {
+  background-color: #3F2296 !important;
+  color: white !important;
+}
+
+  /* 추가 버튼 정중앙 정렬 */
+#aliasForm.row{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.btn-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.edit-btn {
+  background-color: #3F2296 !important;
+  color: white !important;
+}
+
+.delete-btn {
+  background-color: #3F2296 !important;
+  color: white !important;
+}
+
+.add-btn:hover {
+  background-color: #564098 !important;
+}
+
+.edit-btn:hover {
+  background-color: #564098 !important;
+}
+
+.delete-btn:hover {
+  background-color: #564098 !important;
 }
