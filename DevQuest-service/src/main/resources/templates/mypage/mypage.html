@@ -50,14 +50,20 @@
         </div>
     </div>
 
-    <div class="ccmModal" id="achievementListModal">
+    <div class="ccmModal" id="achievementListModal" onclick="outsideModalClick(event)">
         <div class="ccmModal-content">
-            <span class="close" onclick="closeListModal()">×</span>
             <h3>🏅 획득 업적 목록</h3>
             <div id="achievementList">
             </div>
         </div>
     </div>
+    <div class="ccmModal" id="achievementDetailModal" onclick="closeDetailModalOutside(event)" style="display:none;">
+        <div class="ccmModal-content">
+            <h4 id="detailTitle">업적 제목</h4>
+            <p id="detailDescription">업적 상세 설명</p>
+        </div>
+    </div>
+
     <div class="edit" onclick="location.href='/member/update'">수정하기</div>
 </div>
 
@@ -72,5 +78,5 @@
 <script defer src="/js/withdraw.js"></script>
 <script defer src="/js/achievement/mypageAchieve.js"></script>
 <script defer src="/js/achievement/congratulation.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
 </html>

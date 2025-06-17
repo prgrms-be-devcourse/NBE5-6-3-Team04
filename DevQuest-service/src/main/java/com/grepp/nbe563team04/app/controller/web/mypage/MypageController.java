@@ -43,8 +43,6 @@ public class MypageController {
 
     @GetMapping("mypage")
     public String index(@AuthenticationPrincipal Principal principal,
-        @RequestParam(required = false) String achievement,
-        @RequestParam(required = false) String name,
         Model model) {
         String email = principal.getUsername();
         Member member = memberService.findByEmail(email);
@@ -136,6 +134,6 @@ public class MypageController {
     @ResponseBody
     public List<AchievementDto> getUserAchievements(@AuthenticationPrincipal Principal principal) {
         Member member = memberService.findByEmail(principal.getUsername());
-        return achievementService.getUserAchievements(member.getUserId());
+        return achievementService.getSortedAchievementsWithStatus(member.getUserId());
     }
 }

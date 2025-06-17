@@ -1,6 +1,12 @@
+const jsConfetti = new JSConfetti();
 document.addEventListener("DOMContentLoaded", function () {
     const urlParams = new URLSearchParams(window.location.search);
     const rawParam = urlParams.get("achievementName");
+
+    const modal = document.getElementById("achievementCongratsModal");
+    modal.addEventListener("mousedown", function () {
+        closeCongratsModal();
+    });
 
     if (rawParam) {
         const decoded = decodeURIComponent(rawParam.replace(/\+/g, ' '));
@@ -13,15 +19,17 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function showAchievementModal(achievementName) {
-    document.getElementById("congratsMessage").innerText = `"${achievementName}" 업적을 달성했어요!`;
-    // 모달 보이기
-    document.getElementById("achievementCongratsModal").style.display = "block";
-    confetti({
-        particleCount: 150,
-        spread: 90,
-        origin: { y: 0.6 }
-    });
+    const modal = document.getElementById("achievementCongratsModal");
+    const message = document.getElementById("congratsMessage");
 
+    message.innerText = `"${achievementName}" 업적을 달성했어요!`;
+
+    // fade-in
+    modal.style.display = "block";
+    void modal.offsetWidth; // 강제로 reflow 유도
+    modal.classList.add("active");
+
+    // confetti 효과
     const duration = 2500;
     const animationEnd = Date.now() + duration;
 
@@ -31,22 +39,16 @@ function showAchievementModal(achievementName) {
             clearInterval(interval);
             return;
         }
-
-        confetti({
-            particleCount: 30,
-            angle: 60,
-            spread: 70,
-            origin: { x: 0, y: Math.random() * 0.8 }
-        });
-        confetti({
-            particleCount: 30,
-            angle: 120,
-            spread: 70,
-            origin: { x: 1, y: Math.random() * 0.8 }
+        jsConfetti.addConfetti({
+            confettiColors: [
+                "#ff0a54", "#ff477e", "#ff7096",
+                "#ff85a1", "#fbb1bd", "#f9bec7",
+            ],
+            confettiRadius: 5,
+            confettiNumber: 500,
         });
     }, 300);
 }
-
 function closeCongratsModal() {
     document.getElementById("achievementCongratsModal").style.display = "none";
 }

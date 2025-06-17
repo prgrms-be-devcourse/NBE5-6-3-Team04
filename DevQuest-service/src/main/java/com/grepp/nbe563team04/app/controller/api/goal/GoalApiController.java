@@ -20,7 +20,7 @@ public class GoalApiController {
 
     //  목표 생성
     @PostMapping("/{companyId}/create")
-    public ResponseEntity<?> createGoal(@RequestBody GoalRequestDto dto, @AuthenticationPrincipal Principal principal) {
+    public ResponseEntity<?> createGoal( @RequestBody GoalRequestDto dto, @AuthenticationPrincipal Principal principal) {
         Long userId = principal.getMember().getUserId();
         String achievementName = goalService.createGoal(dto, userId);// 로그인된 유저 ID 꺼내기
 
@@ -37,10 +37,10 @@ public class GoalApiController {
     }
 
     //  목표 단건 조회
-    // ResponseEntity 담아서 반환해야 한다. dto째로 던지는것보다. entity로 던지는
     @GetMapping("/{goalId}/select")
-    public GoalResponseDto selectGoal(@PathVariable Long goalId) {
-        return goalService.getGoalById(goalId);
+    public ResponseEntity<GoalResponseDto> selectGoal(@PathVariable Long goalId) {
+        GoalResponseDto dto = goalService.getGoalById(goalId);
+        return ResponseEntity.ok(dto);
     }
 
     //  목표 수정
@@ -57,6 +57,7 @@ public class GoalApiController {
         return ResponseEntity.ok("목표 삭제 완료");
     }
 
+    // 목표 완료
     @PostMapping("/{goalId}/complete")
     public ResponseEntity<Map<String, Object>> completeGoal(
             @PathVariable Long goalId,

@@ -55,6 +55,11 @@ public class MemberService implements UserDetailsService {
     private final FileUtil fileUtil;
     private final MailApi mailApi;
 
+    // 활성 사용자 수 조회
+    public long countActiveUsers() {
+        return memberRepository.countByDeletedAtIsNull();
+    }
+
     @Transactional
     public Long signup(MemberDto dto, Role role) {
         Member member = mapper.map(dto, Member.class);
@@ -153,23 +158,23 @@ public class MemberService implements UserDetailsService {
     }
 
     @Transactional
-    public Map<String, List<MemberDto>> findUsersGroupedByStatus() {
+    public Map<String, List<MemberDto>> findMembersGroupedByStatus() {
         List<MemberDto> users = Optional.of(memberRepository.findAll())
-                .orElse(Collections.emptyList()).stream()
-                .map(MemberDto::new)
-                .toList();
+            .orElse(Collections.emptyList()).stream()
+            .map(MemberDto::new)
+            .toList();
 
         List<MemberDto> activeUsers = users.stream()
-                .filter(user -> user.getDeletedAt() == null && !user.getRole().name().equals("ROLE_ADMIN"))
-                .toList();
+            .filter(user -> user.getDeletedAt() == null && !user.getRole().name().equals("ROLE_ADMIN"))
+            .toList();
 
         List<MemberDto> deletedUsers = users.stream()
-                .filter(user -> user.getDeletedAt() != null)
-                .toList();
+            .filter(user -> user.getDeletedAt() != null)
+            .toList();
 
         List<MemberDto> adminUsers = users.stream()
-                .filter(user -> user.getRole().name().equals("ROLE_ADMIN") && user.getDeletedAt() == null)
-                .toList();
+            .filter(user -> user.getRole().name().equals("ROLE_ADMIN") && user.getDeletedAt() == null)
+            .toList();
 
         Map<String, List<MemberDto>> result = new HashMap<>();
         result.put("activeUsers", activeUsers);

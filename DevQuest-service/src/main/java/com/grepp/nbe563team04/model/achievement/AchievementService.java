@@ -1,5 +1,7 @@
 package com.grepp.nbe563team04.model.achievement;
 
+import com.grepp.nbe563team04.infra.util.file.FileDto;
+import com.grepp.nbe563team04.infra.util.file.FileUtil;
 import com.grepp.nbe563team04.model.achievement.dto.AchievementDto;
 import com.grepp.nbe563team04.model.achievement.entity.Achievement;
 import com.grepp.nbe563team04.model.member.entity.Member;
@@ -11,9 +13,18 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -25,6 +36,39 @@ public class AchievementService {
     private final MemberRepository memberRepository;
     private final AchieveRepository achieveRepository;
     private final TodoRepository todoRepository;
+    private final FileUtil fileUtil;
+
+    @Transactional
+    public void updateAchievement(Long id, Achievement updated, MultipartFile imageFile) throws IOException {
+        Achievement achievement = achieveRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 업적이 존재하지 않습니다: " + id));
+
+        achievement.setName(updated.getName());
+        achievement.setDescription(updated.getDescription());
+
+        if (imageFile != null && !imageFile.isEmpty()) {
+            // 업적 이미지는 'achievement' depth로 업로드
+            List<MultipartFile> imageList = List.of(imageFile);
+            List<FileDto> fileDtos = fileUtil.upload(imageList, "achievement");
+
+            if (!fileDtos.isEmpty()) {
+                FileDto fileDto = fileDtos.getFirst();
+                String imageUrl = "/upload/achievement/" + fileDto.getRenameFileName();
+                achievement.setImageUrl(imageUrl);
+            }
+        }
+
+        achieveRepository.save(achievement);
+    }
+
+    // 업적 삭제
+    @Transactional
+    public void deleteAchievement(Long id) {
+        if (!achieveRepository.existsById(id)) {
+            throw new IllegalArgumentException("삭제할 업적이 존재하지 않습니다: " + id);
+        }
+        achieveRepository.deleteById(id);
+    }
 
     @Transactional
     public String giveTutorialAchievement(Long userId) {
@@ -162,5 +206,29 @@ public class AchievementService {
                         ua.getAchievement().getName(),
                         ua.getAchievement().getDescription()
                 )).toList();
+    }
+
+
+    public List<AchievementDto> getSortedAchievementsWithStatus(Long userId) {
+        List<Achievement> allAchievements = achieveRepository.findAll();
+        List<Long> achievedIds = membersAchieveRepository.findAchievedIdsByUserId(userId);
+        Set<Long> achievedSet = new HashSet<>(achievedIds);
+
+        log.info("💡 전체 업적 수: {}", allAchievements.size());
+        log.info("💡 사용자 획득 업적 ID: {}", achievedSet);
+
+        return allAchievements.stream()
+                .map(a -> new AchievementDto(
+                        a.getName(),
+                        a.getDescription(),
+                        a.getImageUrl(),
+                        achievedSet.contains(a.getAchieveId())
+                ))
+                .sorted((a1, a2) -> Boolean.compare(!a1.getAchieved(), !a2.getAchieved()))
+                .collect(Collectors.toList());
+    }
+
+    public List<Achievement> getAllAchieve() {
+        return null;
     }
 }

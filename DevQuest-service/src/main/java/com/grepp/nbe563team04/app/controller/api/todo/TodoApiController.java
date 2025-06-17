@@ -33,7 +33,7 @@ public class TodoApiController {
     //  특정 목표에 속한 투두 목록 조회
     @GetMapping("/{goalId}")
     public ResponseEntity<List<TodoResponseDto>> getTodosByGoal(@PathVariable Long goalId) {
-        List<TodoResponseDto> todoList = todoService.getByGoal(goalId);
+        List<TodoResponseDto> todoList = todoService.getTodosByGoal(goalId);
         return ResponseEntity.ok(todoList);
     }
 
@@ -66,9 +66,9 @@ public class TodoApiController {
         return ResponseEntity.ok("상태 업데이트 완료");
     }
 
+
     @PostMapping("/{todoId}/toggle-check")
-    public ResponseEntity<Map<String, String>> toggleTodoCheck(@PathVariable Long todoId,
-                                                               @AuthenticationPrincipal Principal principal) {
+    public ResponseEntity<Map<String, String>> toggleTodoCheck(@PathVariable Long todoId, @AuthenticationPrincipal Principal principal) {
         todoService.toggleCheck(todoId, principal.getMember());
 
         Map<String, String> response = new HashMap<>();

@@ -19,6 +19,9 @@ public class FileUtil {
     @Value("${upload.path}")
     private String filePath;
 
+    @Value("${upload.achievement-path}")
+    private String achievementPath;
+
     public List<FileDto> upload(List<MultipartFile> files, String depth) throws IOException {
         List<FileDto> fileDtos = new ArrayList<>();
 
@@ -32,22 +35,24 @@ public class FileUtil {
             String renameFileName = generateRenameFileName(originFileName);
             FileDto fileDto = new FileDto(originFileName, renameFileName, savePath);
             fileDtos.add(fileDto);
-            uploadFile(file, fileDto);
+            uploadFile(file, fileDto, depth);
         }
 
         return fileDtos;
     }
 
-    private void uploadFile(MultipartFile file, FileDto fileDto) throws IOException {
-        File path = new File(filePath + fileDto.getSavePath());
+    private void uploadFile(MultipartFile file, FileDto fileDto, String depth) throws IOException {
+        // depth가 "achievement"이면 업적 경로에 저장
+        String basePath = "achievement".equals(depth) ? achievementPath : filePath;
+
+        File path = new File(basePath + fileDto.getSavePath());
         if (!path.exists()) {
             path.mkdirs();
         }
 
-        File target = new File(filePath + fileDto.getSavePath() + fileDto.getRenameFileName());
+        File target = new File(basePath + fileDto.getSavePath() + fileDto.getRenameFileName());
         file.transferTo(target);
     }
-
     private String generateRenameFileName(String originFileName) {
         String ext = originFileName.substring(originFileName.lastIndexOf("."));
         return UUID.randomUUID().toString() + ext;
