@@ -207,7 +207,7 @@ button {
 }
 
 /* 공통 배경 없애기 */
-body nav.top-bar, header nav{
+body nav.top-bar, header nav {
   background-color: transparent !important;
   box-shadow: none !important;
 }
@@ -227,11 +227,12 @@ body nav.top-bar, header nav{
   font-family: sans-serif;
   background: #f8f8f8;
 }
+
 .admin-dashboard-card {
   width: 400px;
   padding: 20px;
   background: white;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
 }
 
@@ -254,7 +255,7 @@ body nav.top-bar, header nav{
 }
 
 .card {
-  box-shadow: 0 4px 16px rgba(99,49,177,0.08), 0 1.5px 4px rgba(0,0,0,0.04);
+  box-shadow: 0 4px 16px rgba(99, 49, 177, 0.08), 0 1.5px 4px rgba(0, 0, 0, 0.04);
   border-radius: 18px;
   background: #fff;
   border: none;
@@ -291,6 +292,7 @@ canvas {
     gap: 1.5rem;
     align-items: center;
   }
+
   .dashboard-chart-card {
     max-width: 100%;
     min-width: 0;
@@ -303,7 +305,7 @@ canvas {
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  border-bottom: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .card-toolbar-title {
@@ -327,7 +329,7 @@ canvas {
   height: 28px;
   border-radius: 16px;
   font-size: 13px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease;
 }
 
@@ -352,60 +354,228 @@ canvas {
   transition: 0.2s;
 }
 
-.chip.sql { background-color: #e38c00; }
-.chip.computer-science { background-color: #9b59b6; }
-.chip.react { background-color: #61dafb; }
-.chip.vue { background-color: #42b883; }
-.chip.angular { background-color: #dd0031; }
-.chip.javascript { background-color: #f7df1e; color: #000; }
-.chip.node-js { background-color: #339933; }
-.chip.typescript { background-color: #3178c6; }
-.chip.python { background-color: #3776ab; }
-.chip.system-design { background-color: #6c5ce7; }
-.chip.api-design { background-color: #00cec9; }
-.chip.aspnet-core { background-color: #512bd4; }
-.chip.java { background-color: #007396; }
-.chip.c++ { background-color: #00599c; }
-.chip.flutter { background-color: #02569b; }
-.chip.spring-boot { background-color: #6db33f; }
-.chip.go-roadmap { background-color: #00acd7; }
-.chip.rust { background-color: #dea584; }
-.chip.graphql { background-color: #e10098; }
-.chip.design-and-architecture { background-color: #e17055; }
-.chip.design-system { background-color: #dfe6e9; color: #000; }
-.chip.react-native { background-color: #61dafb; }
-.chip.aws { background-color: #ff9900; }
-.chip.code-review { background-color: #2d3436; color: #fff; }
-.chip.docker { background-color: #2496ed; }
-.chip.kubernetes { background-color: #326ce5; }
-.chip.linux { background-color: #fcc624; color: #000; }
-.chip.mongodb { background-color: #47a248; }
-.chip.prompt-engineering { background-color: #6c5ce7; }
-.chip.terraform { background-color: #623ce4; }
-.chip.data-structures-and-algorithms { background-color: #fd79a8; }
-.chip.git-and-github { background-color: #181717; color: #fff; }
-.chip.redis { background-color: #dc382d; }
-.chip.php { background-color: #777bb4; }
-.chip.cloudflare { background-color: #f38020; }
-.chip.ai-agents { background-color: #8e44ad; }
-.chip.ai-red-teaming { background-color: #c0392b; }
-.chip.reactjs { background-color: #61dafb; }
-.chip.vuejs { background-color: #42b883; }
-.chip.angularjs { background-color: #dd0031; }
-.chip.cs { background-color: #9b59b6; }
-.chip.backend { background-color: #2c3e50; color: #fff; }
-.chip.frontend { background-color: #f39c12; }
-.chip.devops { background-color: #16a085; }
-.chip.database { background-color: #8e44ad; }
-.chip.ai { background-color: #9b59b6; }
-.chip.ml { background-color: #3498db; }
-.chip.cloud { background-color: #3498db; }
-.chip.security { background-color: #e74c3c; }
-.chip.infra { background-color: #7f8c8d; }
-.chip.testing { background-color: #34495e; color: #fff; }
-.chip.html-css { background-color: #e67e22; }
-.chip.algorithms { background-color: #d35400; }
-.chip.networking { background-color: #2980b9; }
+.chip.sql {
+  background-color: #e38c00;
+}
+
+.chip.computer-science {
+  background-color: #9b59b6;
+}
+
+.chip.react {
+  background-color: #61dafb;
+}
+
+.chip.vue {
+  background-color: #42b883;
+}
+
+.chip.angular {
+  background-color: #dd0031;
+}
+
+.chip.javascript {
+  background-color: #f7df1e;
+  color: #000;
+}
+
+.chip.node-js {
+  background-color: #339933;
+}
+
+.chip.typescript {
+  background-color: #3178c6;
+}
+
+.chip.python {
+  background-color: #3776ab;
+}
+
+.chip.system-design {
+  background-color: #6c5ce7;
+}
+
+.chip.api-design {
+  background-color: #00cec9;
+}
+
+.chip.aspnet-core {
+  background-color: #512bd4;
+}
+
+.chip.java {
+  background-color: #007396;
+}
+
+.chip.c + + {
+  background-color: #00599c;
+}
+
+.chip.flutter {
+  background-color: #02569b;
+}
+
+.chip.spring-boot {
+  background-color: #6db33f;
+}
+
+.chip.go-roadmap {
+  background-color: #00acd7;
+}
+
+.chip.rust {
+  background-color: #dea584;
+}
+
+.chip.graphql {
+  background-color: #e10098;
+}
+
+.chip.design-and-architecture {
+  background-color: #e17055;
+}
+
+.chip.design-system {
+  background-color: #dfe6e9;
+  color: #000;
+}
+
+.chip.react-native {
+  background-color: #61dafb;
+}
+
+.chip.aws {
+  background-color: #ff9900;
+}
+
+.chip.code-review {
+  background-color: #2d3436;
+  color: #fff;
+}
+
+.chip.docker {
+  background-color: #2496ed;
+}
+
+.chip.kubernetes {
+  background-color: #326ce5;
+}
+
+.chip.linux {
+  background-color: #fcc624;
+  color: #000;
+}
+
+.chip.mongodb {
+  background-color: #47a248;
+}
+
+.chip.prompt-engineering {
+  background-color: #6c5ce7;
+}
+
+.chip.terraform {
+  background-color: #623ce4;
+}
+
+.chip.data-structures-and-algorithms {
+  background-color: #fd79a8;
+}
+
+.chip.git-and-github {
+  background-color: #181717;
+  color: #fff;
+}
+
+.chip.redis {
+  background-color: #dc382d;
+}
+
+.chip.php {
+  background-color: #777bb4;
+}
+
+.chip.cloudflare {
+  background-color: #f38020;
+}
+
+.chip.ai-agents {
+  background-color: #8e44ad;
+}
+
+.chip.ai-red-teaming {
+  background-color: #c0392b;
+}
+
+.chip.reactjs {
+  background-color: #61dafb;
+}
+
+.chip.vuejs {
+  background-color: #42b883;
+}
+
+.chip.angularjs {
+  background-color: #dd0031;
+}
+
+.chip.cs {
+  background-color: #9b59b6;
+}
+
+.chip.backend {
+  background-color: #2c3e50;
+  color: #fff;
+}
+
+.chip.frontend {
+  background-color: #f39c12;
+}
+
+.chip.devops {
+  background-color: #16a085;
+}
+
+.chip.database {
+  background-color: #8e44ad;
+}
+
+.chip.ai {
+  background-color: #9b59b6;
+}
+
+.chip.ml {
+  background-color: #3498db;
+}
+
+.chip.cloud {
+  background-color: #3498db;
+}
+
+.chip.security {
+  background-color: #e74c3c;
+}
+
+.chip.infra {
+  background-color: #7f8c8d;
+}
+
+.chip.testing {
+  background-color: #34495e;
+  color: #fff;
+}
+
+.chip.html-css {
+  background-color: #e67e22;
+}
+
+.chip.algorithms {
+  background-color: #d35400;
+}
+
+.chip.networking {
+  background-color: #2980b9;
+}
 
 
 .card-content {
@@ -417,15 +587,18 @@ canvas {
   margin-bottom: 2rem;
   background: #f8fafc;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
+
 .summary-content {
   margin-top: 1rem;
 }
+
 .summary-row {
   margin-bottom: 0.5rem;
   font-size: 1.1rem;
 }
+
 .summary-row b {
   color: #1976d2;
 }
@@ -439,11 +612,12 @@ canvas {
 .card-title {
   font-size: 1.2rem;
   font-weight: bold;
-  color: #3F2296; 
+  color: #3F2296;
   margin-bottom: 1.2rem;
 }
+
 .summary-row b {
-  color: #3F2296; 
+  color: #3F2296;
 }
 
 /*레벨 상위 유저 Top 5*/
@@ -452,13 +626,15 @@ canvas {
   margin-bottom: 2rem;
   background: #f8fafc;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
+
 .top-member-list {
   list-style: none;
   padding: 0;
   margin: 1rem 0;
 }
+
 .top-member-item {
   display: flex;
   align-items: center;
@@ -469,13 +645,16 @@ canvas {
 .rank {
   font-weight: bold;
 }
+
 .username {
   flex-grow: 1;
 }
+
 .level {
   color: #3F2296;
   font-weight: bold;
 }
+
 .profile-img {
   align-items: center;
   width: 30px;
@@ -506,6 +685,7 @@ canvas {
   text-align: center;
   padding-left: 1rem;
 }
+
 .alias-table th:nth-child(1),
 .alias-table td:nth-child(1) {
   text-align: center;
@@ -555,12 +735,13 @@ canvas {
   color: white !important;
 }
 
-  /* 추가 버튼 정중앙 정렬 */
-#aliasForm.row{
+/* 추가 버튼 정중앙 정렬 */
+#aliasForm.row {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .btn-wrapper {
   display: flex;
   justify-content: center;
@@ -588,4 +769,72 @@ canvas {
 
 .delete-btn:hover {
   background-color: #564098 !important;
+}
+
+/*기업 색상 관리 버튼*/
+.edit-color-btn {
+  background-color: #3F2296 !important;
+  color: white !important;
+}
+
+.delete-color-btn {
+  background-color: #3F2296 !important;
+  color: white !important;
+}
+
+.edit-color-btn:hover {
+  background-color: #564098 !important;
+}
+
+.delete-color-btn:hover {
+  background-color: #564098 !important;
+}
+
+.card-body {
+  height: auto;
+  width: 1000px;
+  display: flex;
+  justify-content: center;
+}
+
+table td,
+table th {
+  text-align: center;
+}
+
+/* 1. td 안에 정렬 개선 */
+td {
+  vertical-align: middle;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* 2. 색상 input + span 같이 정렬 */
+td input[type="color"] {
+  vertical-align: middle;
+  margin-right: 0.5rem;
+}
+
+/* 3. 색상 span (hex 텍스트) 정렬 */
+.color-name {
+  vertical-align: middle;
+  display: inline-block;
+  font-weight: 500;
+  font-family: monospace;
+}
+
+/* 컬러 테이블 전체 균등 분배 */
+.color-table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* 기업 색상관리 -테이블 정렬 */
+.color-table th,
+.color-table td {
+  width: 33.33%;
+  text-align: center;
+  vertical-align: middle;
+  padding: 1.5rem;
 }
