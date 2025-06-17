@@ -151,7 +151,7 @@ function renderProblemList(problems) {
       <td><input type="checkbox" name="problemId" value="${p.problemId}" ${isChecked ? "checked" : ""}></td>
       <td>${p.problemId}</td>
       <td>${p.site}</td>
-      <td>${p.title}</td>
+      <td><a href="${p.url}" target="_blank">${p.title}</a></td>
       <td>${p.level}</td>
       <td>${p.solveCount}</td>
     `;

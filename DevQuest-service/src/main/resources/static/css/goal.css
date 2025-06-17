@@ -1049,9 +1049,33 @@ body {
   max-width: 150px;
 }
 
-.includeSolved{
-  transform: scale(1.2);
-  accent-color: #7e57c2; /* 체크박스 보라색 */
+/* 보라색 커스텀 체크박스 */
+.custom-checkbox {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  appearance: none;
+  border: 2px solid #7e57c2;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #fff;
+  transition: all 0.2s ease-in-out;
+}
+
+.custom-checkbox:checked {
+  background-color: #7e57c2;
+  border-color: #7e57c2;
+}
+
+.custom-checkbox:checked::after {
+  content: "✔";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 
