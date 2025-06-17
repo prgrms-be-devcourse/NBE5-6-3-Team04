@@ -9,12 +9,10 @@
     </div>
 
     <!-- 로그아웃 -->
-    <div class="top-menu">
       <form id="logoutForm" th:action="@{/auth/logout}" method="post"></form>
       <span class="logout" onclick="document.getElementById('logoutForm').submit()">로그아웃</span>
-    </div>
-
   </div>
+
   <!-- 햄버거 메뉴 -->
   <a href="#" data-target="slide-out" class="sidenav-trigger">
     <i class="material-icons menu-icon">menu</i>

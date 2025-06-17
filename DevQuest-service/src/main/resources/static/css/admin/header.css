@@ -5,29 +5,30 @@
   padding: 1rem 2rem;
 }
 
-.logo {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #3F2296;
-  margin-left: 1rem;
-}
-
+/*햄버거메뉴*/
 .menu-icon {
   font-size: 24px;
   cursor: pointer;
   color: #333;
+  margin-top: 1rem;
+  margin-left: 1em;
+
 }
 
 .top-menu {
   margin-left: auto;
 }
 
+.logout:hover {
+  color: #333;
+}
+
 .logout {
   font-size: 1rem;
   color: #aaa;
   cursor: pointer;
-}
-
-.logout:hover {
-  color: #333;
+  display: block;
+  text-align: right;
+  padding: 1rem 2rem;
+  margin-left: auto;
 }
