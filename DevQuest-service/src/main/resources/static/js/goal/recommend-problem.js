@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+
 // 추천 문제 생성 버튼 클릭 이벤트 리스너
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("problem-form");
@@ -47,24 +48,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const goalId = parseInt(form.goalId.value);
 
+        data = {
+            goalId: goalId,
+            problemIds: selectedIds
+        }
+
         fetch("/todos/from-problems", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                goalId: goalId,
-                problemIds: selectedIds
-            })
+            body: JSON.stringify(data)
         })
             .then(res => {
                 if (!res.ok) throw new Error("저장 실패");
                 return res.text();
             })
             .then(() => {
-                // alert("추천 문제 추가 완료!");
+                alert("추천 문제 추가 완료!");
                 document.getElementById("problemModal").style.display = "none";
-                location.reload(); // 필요 시 새로고침
+                location.reload();
             })
             .catch(err => {
                 console.error(err);
@@ -75,9 +78,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 // 전역 변수로 상태 유지
-let currentProblems = [];
+let currentProblems = []; //현재 문제들
 let currentSort = { key: null, ascending: true };
 let currentPage = 1;
+// 체크된 문제 기억용 전역 변수
+let checkedProblemIds = new Set();
 
 // 추천 문제 조회 함수
 function selectProblem() {
@@ -99,22 +104,19 @@ function selectProblem() {
         });
 }
 
-// 체크된 문제 기억용 전역 변수
-let checkedProblemIds = new Set();
+
 
 // 문제 리스트 렌더링 함수
 function renderProblemList(problems) {
-    const selectElement = document.getElementById("itemsPerPage");
-    const searchInput = document.getElementById("problemSearch");
-    const container = document.getElementById("problem-list");
+    const selectElement = document.getElementById("itemsPerPage"); // 페이지 당 몇개 정렬 할것인지 선택 요소
+    const searchInput = document.getElementById("problemSearch"); // 검색할 문제 제목 인풋 텍스트
+    const container = document.getElementById("problem-list"); // 문제 목록 div
     container.innerHTML = "";
 
-    const itemsPerPage = parseInt(selectElement.value);
+    const itemsPerPage = parseInt(selectElement.value); // 페이지당 문제 출력수 정수로 바꾸어 저장
 
-    //  검색 필터 적용
-    const filtered = problems.filter(p =>
-        p.title.toLowerCase().includes(searchInput.value.toLowerCase())
-    );
+    // 검색 필터 적용
+    const filtered = problems.filter(p => p.title.toLowerCase().includes(searchInput.value.toLowerCase())); //  문제 제목 검색 필터 적용
 
     const start = (currentPage - 1) * itemsPerPage;
     const end = start + itemsPerPage;
@@ -222,12 +224,11 @@ window.sortProblems = function (key) {
 document.addEventListener("DOMContentLoaded", () => {
     const searchInput = document.getElementById("problemSearch");
     const selectElement = document.getElementById("itemsPerPage");
-    const problemForm = document.getElementById("problem-form");
 
     //  검색 입력 이벤트
     if (searchInput) {
         searchInput.addEventListener("input", () => {
-            currentPage = 1;
+            // currentPage = 1;
             renderProblemList(currentProblems);
         });
     }
@@ -235,47 +236,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // 페이지당 항목 수 변경 이벤트
     if (selectElement) {
         selectElement.addEventListener("change", () => {
-            currentPage = 1;
+            // currentPage = 1;
             renderProblemList(currentProblems);
         });
     }
 
-    //  form 제출 이벤트
-    if (problemForm) {
-        problemForm.addEventListener("submit", e => {
-            e.preventDefault();
 
-            const goalId = parseInt(problemForm.goalId.value);
-            const selectedIds = Array.from(checkedProblemIds);
-
-            if (selectedIds.length === 0) {
-                alert("문제를 하나 이상 선택하세요.");
-                return;
-            }
-
-            fetch("/todos/from-problems", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    goalId: goalId,
-                    problemIds: selectedIds
-                })
-            })
-                .then(res => {
-                    if (!res.ok) throw new Error("저장 실패");
-                    return res.text();
-                })
-                .then(() => {
-                    alert("추천 문제 추가 완료!");
-                    document.getElementById("problemModal").style.display = "none";
-                    location.reload();
-                })
-                .catch(err => {
-                    console.error(err);
-                    alert("에러 발생: " + err.message);
-                });
-        });
-    }
 });
