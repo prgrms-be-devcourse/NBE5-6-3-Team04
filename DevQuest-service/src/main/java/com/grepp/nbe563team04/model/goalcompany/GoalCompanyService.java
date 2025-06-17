@@ -23,10 +23,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GoalCompanyService {
 
-    private final GoalCompanyRepository goalCompanyRepository;
     private final MemberRepository memberRepository;
+
+    private final GoalCompanyRepository goalCompanyRepository;
     private final GoalRepository goalRepository;
     private final TodoRepository todoRepository;
+
     private final AchievementService achievementService;
     private final CompanyNormalizationService companyNormalizationService;
 
@@ -65,7 +67,7 @@ public class GoalCompanyService {
 
         // GoalCompanyResponseDto dto 생성 - 서버에서 클라이언트로 보내기 위한 Dto 생성 ( Entity -> Dto 변환)
         GoalCompanyResponseDto dto = GoalCompanyResponseDto.builder()
-                .companyId(companyId)
+            .companyId(companyId)
             .companyName(company.getCompanyName())
             .content(company.getContent())
             .status(company.getStatus().name())

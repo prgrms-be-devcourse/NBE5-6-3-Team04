@@ -28,6 +28,7 @@ public class GoalCategoryService {
                     .color(category.getColor())
                     .koreanName(category.getKoreanName())
                     .build();
+
             dtos.add(dto);
         }
         return dtos;

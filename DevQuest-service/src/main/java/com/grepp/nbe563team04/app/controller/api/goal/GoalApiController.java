@@ -57,6 +57,7 @@ public class GoalApiController {
         return ResponseEntity.ok("목표 삭제 완료");
     }
 
+    // 목표 완료
     @PostMapping("/{goalId}/complete")
     public ResponseEntity<Map<String, Object>> completeGoal(
             @PathVariable Long goalId,

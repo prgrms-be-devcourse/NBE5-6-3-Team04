@@ -66,9 +66,9 @@ public class TodoApiController {
         return ResponseEntity.ok("상태 업데이트 완료");
     }
 
+
     @PostMapping("/{todoId}/toggle-check")
-    public ResponseEntity<Map<String, String>> toggleTodoCheck(@PathVariable Long todoId,
-                                                               @AuthenticationPrincipal Principal principal) {
+    public ResponseEntity<Map<String, String>> toggleTodoCheck(@PathVariable Long todoId, @AuthenticationPrincipal Principal principal) {
         todoService.toggleCheck(todoId, principal.getMember());
 
         Map<String, String> response = new HashMap<>();

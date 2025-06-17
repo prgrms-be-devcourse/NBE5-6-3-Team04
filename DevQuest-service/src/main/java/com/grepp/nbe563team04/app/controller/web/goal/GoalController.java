@@ -55,21 +55,20 @@ public class GoalController {
 
         DashboardDto dashboardDto = dashboardService.getDashboard(managedMember);
         GoalCompanyResponseDto goalCompanyDto = goalCompanyService.getGoalCompanyById(companyId);
-        List<GoalResponseDto> goalList = goalService.getGoalsByCompanyId(companyId); // 기업별 목표 리스트 DTO 리스트 받아오기
-
+        List<GoalResponseDto> goalDtos = goalService.getGoalsByCompanyId(companyId); // 기업별 목표 리스트 DTO 리스트 받아오기
         List<GoalCategoryResponseDto> goalCategoryDtos = goalCategoryService.getGoalCategories();
 
         // 목표별 투두 리스트 맵으로 저장
         Map<Long, List<TodoResponseDto>> todoMap = new HashMap<>(); // goalId, 투두 리스트 로 저장
 
-        for (GoalResponseDto goal : goalList) {
-            List<TodoResponseDto> todos = todoService.getTodosByGoal(goal.getGoalId());
-            todoMap.put(goal.getGoalId(), todos);
+        for (GoalResponseDto goalDto : goalDtos) {
+            List<TodoResponseDto> todos = todoService.getTodosByGoal(goalDto.getGoalId());
+            todoMap.put(goalDto.getGoalId(), todos);
         }
 
         model.addAttribute("dashboard", dashboardDto);  // 대시보드 정보
         model.addAttribute("company", goalCompanyDto);      // 기업 정보
-        model.addAttribute("goals", goalList);          // 목표 리스트(진행률 포함)
+        model.addAttribute("goals", goalDtos);          // 목표 리스트(진행률 포함)
         model.addAttribute("todoMap", todoMap);
         model.addAttribute("categories", goalCategoryDtos);
 

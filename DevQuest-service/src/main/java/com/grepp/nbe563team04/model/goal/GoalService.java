@@ -66,7 +66,7 @@ public class GoalService {
         List<Goal> goals = goalRepository.findByCompanyCompanyId(companyId);
 
 
-        List<GoalResponseDto> result = new ArrayList<>();
+        List<GoalResponseDto> dtos = new ArrayList<>();
 
         for (Goal goal : goals) {
             List<Todo> todos = Optional.ofNullable(
@@ -93,10 +93,10 @@ public class GoalService {
                     .categoryName(category.getCategoryName())
                     .build();
 
-            result.add(dto);
+            dtos.add(dto);
         }
 
-        return result;
+        return dtos;
     }
 
 
@@ -147,7 +147,7 @@ public class GoalService {
                 .count();
         int percent = total == 0 ? 0 : (int) ((done * 100.0) / total);
 
-        return GoalResponseDto.builder()
+        GoalResponseDto dto = GoalResponseDto.builder()
                 .goalId(goal.getGoalId())
                 .title(goal.getTitle())
                 .startDate(goal.getStartDate())
@@ -157,6 +157,8 @@ public class GoalService {
                 .progress(percent)
                 .categoryName(category.getCategoryName())
                 .build();
+
+        return dto;
     }
 
 
