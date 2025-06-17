@@ -11,6 +11,8 @@ import com.grepp.nbe563team04.model.member.MemberService;
 import com.grepp.nbe563team04.model.member.dto.MemberDto;
 import com.grepp.nbe563team04.model.member.entity.Member;
 import jakarta.validation.Valid;
+
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +28,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -212,31 +215,29 @@ public class AdminController {
         return "admin/achievement-management";
     }
 
-    @GetMapping("/edit/{id}")
-    public String editForm(@PathVariable Long id, Model model) {
-        Achievement achievement = achieveRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("업적 없음: " + id));
-        model.addAttribute("achievement", achievement);
-        return "admin/edit-achievement";
+//    @GetMapping("/edit/{id}")
+//    public String editForm(@PathVariable Long id, Model model) {
+//        Achievement achievement = achieveRepository.findById(id)
+//                .orElseThrow(() -> new IllegalArgumentException("업적 없음: " + id));
+//        model.addAttribute("achievement", achievement);
+//        return "admin/edit-achievement";
+//    }
+
+    @PostMapping("/achievement/edit/{id}")
+    public String update(@PathVariable Long id, @ModelAttribute Achievement updated,
+                         @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
+        try {
+            achievementService.updateAchievement(id, updated, imageFile);
+        } catch (IOException e) {
+            log.error("업적 이미지 업로드 실패", e);
+        }
+        return "redirect:/admin/achievement-management";
     }
 
-    @PostMapping("/edit/{id}")
-    public String update(@PathVariable Long id, @ModelAttribute Achievement updated) {
-        Achievement achievement = achieveRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("업적 없음: " + id));
-
-        achievement.setName(updated.getName());
-        achievement.setDescription(updated.getDescription());
-        achievement.setImageUrl(updated.getImageUrl());
-
-        achieveRepository.save(achievement);
-        return "redirect:/achievement-management";
-    }
-
-    @GetMapping("/delete/{id}")
+    @GetMapping("/achievement/delete/{id}")
     public String delete(@PathVariable Long id) {
-        achieveRepository.deleteById(id);
-        return "redirect:/achievement-management";
+        achievementService.deleteAchievement(id);
+        return "redirect:/admin/achievement-management";
     }
 
     // 대시보드-방사형 차트

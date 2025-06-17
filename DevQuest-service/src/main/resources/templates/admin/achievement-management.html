@@ -71,7 +71,7 @@
         <div id="editAchievementModal" class="modal">
           <div class="modal-content">
             <h4>업적 수정</h4>
-            <form id="editAchievementForm" method="post">
+            <form id="editAchievementForm" method="post" enctype="multipart/form-data">
               <input type="hidden" id="edit-id" name="id">
               <div class="input-field">
                 <input type="text" id="edit-name" name="name" required>
@@ -81,9 +81,14 @@
                 <textarea id="edit-description" name="description" class="materialize-textarea" required></textarea>
                 <label for="edit-description">설명</label>
               </div>
-              <div class="input-field">
-                <input type="text" id="edit-imageUrl" name="imageUrl">
-                <label for="edit-imageUrl">이미지 URL</label>
+              <div class="file-field input-field">
+                <div class="btn">
+                  <span>파일 선택</span>
+                  <input type="file" name="imageFile">
+                </div>
+                <div class="file-path-wrapper">
+                  <input class="file-path validate" type="text" placeholder="업적 이미지를 선택하세요">
+                </div>
               </div>
             </form>
           </div>
@@ -124,7 +129,6 @@
     document.getElementById('edit-id').value = elem.dataset.id;
     document.getElementById('edit-name').value = elem.dataset.name;
     document.getElementById('edit-description').value = elem.dataset.description;
-    document.getElementById('edit-imageUrl').value = elem.dataset.imageurl;
 
     M.updateTextFields(); // 라벨 고정
 

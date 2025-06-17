@@ -11,9 +11,15 @@ public class WebConfig implements WebMvcConfigurer {
     @Value("${upload.path}")
     private String uploadPath;
 
+    @Value("${upload.achievement-path}")
+    private String achievementPath;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/profile/**")
                 .addResourceLocations("file:" + uploadPath + "/");
+
+        registry.addResourceHandler("/upload/achievement/**")
+                .addResourceLocations("file:" + achievementPath + "/");
     }
 }
