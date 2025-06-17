@@ -1,7 +1,6 @@
 package com.grepp.nbe563team04.model.member;
 
 import com.grepp.nbe563team04.model.member.entity.Member;
-
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,5 +16,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Boolean existsByEmail(String email);
 
-    List<Long> findWithAchievedIdsByUserId(Long userId);
+    long countByDeletedAtIsNull();
+
+    List<Member> findAllByDeletedAtIsNull();
 }

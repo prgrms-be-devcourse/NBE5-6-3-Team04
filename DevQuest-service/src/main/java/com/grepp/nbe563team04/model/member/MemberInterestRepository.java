@@ -12,5 +12,14 @@ import org.springframework.stereotype.Repository;
 public interface MemberInterestRepository extends JpaRepository<MemberInterest, Long> {
 
     @Query("SELECT mi FROM MemberInterest mi WHERE mi.member = :member")
-    List<MemberInterest> findByMember(@Param("member") Member member);
+    List<MemberInterest> findByUser(@Param("member") Member member);
+
+    @Query("SELECT mi.interest.interestName FROM MemberInterest mi WHERE mi.member.userId = :userId AND mi.interest.type = 'ROLE'")
+    List<String> findTop6ByUserIdAndType(@Param("userId") Long userId);
+
+    @Query("SELECT COUNT(mi) FROM MemberInterest mi WHERE mi.interest.interestName = :interestName AND mi.interest.type = 'SKILL'")
+    Integer countByInterestName(@Param("interestName") String interestName);
+
+    @Query("SELECT mi.interest.interestName FROM MemberInterest mi WHERE mi.member.userId = :userId AND mi.interest.type = 'SKILL'")
+    List<String> findTop6SkillsByUserId(@Param("userId") Long userId);
 }

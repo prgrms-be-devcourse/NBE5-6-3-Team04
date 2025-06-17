@@ -51,6 +51,14 @@ public class MemberService implements UserDetailsService {
     private final MembersAchieveRepository membersAchieveRepository;
     private final FileUtil fileUtil;
 
+    /**
+     * 활성 상태인 전체 사용자 수를 조회합니다.
+     * @return 활성 상태인 사용자 수
+     */
+    public long countActiveUsers() {
+        return memberRepository.countByDeletedAtIsNull();
+    }
+
     @Transactional
     public Long signup(MemberDto dto, Role role) {
         Member member = mapper.map(dto, Member.class);
