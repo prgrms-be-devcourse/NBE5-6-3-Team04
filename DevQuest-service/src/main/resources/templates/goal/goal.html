@@ -138,8 +138,8 @@
             <div class="dropdown" onclick="event.stopPropagation()">
               <button class="dropdown-toggle" type="button"> ⋮  </button>
               <ul class="dropdown-menu">
-                <li class="update-btn" th:attr="data-id=${goal.goalId}">수정</li>
-                <li class="delete-btn" th:attr="data-id=${goal.goalId}">삭제</li>
+                <li class="update-btn" th:attr="data-goal-id=${goal.goalId}">수정</li>
+                <li class="delete-btn" th:attr="data-goal-id=${goal.goalId}">삭제</li>
               </ul>
             </div>
           </div>
@@ -161,15 +161,15 @@
 
               <input type="checkbox"
                      th:checked="${todo.isDone}"
-                     th:attr="data-id=${todo.todoId}"
+                     th:attr="data-todo-id=${todo.todoId}"
                      class="todo-checkbox">
 
               <a class="todo-content" th:href="${todo.url}" th:text="${todo.content}">투두 내용</a>
 
 
               <div class="todo-actions">
-                <button type="button" class="update-todo-btn" th:attr="data-id=${todo.todoId}">수정</button>
-                <button type="button" class="delete-todo-btn" th:attr="data-id=${todo.todoId}">삭제</button>
+                <button type="button" class="update-todo-btn" th:attr="data-todo-id=${todo.todoId}">수정</button>
+                <button type="button" class="delete-todo-btn" th:attr="data-todo-id=${todo.todoId}">삭제</button>
               </div>
             </li>
           </ul>
@@ -225,7 +225,7 @@
 
 <!--  모달 모음 -->
 
-  <!-- 목표  생성 모달 -->
+  <!-- 목표  생성  모달 -->
   <div id="goalModal" class="modal modal-large" style="display: none;">
     <div class="modal-content">
       <span class="close" id="goalModalClose">&times;</span>
@@ -269,6 +269,16 @@
       <span class="close" id="recommendModalClose">&times;</span>
       <h2>추천 문제 생성</h2>
       <form id="problem-form">
+        <label for="itemsPerPage">한 페이지에 표시할 문제 수:</label>
+        <select id="itemsPerPage">
+          <option value="10" selected>10개</option>
+          <option value="20" >20개</option>
+          <option value="30">30개</option>
+          <option value="40">40개</option>
+          <option value="50">50개</option>
+        </select>
+        <input type="text" id="problemSearch" placeholder="문제 제목 검색..." />
+
         <input type="hidden" name="goalId" value="">
         <div id="problem-list"></div>
         <button type="submit">추가</button>
@@ -279,9 +289,15 @@
     <div th:replace="~{fragments/achievement-modal :: achievementModal}"></div>
     <div th:replace="~{fragments/levelup-modal.html :: levelUpModal}"></div>
 
-  <script src="/js/goal.js"></script>
+
 </div>
 </body>
+
+<script  src="/js/goal/goal-service.js"></script>
+<script  src="/js/goal/todo-service.js"></script>
+<script  src="/js/goal/recommend-problem.js"></script>
+<script  src="/js/goal/full-calendar.js"></script>
+<script  src="/js/goal/goal.js"></script>
 
 <script defer src="/js/achievement/congratulation.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
