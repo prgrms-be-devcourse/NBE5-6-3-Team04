@@ -175,7 +175,7 @@
                      th:attr="data-todo-id=${todo.todoId}"
                      class="todo-checkbox">
 
-              <a class="todo-content" th:href="${todo.url}" th:text="${todo.content}">투두 내용</a>
+              <a class="todo-content" th:href="${todo.url}" target="_blank" th:text="${todo.content}">투두 내용</a>
 
 
               <div class="todo-actions">
@@ -287,8 +287,12 @@
           <option value="30">30개</option>
           <option value="40">40개</option>
           <option value="50">50개</option>
-        </select>
-        <input type="text" id="problemSearch" placeholder="문제 제목 검색..." />
+          <option value="100">100개</option>
+          <option value="1000">1000개</option>
+        </select><br>
+        <label >해결된 문제 포함하기 : </label>
+        <input type="checkbox" id="includeSolved" class="custom-checkbox"><br><br>
+        <input type="text" id="problemSearch" placeholder="문제 제목 검색..." /><br><br>
 
         <input type="hidden" name="goalId" value="">
         <div id="problem-list"></div>
@@ -302,8 +306,10 @@
 
 
     <script src="/js/achievement/mypageAchieve.js"></script>
+
 </div>
 </body>
+
 <script  src="/js/goal/goal-service.js"></script>
 <script  src="/js/goal/todo-service.js"></script>
 <script  src="/js/goal/recommend-problem.js"></script>
@@ -312,8 +318,6 @@
 
 <script defer src="/js/achievement/congratulation.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
-
 <script defer src="/js/level/level.js"></script>
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js'></script>
 </html>

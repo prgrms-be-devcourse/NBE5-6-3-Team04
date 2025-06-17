@@ -71,6 +71,12 @@
 /* AI 박스 전체 */
 /* ai-box를 모달에 맞게 채움 */
 .ai-box {
+  width: 87%;
+  margin-bottom: 10px;
+  padding: 1rem;
+  background-color: white; /* 연한 초록색 */
+  border: 2px solid rgba(85, 67, 168, 0.47);
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -92,7 +98,6 @@
   border-radius: 50%;
   object-fit: cover;
 }
-
 
 .ai-title {
   font-size: 1rem;
@@ -1270,4 +1275,114 @@ body {
 }
 
 
+
+
+.problem-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(128, 0, 255, 0.1); /* 보라 그림자 */
+}
+
+.problem-table th,
+.problem-table td {
+  border-bottom: 1px solid #c7a8ff;  /* 가로선 (보라색) */
+  border-right: 1px solid #e5ccff;   /* 세로선 (옅은 보라) */
+  padding: 12px 16px;
+  text-align: left;
+  color: #3e206d;
+}
+
+.problem-table th:last-child,
+.problem-table td:last-child {
+  border-right: none; /* 마지막 열에는 오른쪽 선 제거 */
+}
+
+.problem-table thead {
+  background-color: #f5f0ff; /* 연보라 배경 */
+  font-weight: bold;
+  color: #5e35b1; /* 진보라 텍스트 */
+}
+
+.problem-table tr:hover {
+  background-color: #f3eaff; /* hover시 옅은 보라 */
+}
+
+.problem-table td:first-child input[type="checkbox"] {
+  transform: scale(1.2);
+  accent-color: #7e57c2; /* 체크박스 보라색 */
+}
+
+
+
+.pagination button {
+  background-color: #e0d4ff;
+  color: #4b0082;
+  border: none;
+  margin: 2px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background-color: #9575cd;
+  color: white;
+}
+
+.pagination button:hover {
+  background-color: #b39ddb;
+}
+
+
+#itemsPerPage {
+  padding: 4px 8px;
+  font-size: 13px;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #f9f0ff;
+  color: #4a148c;
+  width: auto; /* 너무 넓어지지 않도록 */
+  max-width: 150px;
+}
+
+/* 보라색 커스텀 체크박스 */
+.custom-checkbox {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  appearance: none;
+  border: 2px solid #7e57c2;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #fff;
+  transition: all 0.2s ease-in-out;
+}
+
+.custom-checkbox:checked {
+  background-color: #7e57c2;
+  border-color: #7e57c2;
+}
+
+.custom-checkbox:checked::after {
+  content: "✔";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.problem-table td a {
+  text-decoration: none;
+  color: inherit;
+}
+.problem-table td a:hover {
+  background-color: #f3e5f5;
+}
 

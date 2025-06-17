@@ -79,10 +79,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // 전역 변수로 상태 유지
 let currentProblems = []; //현재 문제들
+let checkedProblemIds = new Set();// 체크된 문제들
 let currentSort = { key: null, ascending: true };
 let currentPage = 1;
-// 체크된 문제 기억용 전역 변수
-let checkedProblemIds = new Set();
+
 
 // 추천 문제 조회 함수
 function selectProblem() {
@@ -110,13 +110,19 @@ function selectProblem() {
 function renderProblemList(problems) {
     const selectElement = document.getElementById("itemsPerPage"); // 페이지 당 몇개 정렬 할것인지 선택 요소
     const searchInput = document.getElementById("problemSearch"); // 검색할 문제 제목 인풋 텍스트
+    const includeSolved = document.getElementById("includeSolved").checked; // 해결 문제 포함 미포함 여부
     const container = document.getElementById("problem-list"); // 문제 목록 div
     container.innerHTML = "";
 
     const itemsPerPage = parseInt(selectElement.value); // 페이지당 문제 출력수 정수로 바꾸어 저장
 
     // 검색 필터 적용
-    const filtered = problems.filter(p => p.title.toLowerCase().includes(searchInput.value.toLowerCase())); //  문제 제목 검색 필터 적용
+    let filtered = problems.filter(p => p.title.toLowerCase().includes(searchInput.value.toLowerCase())); //  문제 제목 검색 필터 적용
+
+    // 해결 문제 필터 적용
+    if (!includeSolved) { // 체크가 되어 있지 않으면 통과
+        filtered = filtered.filter(p => p.solveCount === 0);
+    }
 
     const start = (currentPage - 1) * itemsPerPage;
     const end = start + itemsPerPage;
@@ -148,7 +154,7 @@ function renderProblemList(problems) {
       <td><input type="checkbox" name="problemId" value="${p.problemId}" ${isChecked ? "checked" : ""}></td>
       <td>${p.problemId}</td>
       <td>${p.site}</td>
-      <td>${p.title}</td>
+      <td><a href="${p.url}" target="_blank">${p.title}</a></td>
       <td>${p.level}</td>
       <td>${p.solveCount}</td>
     `;
@@ -192,21 +198,21 @@ function renderPagination(totalItems, itemsPerPage) {
 
 // 정렬 아이콘 렌더링
 function renderSortIcon(key) {
-    if (currentSort.key !== key) return '';
-    return currentSort.ascending ? ' ▲' : ' ▼';
+    if (currentSort.key !== key) return ''; // 자신과 키가 다르면 아이콘 붙이지 않음
+    return currentSort.ascending ? ' ▲' : ' ▼'; // 자신의 값이 true면 ▲ / false 면 ▼
 }
 
 // 정렬 함수 전역 등록
 window.sortProblems = function (key) {
     if (currentSort.key === key) {
-        currentSort.ascending = !currentSort.ascending;
+        currentSort.ascending = !currentSort.ascending; // 정렬 방향 반전
     } else {
         currentSort.key = key;
         currentSort.ascending = true;
     }
 
     currentProblems.sort((a, b) => {
-        if (typeof a[key] === "string") {
+        if (typeof a[key] === "string") { // 정렬 대상이 문자열인지 확인
             return currentSort.ascending
                 ? a[key].localeCompare(b[key])
                 : b[key].localeCompare(a[key]);
@@ -224,11 +230,12 @@ window.sortProblems = function (key) {
 document.addEventListener("DOMContentLoaded", () => {
     const searchInput = document.getElementById("problemSearch");
     const selectElement = document.getElementById("itemsPerPage");
+    const includeSolved = document.getElementById("includeSolved");
 
     //  검색 입력 이벤트
     if (searchInput) {
         searchInput.addEventListener("input", () => {
-            // currentPage = 1;
+            currentPage = 1;
             renderProblemList(currentProblems);
         });
     }
@@ -236,10 +243,19 @@ document.addEventListener("DOMContentLoaded", () => {
     // 페이지당 항목 수 변경 이벤트
     if (selectElement) {
         selectElement.addEventListener("change", () => {
-            // currentPage = 1;
+            currentPage = 1;
             renderProblemList(currentProblems);
         });
     }
+
+    if (includeSolved) {
+        includeSolved.addEventListener("change", () => {
+            currentPage = 1;
+            renderProblemList(currentProblems);
+        });
+    }
+
+
 
 
 });
