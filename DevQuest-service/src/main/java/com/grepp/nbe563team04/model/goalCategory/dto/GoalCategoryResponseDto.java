@@ -10,8 +10,10 @@ import lombok.Setter;
 
 @Getter
 @AllArgsConstructor
+@Builder
 public class GoalCategoryResponseDto {
     private Long categoryId;
     private String categoryName;
     private String color;
+    private String koreanName;
 }

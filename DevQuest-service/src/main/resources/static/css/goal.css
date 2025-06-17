@@ -1351,9 +1351,6 @@ body {
   max-width: 150px;
 }
 
-
-
-
 .problem-table {
   width: 100%;
   border-collapse: collapse;
@@ -1462,4 +1459,3 @@ body {
 .problem-table td a:hover {
   background-color: #f3e5f5;
 }
-

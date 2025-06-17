@@ -25,12 +25,20 @@ repositories {
 }
 
 dependencies {
+    // https://mvnrepository.com/artifact/io.github.cdimascio/dotenv-kotlin
+    implementation("io.github.cdimascio:dotenv-kotlin:6.5.1")
     implementation("org.springframework.boot:spring-boot-starter-mail")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
+
+    // https://mvnrepository.com/artifact/mysql/mysql-connector-java
+    implementation("mysql:mysql-connector-java:8.0.33")
+
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
     developmentOnly("org.springframework.boot:spring-boot-devtools")

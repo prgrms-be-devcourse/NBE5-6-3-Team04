@@ -26,7 +26,7 @@ function goalComplete(goalId) {
           setTimeout(() => {
             document.getElementById('levelUpModal').style.display = 'none';
             location.reload();
-          }, 400);
+          }, 4000);
         } else {
           alert('목표 완료! 경험치 +10');
           location.reload();
@@ -37,6 +37,21 @@ function goalComplete(goalId) {
         alert('요청 중 오류가 발생했습니다.');
       });
 }
+
+// 목표진행률 상 완료 목표 버튼
+document.addEventListener('DOMContentLoaded', () => {
+  const toggleBtn = document.getElementById('toggleDoneGoalsBtn');
+  let isHidden = false;
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      const doneGoals = document.querySelectorAll('.goal-process .done-goal');
+      doneGoals.forEach(goal => goal.classList.toggle('hidden'));
+      isHidden = !isHidden;
+      toggleBtn.textContent = isHidden ? '완료된 목표 보기' : '완료된 목표 숨기기';
+    });
+  }
+});
 
 // 드롭다운(수정, 삭제)
 document.addEventListener('DOMContentLoaded', () => {
@@ -114,23 +129,8 @@ function showCompletedGoals() {
 }
 
 
-// 목표진행률 상 완료 목표 버튼
-document.addEventListener('DOMContentLoaded', () => {
-  const toggleBtn = document.getElementById('toggleDoneGoalsBtn');
-  let isHidden = false;
 
-  if (toggleBtn) {
-    toggleBtn.addEventListener('click', () => {
-      const doneGoals = document.querySelectorAll('.goal-process .done-goal');
-      doneGoals.forEach(goal => goal.classList.toggle('hidden'));
-      isHidden = !isHidden;
-      toggleBtn.textContent = isHidden ? '완료된 목표 보기' : '완료된 목표 숨기기';
-    });
-  }
-});
-
-
-
+//Gemini 답장 메시지
 document.addEventListener("DOMContentLoaded", () => {
   const inputBox = document.getElementById("userMessageInput");
   const chatHistory = document.getElementById("chatHistory");
@@ -154,6 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
     autoResizeTextarea(this);
   });
 
+  // 전송 버튼 클릭
   document.getElementById("sendBtn").addEventListener("click", handleUserInput);
 
   function handleUserInput() {

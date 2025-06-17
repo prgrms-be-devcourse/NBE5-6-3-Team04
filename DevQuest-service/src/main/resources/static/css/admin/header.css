@@ -9,7 +9,7 @@ body {
 }
 
 .top-header {
-  position: absolute;         
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -57,8 +57,8 @@ body {
 }
 
 header, .top-bar, .top-menu {
-    background: transparent !important;
-    box-shadow: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 로그아웃 버튼 우측 정렬 및 동일 여백
@@ -66,9 +66,10 @@ header, .top-bar, .top-menu {
   font-size: 1rem;
   color: #aaa;
   cursor: pointer;
-  margin-top: 0.3rem; 
+  margin-top: 0.3rem;
 }
 
 .logout:hover {
   color: #333;
+  cursor: pointer;
 }

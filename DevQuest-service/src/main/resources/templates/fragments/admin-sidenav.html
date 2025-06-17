@@ -1,26 +1,22 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<body>
 <div th:fragment="sidenav">
   <ul id="slide-out" class="sidenav">
     <li>
-      <div class="user-view">
+      <div class="user-view" style="text-align:center; display:flex; flex-direction:column; align-items:center;">
         <div class="background">
-<!--          <img src="/img/DevQuestLogo.png">-->
         </div>
-        <a href="#member"><img class="circle" src="/img/profile.png"></a>
+        <a href="#member" style="display:flex; justify-content:center; align-items:center;">
+          <img class="circle" src="/img/profile.png">
+        </a>
       </div>
     </li>
 
-    <li><a href="/admin/dashboard">DevQuest</a></li>
+    <li>
+      <a href="/admin/dashboard" style="text-align:center; display:block; font-weight:bold; font-size:1.2rem;">DevQuest</a>
+    </li>
     <li><a href="/admin/dashboard"><i class="material-icons">desktop_mac</i>대시 보드</a></li>
-    <li><a href="/admin/company-stats"><i class="material-icons">equalizer</i>기업 통계</a></li>
-    <li><a href="/admin/company-color"><i class="material-icons">brush</i>기업 관리</a></li>
+    <li><a href="/admin/company/colors"><i class="material-icons">brush</i>기업 색상 관리</a></li>
+    <li><a href="/admin/company/stats/aliases"><i class="material-icons">translate</i>기업 유사어 관리</a></li>
     <li><a href="/admin/member-management"><i class="material-icons">person</i>회원 관리</a></li>
-    <li><a href="/admin"><i class="material-icons">fiber_new</i>업적 관리</a></li>
+    <li><a href="/admin/achievement-management"><i class="material-icons">fiber_new</i>업적 관리</a></li>
   </ul>
 </div>
-
-
-</body>
-</html>
