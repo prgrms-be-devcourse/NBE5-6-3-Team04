@@ -1078,4 +1078,11 @@ body {
   font-weight: bold;
 }
 
+.problem-table td a {
+  text-decoration: none;
+  color: inherit;
+}
+.problem-table td a:hover {
+  background-color: #f3e5f5;
+}
 
