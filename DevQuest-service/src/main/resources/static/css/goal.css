@@ -1015,6 +1015,8 @@ body {
   accent-color: #7e57c2; /* 체크박스 보라색 */
 }
 
+
+
 .pagination button {
   background-color: #e0d4ff;
   color: #4b0082;
@@ -1047,5 +1049,9 @@ body {
   max-width: 150px;
 }
 
+.includeSolved{
+  transform: scale(1.2);
+  accent-color: #7e57c2; /* 체크박스 보라색 */
+}
 
 
