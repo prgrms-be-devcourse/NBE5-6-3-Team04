@@ -278,4 +278,22 @@ button {
     font-weight: 700; /* ✅ 더 진하게 */
     text-align: center;
 }
+#achievementDetailModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4); /* 어두운 배경 */
+    z-index: 9998;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* 모달 활성화 */
+#achievementDetailModal.active {
+    display: block;
+    opacity: 1;
+}
 

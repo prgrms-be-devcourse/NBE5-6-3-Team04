@@ -27,3 +27,16 @@
     margin-bottom: 16px;
     text-align: center;
 }
+
+#achievementCongratsModal {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+
+#achievementCongratsModal.active {
+    display: block;
+    opacity: 1;
+    pointer-events: auto;
+}
