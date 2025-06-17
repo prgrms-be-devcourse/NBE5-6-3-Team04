@@ -38,6 +38,22 @@ function goalComplete(goalId) {
       });
 }
 
+
+// 목표진행률 상 완료 목표 버튼
+document.addEventListener('DOMContentLoaded', () => {
+  const toggleBtn = document.getElementById('toggleDoneGoalsBtn');
+  let isHidden = false;
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      const doneGoals = document.querySelectorAll('.goal-process .done-goal');
+      doneGoals.forEach(goal => goal.classList.toggle('hidden'));
+      isHidden = !isHidden;
+      toggleBtn.textContent = isHidden ? '완료된 목표 보기' : '완료된 목표 숨기기';
+    });
+  }
+});
+
 // 드롭다운(수정, 삭제)
 document.addEventListener('DOMContentLoaded', () => {
   const toggles = document.querySelectorAll('.dropdown-toggle');
@@ -114,20 +130,7 @@ function showCompletedGoals() {
 }
 
 
-// 목표진행률 상 완료 목표 버튼
-document.addEventListener('DOMContentLoaded', () => {
-  const toggleBtn = document.getElementById('toggleDoneGoalsBtn');
-  let isHidden = false;
 
-  if (toggleBtn) {
-    toggleBtn.addEventListener('click', () => {
-      const doneGoals = document.querySelectorAll('.goal-process .done-goal');
-      doneGoals.forEach(goal => goal.classList.toggle('hidden'));
-      isHidden = !isHidden;
-      toggleBtn.textContent = isHidden ? '완료된 목표 보기' : '완료된 목표 숨기기';
-    });
-  }
-});
 
 
 

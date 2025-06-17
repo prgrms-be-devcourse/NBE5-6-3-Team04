@@ -30,7 +30,7 @@ public class CalendarApiController {
         List<Map<String, Object>> events = new ArrayList<>();
 
         for (GoalResponseDto goal : goals) {
-            List<TodoResponseDto> todos = todoService.getByGoal(goal.getGoalId());
+            List<TodoResponseDto> todos = todoService.getTodosByGoal(goal.getGoalId());
             for (TodoResponseDto todo : todos) {
 
                 Map<String, Object> extendedProps = new HashMap<>();
