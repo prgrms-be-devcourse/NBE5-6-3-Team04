@@ -176,13 +176,60 @@ function renderProblemList(problems) {
 }
 
 // 페이지네이션 렌더링
+// function renderPagination(totalItems, itemsPerPage) {
+//     const pagination = document.createElement("div");
+//     pagination.className = "pagination";
+//
+//     const totalPages = Math.ceil(totalItems / itemsPerPage);
+//
+//     for (let i = 1; i <= totalPages; i++) {
+//         const btn = document.createElement("button");
+//         btn.textContent = i;
+//         btn.className = i === currentPage ? "active" : "";
+//         btn.addEventListener("click", () => {
+//             currentPage = i;
+//             renderProblemList(currentProblems);
+//         });
+//         pagination.appendChild(btn);
+//     }
+//
+//     document.getElementById("problem-list").appendChild(pagination);
+// }
+
 function renderPagination(totalItems, itemsPerPage) {
     const pagination = document.createElement("div");
     pagination.className = "pagination";
 
     const totalPages = Math.ceil(totalItems / itemsPerPage);
+    const blockSize = 10; // 한 블록에 보여줄 페이지 수
+    const currentBlock = Math.ceil(currentPage / blockSize);
+    const startPage = (currentBlock - 1) * blockSize + 1;
+    const endPage = Math.min(startPage + blockSize - 1, totalPages);
 
-    for (let i = 1; i <= totalPages; i++) {
+    // [처음] 버튼
+    if (startPage > 1) {
+        const firstBtn = document.createElement("button");
+        firstBtn.textContent = "처음";
+        firstBtn.addEventListener("click", () => {
+            currentPage = 1;
+            renderProblemList(currentProblems);
+        });
+        pagination.appendChild(firstBtn);
+    }
+
+    // [이전] 버튼
+    if (startPage > 1) {
+        const prevBtn = document.createElement("button");
+        prevBtn.textContent = "이전";
+        prevBtn.addEventListener("click", () => {
+            currentPage = startPage - 1;
+            renderProblemList(currentProblems);
+        });
+        pagination.appendChild(prevBtn);
+    }
+
+    // 페이지 숫자 버튼
+    for (let i = startPage; i <= endPage; i++) {
         const btn = document.createElement("button");
         btn.textContent = i;
         btn.className = i === currentPage ? "active" : "";
@@ -191,6 +238,28 @@ function renderPagination(totalItems, itemsPerPage) {
             renderProblemList(currentProblems);
         });
         pagination.appendChild(btn);
+    }
+
+    // [다음] 버튼
+    if (endPage < totalPages) {
+        const nextBtn = document.createElement("button");
+        nextBtn.textContent = "다음";
+        nextBtn.addEventListener("click", () => {
+            currentPage = endPage + 1;
+            renderProblemList(currentProblems);
+        });
+        pagination.appendChild(nextBtn);
+    }
+
+    // [끝] 버튼
+    if (endPage < totalPages) {
+        const lastBtn = document.createElement("button");
+        lastBtn.textContent = "끝";
+        lastBtn.addEventListener("click", () => {
+            currentPage = totalPages;
+            renderProblemList(currentProblems);
+        });
+        pagination.appendChild(lastBtn);
     }
 
     document.getElementById("problem-list").appendChild(pagination);
