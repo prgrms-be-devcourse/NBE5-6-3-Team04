@@ -87,14 +87,12 @@ public class AdminController {
             // 차트 데이터 조회 시작
             log.info("차트 데이터 조회 시작");
 
-            // 모든 활성 회원의 언어 관심도 데이터 수집
+            // 모든 활성 회원의 언어 관심도 데이터 수집 - N+1 문제 해결
             Map<String, Integer> langCounts = new HashMap<>();
-            for (MemberDto memberDto : activeUsers) {
-                Member member = memberService.findByEmail(memberDto.getEmail());
-                List<String> memberLangs = memberInterestService.getTop6Langs(member.getEmail());
-                for (String lang : memberLangs) {
-                    langCounts.merge(lang, 1, Integer::sum);
-                }
+            // 한 번에 모든 회원의 언어 관심도를 조회하는 메서드 사용
+            List<String> allMemberLangs = memberInterestService.getAllMemberTopLangs();
+            for (String lang : allMemberLangs) {
+                langCounts.merge(lang, 1, Integer::sum);
             }
 
             // 상위 6개 언어 선택
@@ -185,9 +183,9 @@ public class AdminController {
         model.addAttribute("deletedMembers", deletedMembers);
         model.addAttribute("adminMembers", adminMembers);
         model.addAttribute("_csrf", csrfToken);
-        model.addAttribute("nickname", principal.getUser().getNickname());
+        model.addAttribute("nickname", principal.getMember().getNickname());
 
-        log.info("닉네임: {}", principal.getUser().getNickname());
+        log.info("닉네임: {}", principal.getMember().getNickname());
 
         return "admin/member-management";
     }
@@ -204,13 +202,18 @@ public class AdminController {
         return "redirect:/admin/dashboard";
     }
 
-    // 대시보드-방사형 차트
-    @GetMapping("/dashboard/rader")
-    public String raderChart(Model model, Principal principal) {
-        String memberId = principal.getUsername();
-        List<String> langLabels = memberInterestService.getTop6Langs(memberId);
-        model.addAttribute("langLabels", langLabels);
-        return "dashboard";
+    @GetMapping("/achievement-management")
+    public String achievementManagement() {
+        return "admin/achievement-management";
     }
+
+    // 대시보드-방사형 차트
+//    @GetMapping("/dashboard/rader")
+//    public String raderChart(Model model, Principal principal) {
+//        String memberId = principal.getUsername();
+//        List<String> langLabels = memberInterestService.getTop6Langs(memberId);
+//        model.addAttribute("langLabels", langLabels);
+//        return "dashboard";
+//    }
 
 }

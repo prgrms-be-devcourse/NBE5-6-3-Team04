@@ -18,4 +18,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Boolean existsByEmail(String email);
 
     List<Long> findWithAchievedIdsByUserId(Long userId);
+
+    long countByDeletedAtIsNull();
+
+    List<Member> findAllByDeletedAtIsNull();
 }

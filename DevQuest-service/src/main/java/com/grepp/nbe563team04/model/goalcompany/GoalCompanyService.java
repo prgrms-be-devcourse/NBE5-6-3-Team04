@@ -34,20 +34,20 @@ public class GoalCompanyService {
     @Transactional
     public String createGoalCompany(GoalCompanyRequestDto dto, Long userId) {
         Member member = memberRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("Member not found"));
+            .orElseThrow(() -> new RuntimeException("Member not found"));
 
         // 기업명 정규화
         String normalizedCompanyName = companyNormalizationService.normalizeCompanyName(dto.getCompanyName());
 
         // GoalCompany Entity 생성
         GoalCompany company = GoalCompany.builder()
-                .member(member)
-                .companyName(normalizedCompanyName)  // 정규화된 기업명 사용
-                .content(dto.getContent())
-                .status(dto.getStatus())
-                .endDate(dto.getEndDate())
-                .createdAt(LocalDate.now())
-                .build();
+            .member(member)
+            .companyName(normalizedCompanyName)  // 정규화된 기업명 사용
+            .content(dto.getContent())
+            .status(dto.getStatus())
+            .endDate(dto.getEndDate())
+            .createdAt(LocalDate.now())
+            .build();
 
         goalCompanyRepository.save(company);
 
@@ -61,15 +61,15 @@ public class GoalCompanyService {
     // 목표 기업 단건 조회
     public GoalCompanyResponseDto getCompanyById(Long companyId) {
         GoalCompany company = goalCompanyRepository.findById(companyId) // 회사 id 로 회사 불러오기
-                .orElseThrow(() -> new RuntimeException("해당 기업이 존재하지 않습니다."));
+            .orElseThrow(() -> new RuntimeException("해당 기업이 존재하지 않습니다."));
 
         // GoalCompanyResponseDto dto 생성 - 서버에서 클라이언트로 보내기 위한 Dto 생성 ( Entity -> Dto 변환)
         GoalCompanyResponseDto dto = GoalCompanyResponseDto.builder()
-                .companyName(company.getCompanyName())
-                .content(company.getContent())
-                .status(company.getStatus().name())
-                .endDate(company.getEndDate())
-                .build();
+            .companyName(company.getCompanyName())
+            .content(company.getContent())
+            .status(company.getStatus().name())
+            .endDate(company.getEndDate())
+            .build();
 
         return dto;
     }
@@ -78,7 +78,7 @@ public class GoalCompanyService {
     @Transactional
     public void updateGoalCompany(Long companyId, GoalCompanyRequestDto dto) {
         GoalCompany company = goalCompanyRepository.findById(companyId)
-                .orElseThrow(() -> new RuntimeException("해당 기업이 존재하지 않습니다."));
+            .orElseThrow(() -> new RuntimeException("해당 기업이 존재하지 않습니다."));
 
         // 기업명 정규화
         String normalizedCompanyName = companyNormalizationService.normalizeCompanyName(dto.getCompanyName());
@@ -93,7 +93,7 @@ public class GoalCompanyService {
     @Transactional
     public void deleteGoalCompany(Long companyId) {
         GoalCompany company = goalCompanyRepository.findById(companyId) // 회사 id 로 회사 불러오기
-                .orElseThrow(() -> new RuntimeException("해당 기업이 존재하지 않습니다."));
+            .orElseThrow(() -> new RuntimeException("해당 기업이 존재하지 않습니다."));
 
         // goal 에 값이 들어 있으면 goalCompany가 삭제되지 않아 goal을 먼저 삭제하고 goalCompany를 삭제하는 로직 추가
         List<Goal> goals = goalRepository.findByCompanyCompanyId(companyId);
