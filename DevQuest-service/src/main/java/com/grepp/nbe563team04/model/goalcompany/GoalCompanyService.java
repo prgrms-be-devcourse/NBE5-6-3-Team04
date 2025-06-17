@@ -23,10 +23,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GoalCompanyService {
 
-    private final GoalCompanyRepository goalCompanyRepository;
     private final MemberRepository memberRepository;
+
+    private final GoalCompanyRepository goalCompanyRepository;
     private final GoalRepository goalRepository;
     private final TodoRepository todoRepository;
+
     private final AchievementService achievementService;
     private final CompanyNormalizationService companyNormalizationService;
 
@@ -59,12 +61,13 @@ public class GoalCompanyService {
     }
 
     // 목표 기업 단건 조회
-    public GoalCompanyResponseDto getCompanyById(Long companyId) {
+    public GoalCompanyResponseDto getGoalCompanyById(Long companyId) {
         GoalCompany company = goalCompanyRepository.findById(companyId) // 회사 id 로 회사 불러오기
             .orElseThrow(() -> new RuntimeException("해당 기업이 존재하지 않습니다."));
 
         // GoalCompanyResponseDto dto 생성 - 서버에서 클라이언트로 보내기 위한 Dto 생성 ( Entity -> Dto 변환)
         GoalCompanyResponseDto dto = GoalCompanyResponseDto.builder()
+            .companyId(companyId)
             .companyName(company.getCompanyName())
             .content(company.getContent())
             .status(company.getStatus().name())
