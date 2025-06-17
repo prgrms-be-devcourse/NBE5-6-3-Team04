@@ -136,6 +136,6 @@ public class MypageController {
     @ResponseBody
     public List<AchievementDto> getUserAchievements(@AuthenticationPrincipal Principal principal) {
         Member member = memberService.findByEmail(principal.getUsername());
-        return achievementService.getUserAchievements(member.getUserId());
+        return achievementService.getSortedAchievementsWithStatus(member.getUserId());
     }
 }
