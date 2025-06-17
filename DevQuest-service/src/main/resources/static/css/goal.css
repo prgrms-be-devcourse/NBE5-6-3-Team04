@@ -68,43 +68,159 @@
 .tags .tag:hover {
   text-decoration: underline;
 }
-
-/* AI */
+/* AI 박스 전체 */
+/* ai-box를 모달에 맞게 채움 */
 .ai-box {
-  width: 87%;
-  margin-bottom: 10px;
-  padding: 1rem;
-  background-color: white; /* 연한 초록색 */
-  border: 2px solid rgba(85, 67, 168, 0.47);
-  border-radius: 12px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  height: 100%;
+  width: 100%;
+  gap: 10px;
+  box-sizing: border-box;
 }
 
+/* AI 헤더 */
 .ai-header {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.3rem;
-  margin-bottom: 0.5rem;
+  align-items: center;
+  gap: 10px;
 }
 
 .ai-avatar {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   object-fit: cover;
 }
 
+
 .ai-title {
-  font-size: 11pt;
-  font-weight: 700;
-  color: #4a4a4a;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* 채팅 내역 */
+/* 채팅 히스토리 (스크롤만 이 안에 적용됨) */
+.chat-history {
+  flex: 1;
+  overflow-y: auto; /* ✅ 스크롤 여기에만 */
+  background-color: #f4f4ff;
+  padding: 10px;
+  border-radius: 8px;
+  min-height: 0; /* ✅ flex scroll layout 이슈 방지 */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 메시지 */
+.chat-history p {
+  max-width: 80%;
+  padding: 8px 12px;
+  border-radius: 16px;
+  font-size: 0.9rem;
+  white-space: pre-line;
+  word-break: break-word;
   margin: 0;
 }
 
+.chat-history .user {
+  align-self: flex-end;
+  background-color: #dcf8c6;
+  color: #333;
+  border-bottom-right-radius: 0;
+}
+
+.chat-history .ai {
+  align-self: flex-start;
+  color: #4a2fa7;
+  border-bottom-left-radius: 0;
+}
+
+
+/*채팅 입력창 */
+.chat-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #f5f5f5;
+  padding: 10px 12px;
+  border-radius: 24px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid #ddd;
+}
+
+/*input과 버튼 높이 일치 */
+#userMessageInput {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  outline: none;
+  height: 100%; /* ✅ 전송 버튼과 높이 맞춤 */
+}
+
+.send-btn {
+  background-color: #8c6eff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 20px;
+  cursor: pointer;
+  height: 36px; /* ✅ 버튼 높이 고정 */
+  display: flex;
+  align-items: center;
+}
+
+/*챗봇 말풍선 스타일*/
+.chat-message.ai {
+  display: flex;
+  flex-direction: row;         /* ✅ 가로 정렬 */
+  align-items: flex-start;     /* ✅ 위쪽 정렬 */
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.chat-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.chat-bubble-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 260px;
+}
+
+.chat-name {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 4px;
+  margin-left: 4px;
+}
+
+.chat-bubble {
+  background-color: #e0e4ff;
+  color: inherit; /* ✅ 부모로부터 상속 받게 만들기 */
+  padding: 10px 14px;
+  border-radius: 16px;
+  border-top-left-radius: 4px;
+  font-size: 14px;
+  line-height: 1.5;
+  word-break: break-word;
+  white-space: pre-line;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+}
+/*----------------------------*/
+
+
+/* 챗봇 응답 텍스트 영역 */
 #aiFeedBack {
   display: inline-block;
   font-weight: bold;
@@ -116,9 +232,11 @@
   white-space: pre-line;
   max-width: 100%;
   max-height: 30vh;
-  overflow-y: auto;       /* 내용이 넘칠 때만 세로 스크롤 */
+  overflow-y: auto;
 }
 
+
+/* 버튼 컨테이너 */
 .reaction {
   display: flex;
   gap: 10px;
@@ -127,6 +245,7 @@
   align-self: flex-end;
 }
 
+/* 전송 버튼 (초록색) */
 .btn-positive {
   background-color: #89ca67;
   color: white;
@@ -135,23 +254,126 @@
   border-radius: 8px;
   cursor: pointer;
 }
-
-.btn-negative {
-  background-color: #ff8279;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
 .btn-positive:hover {
   background-color: #519502;
 }
 
-.btn-negative:hover {
-  background-color: #e64509;
+/* 오른쪽 하단에 고정된 채팅창 모달 */
+.chat-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  bottom: 80px;
+  right: 20px; /* ✅ 왼쪽 → 오른쪽 */
+  width: 360px;
+  max-width: 90vw; /* ✅ 반응형 */
+  height: 480px;
+  background-color: white;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  animation-duration: 0.4s;
+  animation-fill-mode: forwards;
 }
+
+/*모달 내부 콘텐츠 설정 */
+.chat-modal-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1rem; /* ✅ 상하좌우 간격 동일 */
+  box-sizing: border-box;
+}
+
+/* 모달 닫기 버튼 */
+.chat-modal .close {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/*열기 애니메이션 (오른쪽 기준) */
+@keyframes slideUpRight {
+  from {
+    transform: translateY(100%) translateX(20%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) translateX(0);
+    opacity: 1;
+  }
+}
+
+/* 4. 닫기 애니메이션 */
+@keyframes slideDownRight {
+  from {
+    transform: translateY(0) translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%) translateX(20%);
+    opacity: 0;
+  }
+}
+
+/* 채팅 열기 버튼 */
+#openChatBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px; /* ✅ 왼쪽 → 오른쪽 */
+  background-color: #6d84ef;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+/* 채팅 입력창 */
+.chat-input-wrapper {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  background-color: #eee;
+  border-radius: 20px;
+  padding: 8px 12px;
+}
+
+/* 입력 필드 */
+#userMessageInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  outline: none;
+}
+#userMessageInput::placeholder {
+  color: #aaa;
+}
+
+/* 전송 버튼 */
+.send-btn {
+  background-color: #8c6eff;
+  color: white;
+  border: none;
+  border-radius: 16px;
+  padding: 6px 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.send-btn:hover {
+  background-color: #6d4ce9;
+}
+
+
+
+/*---------------------------------------------*/
+
 
 /* goal 진행률 */
 
