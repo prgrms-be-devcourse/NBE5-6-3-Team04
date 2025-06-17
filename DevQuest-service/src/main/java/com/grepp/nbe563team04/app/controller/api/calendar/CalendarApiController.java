@@ -16,21 +16,30 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/companies/{companyId}/events")
+@RequestMapping("/companies")
 @RequiredArgsConstructor
 public class CalendarApiController {
 
     private final GoalService goalService;
     private final TodoService todoService;
 
-    @GetMapping
+    @GetMapping("/{companyId}/events")
     public List<Map<String, Object>> getTodosByCompany(@PathVariable Long companyId) {
 
         List<GoalResponseDto> goals = goalService.getGoalsByCompanyId(companyId);
         List<Map<String, Object>> events = new ArrayList<>();
+
         for (GoalResponseDto goal : goals) {
-            List<TodoResponseDto> todos = todoService.getByGoal(goal.getGoalId());
+            List<TodoResponseDto> todos = todoService.getTodosByGoal(goal.getGoalId());
             for (TodoResponseDto todo : todos) {
+
+                Map<String, Object> extendedProps = new HashMap<>();
+                extendedProps.put("todoId", todo.getTodoId());
+                extendedProps.put("categoryName", goal.getCategoryName());
+                extendedProps.put("url", todo.getUrl());
+                extendedProps.put("endDate", todo.getEndDate());
+                extendedProps.put("isDone", todo.getIsDone());
+
                 Map<String, Object> event = new HashMap<>();
                 event.put("title", todo.getContent());
                 event.put("start", todo.getStartDate());
@@ -38,6 +47,7 @@ public class CalendarApiController {
                 event.put("color", goal.getColor());
                 event.put("url", todo.getUrl());
                 event.put("className", todo.getIsDone() ? "todo-done" : "");
+                event.put("extendedProps", extendedProps);
 
                 events.add(event);
             }
@@ -45,5 +55,10 @@ public class CalendarApiController {
         }
         return events; //Map 에 담아 json 형태로 넘기기
     }
+
+
+
+
+
 }
 

@@ -79,10 +79,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // 전역 변수로 상태 유지
 let currentProblems = []; //현재 문제들
+
 let checkedProblemIds = new Set();// 체크된 문제들
 let currentSort = { key: null, ascending: true };
 let currentPage = 1;
-
 
 // 추천 문제 조회 함수
 function selectProblem() {
@@ -155,7 +155,7 @@ function renderProblemList(problems) {
       <td>${p.problemId}</td>
       <td>${p.site}</td>
       <td><a href="${p.url}" target="_blank">${p.title}</a></td>
-      <td>${p.level}</td>
+      <td>${p.site==="백준"? "-" : p.level}</td> 
       <td>${p.solveCount}</td>
     `;
 
@@ -176,13 +176,63 @@ function renderProblemList(problems) {
 }
 
 // 페이지네이션 렌더링
+
+// function renderPagination(totalItems, itemsPerPage) {
+//     const pagination = document.createElement("div");
+//     pagination.className = "pagination";
+//
+//     const totalPages = Math.ceil(totalItems / itemsPerPage);
+//
+//     for (let i = 1; i <= totalPages; i++) {
+//         const btn = document.createElement("button");
+//         btn.textContent = i;
+//         btn.className = i === currentPage ? "active" : "";
+//         btn.addEventListener("click", () => {
+//             currentPage = i;
+//             renderProblemList(currentProblems);
+//         });
+//         pagination.appendChild(btn);
+//     }
+//
+//     document.getElementById("problem-list").appendChild(pagination);
+// }
+
+// 페이지네이션 렌더링(블록 방식 페이지네이션)
+
 function renderPagination(totalItems, itemsPerPage) {
     const pagination = document.createElement("div");
     pagination.className = "pagination";
 
     const totalPages = Math.ceil(totalItems / itemsPerPage);
+    const blockSize = 10; // 한 블록에 보여줄 페이지 수
+    const currentBlock = Math.ceil(currentPage / blockSize);
+    const startPage = (currentBlock - 1) * blockSize + 1;
+    const endPage = Math.min(startPage + blockSize - 1, totalPages);
 
-    for (let i = 1; i <= totalPages; i++) {
+    // [처음] 버튼
+    if (startPage > 1) {
+        const firstBtn = document.createElement("button");
+        firstBtn.textContent = "처음";
+        firstBtn.addEventListener("click", () => {
+            currentPage = 1;
+            renderProblemList(currentProblems);
+        });
+        pagination.appendChild(firstBtn);
+    }
+
+    // [이전] 버튼
+    if (startPage > 1) {
+        const prevBtn = document.createElement("button");
+        prevBtn.textContent = "이전";
+        prevBtn.addEventListener("click", () => {
+            currentPage = startPage - 1;
+            renderProblemList(currentProblems);
+        });
+        pagination.appendChild(prevBtn);
+    }
+
+    // 페이지 숫자 버튼
+    for (let i = startPage; i <= endPage; i++) {
         const btn = document.createElement("button");
         btn.textContent = i;
         btn.className = i === currentPage ? "active" : "";
@@ -193,11 +243,33 @@ function renderPagination(totalItems, itemsPerPage) {
         pagination.appendChild(btn);
     }
 
+    // [다음] 버튼
+    if (endPage < totalPages) {
+        const nextBtn = document.createElement("button");
+        nextBtn.textContent = "다음";
+        nextBtn.addEventListener("click", () => {
+            currentPage = endPage + 1;
+            renderProblemList(currentProblems);
+        });
+        pagination.appendChild(nextBtn);
+    }
+
+    // [끝] 버튼
+    if (endPage < totalPages) {
+        const lastBtn = document.createElement("button");
+        lastBtn.textContent = "끝";
+        lastBtn.addEventListener("click", () => {
+            currentPage = totalPages;
+            renderProblemList(currentProblems);
+        });
+        pagination.appendChild(lastBtn);
+    }
     document.getElementById("problem-list").appendChild(pagination);
 }
 
 // 정렬 아이콘 렌더링
 function renderSortIcon(key) {
+
     if (currentSort.key !== key) return ''; // 자신과 키가 다르면 아이콘 붙이지 않음
     return currentSort.ascending ? ' ▲' : ' ▼'; // 자신의 값이 true면 ▲ / false 면 ▼
 }
@@ -206,6 +278,7 @@ function renderSortIcon(key) {
 window.sortProblems = function (key) {
     if (currentSort.key === key) {
         currentSort.ascending = !currentSort.ascending; // 정렬 방향 반전
+
     } else {
         currentSort.key = key;
         currentSort.ascending = true;
@@ -254,8 +327,6 @@ document.addEventListener("DOMContentLoaded", () => {
             renderProblemList(currentProblems);
         });
     }
-
-
 
 
 });

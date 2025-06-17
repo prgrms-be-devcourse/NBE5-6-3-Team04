@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,20 +48,28 @@ public class TodoService {
         todoRepository.save(todo);
     }
 
+
     // 특정 목표(goalId)에 속한 투두 목록 조회
     @Transactional
-    public List<TodoResponseDto> getByGoal(Long goalId) {
-        return todoRepository.findByGoalGoalId(goalId).stream()
-                .map(todo -> TodoResponseDto.builder()
-                        .todoId(todo.getTodoId())
-                        .content(todo.getContent())
-                        .url(todo.getUrl())
-                        .startDate(todo.getStartDate())
-                        .endDate(todo.getEndDate())
-                        .isDone(todo.getIsDone())
-                        .goalId(todo.getGoal().getGoalId())
-                        .build())
-                .collect(Collectors.toList());
+    public List<TodoResponseDto> getTodosByGoal(Long goalId) {
+        List<Todo> todos = todoRepository.findByGoalGoalId(goalId);
+
+        List<TodoResponseDto> dtos = new ArrayList<>();
+
+        for(Todo todo :  todos) {
+            TodoResponseDto dto = TodoResponseDto.builder()
+                    .todoId(todo.getTodoId())
+                    .content(todo.getContent())
+                    .url(todo.getUrl())
+                    .startDate(todo.getStartDate())
+                    .endDate(todo.getEndDate())
+                    .isDone(todo.getIsDone())
+                    .goalId(todo.getGoal().getGoalId())
+                    .build();
+            dtos.add(dto);
+        }
+
+        return dtos;
     }
 
     // 투두 수정
@@ -74,6 +83,7 @@ public class TodoService {
         todo.setStartDate(dto.getStartDate());
         todo.setEndDate(dto.getEndDate());
         todo.setIsDone(dto.getIsDone());
+
     }
 
     // 투두 삭제
@@ -89,7 +99,8 @@ public class TodoService {
     public TodoResponseDto getById(Long todoId) {
         Todo todo = todoRepository.findById(todoId)
                 .orElseThrow(() -> new RuntimeException("투두를 찾을 수 없습니다."));
-        return TodoResponseDto.builder()
+
+        TodoResponseDto dto = TodoResponseDto.builder()
                 .todoId(todo.getTodoId())
                 .content(todo.getContent())
                 .url(todo.getUrl())
@@ -98,6 +109,8 @@ public class TodoService {
                 .isDone(todo.getIsDone())
                 .goalId(todo.getGoal().getGoalId())
                 .build();
+
+        return dto;
     }
 
     @Transactional
@@ -127,12 +140,12 @@ public class TodoService {
         todo.setIsDone(!todo.getIsDone());
         todoRepository.save(todo);
 
+        // 문제 추천 모달에서 생성한 문제라면 문제 완료후 user_problem_solve에 값 저장하기
         if (todo.getIsDone() && "PROBLEM_RECOMMEND".equals(todo.getSourceType()) && todo.getProblem() != null) {
 
             Long userId = member.getUserId();
             Long problemId = todo.getProblem().getId();
-
-            UserProblemId id = new UserProblemId(userId, problemId);
+            UserProblemId id = new UserProblemId(userId, problemId); // 복합키
 
             if (userProblemSolveRepository.existsById(id)) {
                 UserProblemSolve existing = userProblemSolveRepository.findById(id).get();
@@ -159,7 +172,7 @@ public class TodoService {
                     .content(problem.getTitle())
                     .url(problem.getUrl())
                     .startDate(LocalDate.now())
-                    .endDate(LocalDate.now().plusDays(1))
+                    .endDate(LocalDate.now().plusDays(0)) // 추천 문제로직을 통해 만들어지는 투두는 0일로 만들어짐
                     .isDone(false)
                     .sourceType("PROBLEM_RECOMMEND")
                     .build();

@@ -1,6 +1,9 @@
 package com.grepp.nbe563team04.app.controller.web.admin;
 
 import com.grepp.nbe563team04.app.controller.web.member.payload.SignupRequest;
+import com.grepp.nbe563team04.model.achievement.AchieveRepository;
+import com.grepp.nbe563team04.model.achievement.AchievementService;
+import com.grepp.nbe563team04.model.achievement.entity.Achievement;
 import com.grepp.nbe563team04.model.auth.code.Role;
 import com.grepp.nbe563team04.model.auth.domain.Principal;
 import com.grepp.nbe563team04.model.member.MemberImageRepository;
@@ -10,6 +13,8 @@ import com.grepp.nbe563team04.model.member.dto.MemberDto;
 import com.grepp.nbe563team04.model.member.entity.Member;
 import com.grepp.nbe563team04.model.member.entity.MemberImage;
 import jakarta.validation.Valid;
+
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +35,8 @@ import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,6 +53,8 @@ public class AdminController {
 
     private final MemberService memberService;
     private final MemberInterestService memberInterestService;
+    private final AchievementService achievementService;
+    private final AchieveRepository achieveRepository;
     private final MemberImageRepository memberImageRepository;
 
     @GetMapping("signup")
@@ -214,10 +223,46 @@ public class AdminController {
     }
 
     @GetMapping("/achievement-management")
-    public String achievementManagement() {
+    public String achievementManagement(Model model) {
+        List<Achievement> achievements = achieveRepository.findAll();
+
+        model.addAttribute("achievements", achievements);
         return "admin/achievement-management";
     }
 
+//    @GetMapping("/edit/{id}")
+//    public String editForm(@PathVariable Long id, Model model) {
+//        Achievement achievement = achieveRepository.findById(id)
+//                .orElseThrow(() -> new IllegalArgumentException("업적 없음: " + id));
+//        model.addAttribute("achievement", achievement);
+//        return "admin/edit-achievement";
+//    }
+
+    @PostMapping("/achievement/edit/{id}")
+    public String update(@PathVariable Long id, @ModelAttribute Achievement updated,
+                         @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
+        try {
+            achievementService.updateAchievement(id, updated, imageFile);
+        } catch (IOException e) {
+            log.error("업적 이미지 업로드 실패", e);
+        }
+        return "redirect:/admin/achievement-management";
+    }
+
+    @GetMapping("/achievement/delete/{id}")
+    public String delete(@PathVariable Long id) {
+        achievementService.deleteAchievement(id);
+        return "redirect:/admin/achievement-management";
+    }
+
+    // 대시보드-방사형 차트
+//    @GetMapping("/dashboard/rader")
+//    public String raderChart(Model model, Principal principal) {
+//        String memberId = principal.getUsername();
+//        List<String> langLabels = memberInterestService.getTop6Langs(memberId);
+//        model.addAttribute("langLabels", langLabels);
+//        return "dashboard";
+//    }
     // admin-dashboard Top5 Member 조회
     @GetMapping("/dashboard/top-members")
     @ResponseBody

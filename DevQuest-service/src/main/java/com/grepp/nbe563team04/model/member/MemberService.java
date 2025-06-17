@@ -1,11 +1,9 @@
 package com.grepp.nbe563team04.model.member;
 
+import com.grepp.nbe563team04.app.controller.web.member.payload.SignupRequest;
+import com.grepp.nbe563team04.infra.feign.client.MailApi;
 import com.grepp.nbe563team04.infra.util.file.FileDto;
 import com.grepp.nbe563team04.infra.util.file.FileUtil;
-import com.grepp.nbe563team04.model.achievement.AchievementService;
-import com.grepp.nbe563team04.model.member.entity.Member;
-import com.grepp.nbe563team04.model.member.entity.MemberImage;
-import com.grepp.nbe563team04.model.member.entity.MembersAchieve;
 import com.grepp.nbe563team04.model.auth.code.Role;
 import com.grepp.nbe563team04.model.auth.domain.Principal;
 import com.grepp.nbe563team04.model.interest.InterestRepository;
@@ -13,13 +11,22 @@ import com.grepp.nbe563team04.model.interest.entity.Interest;
 import com.grepp.nbe563team04.model.level.LevelRepository;
 import com.grepp.nbe563team04.model.level.entity.Level;
 import com.grepp.nbe563team04.model.member.dto.MemberDto;
-
+import com.grepp.nbe563team04.model.member.dto.SmtpDto;
+import com.grepp.nbe563team04.model.member.entity.Member;
+import com.grepp.nbe563team04.model.member.entity.MemberImage;
 import com.grepp.nbe563team04.model.member.entity.MemberInterest;
+import com.grepp.nbe563team04.model.member.entity.MembersAchieve;
 
 import jakarta.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.*;
 
 import java.util.stream.Collectors;
@@ -32,9 +39,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -49,9 +56,9 @@ public class MemberService implements UserDetailsService {
     private final LevelRepository levelRepository;
     private final InterestRepository interestRepository;
     private final MemberInterestRepository memberInterestRepository;
-    private final AchievementService achievementService;
     private final MembersAchieveRepository membersAchieveRepository;
     private final FileUtil fileUtil;
+    private final MailApi mailApi;
 
     // 활성 사용자 수 조회
     public long countActiveUsers() {
@@ -242,6 +249,21 @@ public class MemberService implements UserDetailsService {
         UserDetails updatedUser = new Principal(member); // 새 User로 Principal 재생성
         Authentication newAuth = new UsernamePasswordAuthenticationToken(updatedUser, auth.getCredentials(), auth.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(newAuth);
+    }
+
+    public void sendSignupCompleteMail(SignupRequest request) {
+        SmtpDto dto = SmtpDto.builder()
+            .from("DevQuest")
+            .to(List.of(request.getEmail()))
+            .subject("[DevQuest] 회원가입이 완료되었습니다 ")
+            .properties(new HashMap<>() {{
+                put("nickname", request.getNickname());
+                put("domain", "http://localhost:8080");
+            }})
+            .eventType("signup_complete")
+            .build();
+
+        mailApi.sendMail("DevQuest-mail", "ROLE_SERVER", dto);
     }
 
     // admin-dashbaord Top5 member 조회
