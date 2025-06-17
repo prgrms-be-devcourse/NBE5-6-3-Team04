@@ -37,6 +37,24 @@ spring:
           starttls:
             enable: true
 
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  sql:
+    init:
+      mode: never  # 초기 데이터 넣을 때: always / 업데이트만 할 떄: never
+  jpa:
+    hibernate:
+      ddl-auto: update  # 기존 테이블 삭제 후 다시 생성: create / 업데이트만 할 때: update
+    defer-datasource-initialization: true
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
   application:
     name: DevQuest-mail
 
