@@ -49,7 +49,7 @@ public class TodoService {
 
     // 특정 목표(goalId)에 속한 투두 목록 조회
     @Transactional
-    public List<TodoResponseDto> getByGoal(Long goalId) {
+    public List<TodoResponseDto> getTodosByGoal(Long goalId) {
         return todoRepository.findByGoalGoalId(goalId).stream()
                 .map(todo -> TodoResponseDto.builder()
                         .todoId(todo.getTodoId())
@@ -66,7 +66,8 @@ public class TodoService {
     // 투두 수정
     @Transactional
     public void update(Long todoId, TodoRequestDto dto) {
-        Todo todo = todoRepository.findById(todoId).orElseThrow(() -> new RuntimeException("해당 투두가 존재하지 않습니다."));
+        Todo todo = todoRepository.findById(todoId)
+                .orElseThrow(() -> new RuntimeException("해당 투두가 존재하지 않습니다."));
 
         todo.setUrl(dto.getUrl());
         todo.setContent(dto.getContent());
