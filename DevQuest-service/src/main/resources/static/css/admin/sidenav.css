@@ -1,0 +1,38 @@
+.sidenav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 220px;
+  height: 100vh;
+  background: white;
+  z-index: 1000;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.04);
+  padding-top: 60px;
+}
+
+.sidenav-trigger {
+  margin-left: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.user-view {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 4rem; /* 추가 마진 */
+}
+
+.profile-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidenav-title {
+  text-align: center;
+  display: block;
+  font-weight: bold;
+  font-size: 1.2rem;
+}

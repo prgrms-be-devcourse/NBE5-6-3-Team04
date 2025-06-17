@@ -14,18 +14,8 @@
   <!--css-->
   <link rel="stylesheet" href="/css/common.css">
   <link rel="stylesheet" href="/css/admin/header.css">
+  <link rel="stylesheet" href="/css/admin/sidenav.css">
   <link rel="stylesheet" href="/css/admin/adminDashboard.css">
-  <style>
-    .card-title {
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: #3F2296; /* DevQuest 로고 색상으로 통일 */
-      margin-bottom: 1.2rem;
-    }
-    .summary-row b {
-      color: #3F2296; /* DevQuest 로고 색상으로 통일 */
-    }
-  </style>
 </head>
 
 <body>
@@ -35,28 +25,65 @@
 <div th:replace="~{fragments/admin-sidenav :: sidenav}"></div>
 
 <main>
-  <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;"><b th:text="${nickname} + ' 관리자님, 반갑습니다!'"></b></h2>
-  <!-- Dashboard 요약 카드: 인사 멘트 바로 아래로 이동 -->
-  <div class="dashboard-summary-card card">
-    <div class="card-content">
-      <span class="card-title">Dashboard</span>
-      <div class="summary-content">
-        <div class="summary-row">
-          <!-- 오늘 가입/탈퇴한 사용자 수 바인딩: 값이 없으면 0으로 표시 -->
-          오늘 가입한 사용자는 <b id="today-join">0</b>명, 탈퇴한 사용자는 <b id="today-leave">0</b>명이에요
-        </div>
-        <div class="summary-row">
-          사용자들은 <b id="top-langs"></b>에 관심이 많아요!<br/>
-          사용자들은 <b id="top-companies"></b> 기업에 관심갖고 있어요!
+  <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;"><b
+      th:text="${nickname} + ' 관리자님, 반갑습니다!'"></b></h2>
+  <!-- Dashboard 요약 카드-->
+  <div class="dashboard-summary-wrapper">
+    <div class="dashboard-summary-card card">
+      <div class="card-content">
+        <span class="card-title">Summary</span>
+        <div class="summary-content">
+          <div class="summary-row">
+            👤 오늘 가입한 사용자는 <b id="today-join">0</b>명, 탈퇴한 사용자는 <b id="today-leave">0</b>명 이에요!
+          </div>
+          <br/>
+          <div class="summary-row">
+            🤓 지금 사용자들은 <b id="top-langs"></b>에 관심이 많아요!<br/>
+            <br/>
+            🏢 지금 사용자들은 <b id="top-companies"></b> 기업에 관심을 갖고 있어요!
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- 레벨 상위 유저 Top 5 -->
+    <div class="card top-level-card">
+      <div class="card-title">
+        🏆 Level Top3
+      </div>
+      <ul class="top-user-list" id="top-user-list">
+        <!-- JS가 이 안에 <li>를 동적으로 넣어줌 -->
+      </ul>
+      <div class="card-footer"><a href="/admin/member-management">전체 보기</a></div>
+    </div>
   </div>
-  <!-- 차트 영역: 요약 카드 아래에 위치 -->
-  <div class="dashboard-charts-row" style="justify-content: center; gap:2.5rem;">
-    <!-- 회원 관심태그 (직무, 언어) 차트 -->
-    <div class="dashboard-chart-card" style="min-width:420px;max-width:600px;">
-      <div class="card-toolbar-title">회원 관심태그 (직무, 언어)</div>
+
+  <!-- 차트 영역-->
+  <div class="dashboard-charts-row">
+    <!-- 차트1. 회원 가입/탈퇴 차트 -->
+    <div class="dashboard-chart-card">
+      <div class="card-toolbar-title">👤 회원 가입/탈퇴 현황</div>
+      <div class="card">
+        <div class="card-toolbar">
+          <div class="card-toolbar-actions">
+            <div class="chips-wrapper">
+              <div data-index="0" class="chip white-text"
+                   style="background-color: rgb(156,204,129);">가입자 수
+              </div>
+              <div data-index="1" class="chip white-text"
+                   style="background-color: rgb(172,172,172);">탈퇴자 수
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-content">
+          <canvas id="memberChart"></canvas>
+        </div>
+      </div>
+    </div>
+    <!-- 차트2. 회원 관심태그 (직무, 언어) 차트 -->
+    <div class="dashboard-chart-card">
+      <div class="card-toolbar-title">🤓 회원 관심태그 (직무, 언어)</div>
       <div class="card">
         <div class="card-toolbar">
           <div class="card-toolbar-actions">
@@ -70,27 +97,17 @@
         </div>
       </div>
     </div>
-    <!-- 회원 가입/탈퇴 차트 -->
-    <div class="dashboard-chart-card" style="min-width:420px;max-width:600px;">
-      <div class="card-toolbar-title">회원 가입/탈퇴 현황</div>
+    <!-- 차트3. 기업통계 차트 -->
+    <div class="dashboard-chart-card">
+      <div class="card-toolbar-title">🏢 기업별 지원자 수 통계</div>
       <div class="card">
         <div class="card-toolbar">
           <div class="card-toolbar-actions">
-            <div class="chips-wrapper">
-              <div data-index="0" class="chip white-text" style="background-color: rgb(156,204,129);">가입자 수</div>
-              <div data-index="1" class="chip white-text" style="background-color: rgb(172,172,172);">탈퇴자 수</div>
+            <div class="chips-wrapper" id="company-chips-wrapper">
+              <!-- JS에서 동적으로 칩 생성 -->
             </div>
           </div>
         </div>
-        <div class="card-content">
-          <canvas id="memberChart"></canvas>
-        </div>
-      </div>
-    </div>
-    <!-- 기업통계 차트 -->
-    <div class="dashboard-chart-card" style="min-width:420px;max-width:600px;">
-      <div class="card-toolbar-title">기업별 지원자 수 통계</div>
-      <div class="card">
         <div class="card-content">
           <canvas id="stacked-bar-chart"></canvas>
         </div>
@@ -101,7 +118,8 @@
 
 <!-- 필수 스크립트 -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
 <!-- sidenav 초기화 -->
@@ -109,19 +127,47 @@
   document.addEventListener('DOMContentLoaded', function () {
     const elems = document.querySelectorAll('.sidenav');
     M.Sidenav.init(elems, {
-      onOpenStart: function() {
+      onOpenStart: function () {
         document.querySelector('.top-header').style.display = 'none';
       },
-      onCloseEnd: function() {
+      onCloseEnd: function () {
         document.querySelector('.top-header').style.display = '';
       }
     });
   });
 </script>
 
+<!-- 레벨 상위 유저 Top 5 js 렌더링-->
+<script>
+  fetch('/admin/dashboard/top-members')
+  .then(res => {
+    if (!res.ok) {
+      throw new Error('서버 응답 에러');
+    }
+    return res.json();
+  })
+  .then(data => {
+    const list = document.getElementById('top-user-list');
+    list.innerHTML = ''; // 기존 내용 지우기
+
+    data.forEach((member, idx) => {
+      const li = document.createElement('li');
+      li.className = 'top-member-item';
+      li.innerHTML = `
+          <img src="${member.profileImageUrl}" class="profile-img" alt="${member.nickname}" />
+          <span class="rank">${idx + 1}위</span>
+          <span class="membername">${member.nickname} 님</span>
+          <span class="level">Lv.${member.level.levelId}</span>
+        `;
+      list.appendChild(li);
+    });
+  })
+  .catch(err => console.error('Top user fetch 실패:', err));
+</script>
+
 <!-- 차트 데이터 및 초기화 -->
 <script th:inline="javascript">
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     // 차트 데이터
     const labels = /*[[${labels}]]*/ [];
     const joinData = /*[[${joinData}]]*/ [];
@@ -197,7 +243,7 @@
 
       // 칩 클릭 이벤트 처리 (X 아이콘 없이 칩 전체를 토글)
       document.querySelectorAll('.chips-wrapper .chip').forEach((chip, index) => {
-        chip.addEventListener('click', function() {
+        chip.addEventListener('click', function () {
           const datasetIndex = parseInt(this.dataset.index);
           const meta = memberChart.getDatasetMeta(datasetIndex);
           meta.hidden = !meta.hidden;
@@ -213,15 +259,15 @@
       });
     }
 
-    // 직무별 색상 배열 (필요시 더 추가)
-    const langChipColors = [
-      'rgb(255, 99, 132)',   // 예: 백엔드
-      'rgb(54, 162, 235)',   // 예: 프론트엔드
-      'rgb(255, 206, 86)',   // 예: 데이터
-      'rgb(75, 192, 192)',   // 예: 인프라
-      'rgb(153, 102, 255)',  // 예: 기획
-      'rgb(255, 159, 64)'    // 예: 기타
-    ];
+    // // 직무별 색상 배열 (필요시 더 추가)
+    // const langChipColors = [
+    //   'rgb(255, 99, 132)',   // 예: 백엔드
+    //   'rgb(54, 162, 235)',   // 예: 프론트엔드
+    //   'rgb(255, 206, 86)',   // 예: 데이터
+    //   'rgb(75, 192, 192)',   // 예: 인프라
+    //   'rgb(153, 102, 255)',  // 예: 기획
+    //   'rgb(255, 159, 64)'    // 예: 기타
+    // ];
 
     // langLabels: 직무명 배열, langScores: 각 직무별 회원 수
     // ex) langLabels = ['백엔드', '프론트엔드', ...], langScores = [10, 7, ...]
@@ -233,7 +279,8 @@
     langLabels.forEach((label, idx) => {
       const chip = document.createElement('div');
       // label 값을 소문자, 공백/특수문자 → 하이픈 등으로 변환
-      const className = 'chip white-text ' + label.toLowerCase().replace(/ /g, '-');
+      // const className = 'chip white-text ' + label.toLowerCase().replace(/ /g, '-');
+      const className = 'chip white-text lang-chip ' + label.toLowerCase().replace(/ /g, '-');
       chip.className = className;
       chip.dataset.index = idx;
       chip.textContent = label;
@@ -265,15 +312,15 @@
         options: {
           responsive: true,
           plugins: {
-            legend: { display: false },
-            tooltip: { enabled: true }
+            legend: {display: false},
+            tooltip: {enabled: true}
           },
           scales: {
             y: {
               beginAtZero: true,
               // 최대값을 데이터 최대값 + 1로 설정
               max: maxLangScore + 1,
-              ticks: { stepSize: 1, precision: 0 }
+              ticks: {stepSize: 1, precision: 0}
             }
           }
         }
@@ -281,7 +328,7 @@
 
       // 칩 클릭 이벤트 (토글)
       langChipsWrapper.querySelectorAll('.chip').forEach((chip, idx) => {
-        chip.addEventListener('click', function() {
+        chip.addEventListener('click', function () {
           langChipStates[idx] = !langChipStates[idx];
           // 한글 주석: 칩 활성/비활성에 따라 색상 변경
           if (!langChipStates[idx]) {
@@ -298,7 +345,7 @@
 
     // 관심 언어 TOP3 추출
     const topLangs = langLabels
-    .map((label, idx) => ({ label, score: langScores[idx] }))
+    .map((label, idx) => ({label, score: langScores[idx]}))
     .sort((a, b) => b.score - a.score)
     .slice(0, 3)
     .map(item => item.label)
@@ -313,22 +360,29 @@
     // 요약 카드에 데이터 삽입
     document.getElementById('top-langs').textContent = topLangs;
 
-    // 기업통계 차트 데이터 fetch 및 차트 생성
     fetch('/api/admin/company/stats/data')
     .then(response => response.json())
     .then(data => {
       const ctx = document.getElementById('stacked-bar-chart').getContext('2d');
-      // y축 최대값 계산: 데이터 최대값 + 1
-      const maxValue = Math.max(...data.data);
-      new Chart(ctx, {
+      const companyLabels = data.labels;
+      const companyData = data.data;
+      const companyDataOrigin = [...companyData];
+
+      // 색상 배열 생성
+      const companyChipColors = companyLabels.map((_, i) =>
+          `hsl(${(i * 40) % 360}, 70%, 70%)`
+      );
+
+      // 차트 먼저 생성
+      const companyChart = new Chart(ctx, {
         type: 'bar',
         data: {
-          labels: data.labels,
+          labels: companyLabels,
           datasets: [{
             label: '지원자 수',
-            data: data.data,
-            backgroundColor: 'rgba(218,199,248,0.8)',
-            borderColor: 'rgb(213,189,250)',
+            data: companyData,
+            backgroundColor: companyChipColors,
+            borderColor: companyChipColors,
             borderWidth: 1
           }]
         },
@@ -336,24 +390,48 @@
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            title: {
-              display: true,
-              text: '기업별 지원자 수 통계',
-              font: { size: 16 }
-            },
-            legend: { display: false }
+            legend: {display: false}
           },
           scales: {
             y: {
               beginAtZero: true,
-              max: maxValue + 1,
-              ticks: { stepSize: 1 }
+              max: Math.max(...companyData) + 1,
+              ticks: {stepSize: 1}
             }
           }
         }
       });
-      // 기업별 지원자 수 통계에서 top3 기업 추출해서 요약카드에 표시
-      const topCompanies = data.labels.slice(0, 3).join(', ');
+
+      // 차트 생성 이후 칩 추가
+      const chipWrapper = document.getElementById('company-chips-wrapper');
+      const chipStates = [];
+
+      companyLabels.forEach((label, idx) => {
+        const chip = document.createElement('div');
+        // chip.className = 'chip white-text';
+        chip.className = 'chip white-text company-chip';
+        chip.dataset.index = idx;
+        chip.textContent = label;
+        chip.style.backgroundColor = companyChipColors[idx];
+        chipWrapper.appendChild(chip);
+        chipStates[idx] = true;
+
+        // 칩 클릭 이벤트 연결
+        chip.addEventListener('click', function () {
+          chipStates[idx] = !chipStates[idx];
+          if (!chipStates[idx]) {
+            this.style.backgroundColor = '#bdbdbd';
+            companyChart.data.datasets[0].data[idx] = 0;
+          } else {
+            this.style.backgroundColor = companyChipColors[idx];
+            companyChart.data.datasets[0].data[idx] = companyDataOrigin[idx];
+          }
+          companyChart.update();
+        });
+      });
+
+      // 기업 요약 텍스트 설정
+      const topCompanies = companyLabels.slice(0, 3).join(', ');
       document.getElementById('top-companies').textContent = topCompanies;
     })
     .catch(error => {

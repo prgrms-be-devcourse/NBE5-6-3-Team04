@@ -6,10 +6,12 @@ import com.grepp.nbe563team04.model.achievement.AchievementService;
 import com.grepp.nbe563team04.model.achievement.entity.Achievement;
 import com.grepp.nbe563team04.model.auth.code.Role;
 import com.grepp.nbe563team04.model.auth.domain.Principal;
+import com.grepp.nbe563team04.model.member.MemberImageRepository;
 import com.grepp.nbe563team04.model.member.MemberInterestService;
 import com.grepp.nbe563team04.model.member.MemberService;
 import com.grepp.nbe563team04.model.member.dto.MemberDto;
 import com.grepp.nbe563team04.model.member.entity.Member;
+import com.grepp.nbe563team04.model.member.entity.MemberImage;
 import jakarta.validation.Valid;
 
 import java.io.IOException;
@@ -19,9 +21,15 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
@@ -29,6 +37,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -41,6 +55,7 @@ public class AdminController {
     private final MemberInterestService memberInterestService;
     private final AchievementService achievementService;
     private final AchieveRepository achieveRepository;
+    private final MemberImageRepository memberImageRepository;
 
     @GetMapping("signup")
     public String signup(Model model) {
@@ -100,10 +115,10 @@ public class AdminController {
                 langCounts.merge(lang, 1, Integer::sum);
             }
 
-            // 상위 6개 언어 선택
+            // 상위 5개 언어 선택
             List<Map.Entry<String, Integer>> topLangs = langCounts.entrySet().stream()
                 .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
-                .limit(6)
+                .limit(5)
                 .collect(Collectors.toList());
 
             List<String> langLabels = topLangs.stream()
@@ -248,5 +263,43 @@ public class AdminController {
 //        model.addAttribute("langLabels", langLabels);
 //        return "dashboard";
 //    }
+    // admin-dashboard Top5 Member 조회
+    @GetMapping("/dashboard/top-members")
+    @ResponseBody
+    public List<MemberDto> getTopUsers() {
+        return memberService.getTop5MembersByLevel()
+            .stream()
+            .map(MemberDto::from)
+            .collect(Collectors.toList());
+    }
 
+    // 사진 조회
+    @Value("${upload.path}")
+    private String uploadPath;
+
+    @GetMapping("/dashboard/image/{userId}")
+    @ResponseBody
+    public ResponseEntity<Resource> getProfileImage(@PathVariable Long userId) {
+        Member member = memberService.findById(userId);
+
+        Optional<MemberImage> imageOpt =
+            memberImageRepository.findTopByMemberAndActivatedTrueOrderByCreatedAtDesc(member);
+
+        if (imageOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        MemberImage image = imageOpt.get();
+
+        String fullPath = uploadPath + "/" + image.getRenameFileName();
+        Resource file = new FileSystemResource(fullPath);
+
+        if (!file.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok()
+            .contentType(MediaType.IMAGE_JPEG)
+            .body(file);
+    }
 }

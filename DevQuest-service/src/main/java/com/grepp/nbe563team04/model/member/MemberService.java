@@ -16,6 +16,8 @@ import com.grepp.nbe563team04.model.member.entity.Member;
 import com.grepp.nbe563team04.model.member.entity.MemberImage;
 import com.grepp.nbe563team04.model.member.entity.MemberInterest;
 import com.grepp.nbe563team04.model.member.entity.MembersAchieve;
+
+import jakarta.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,6 +27,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.*;
+
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -259,5 +264,19 @@ public class MemberService implements UserDetailsService {
             .build();
 
         mailApi.sendMail("DevQuest-mail", "ROLE_SERVER", dto);
+    }
+
+    // admin-dashbaord Top5 member 조회
+    public List<Member> getTop5MembersByLevel() {
+        return memberRepository.findAll().stream()
+            .filter(member -> member.getRole() != Role.ROLE_ADMIN) // 관리자 제외
+            .sorted(Comparator.comparingInt(Member::getExp).reversed())
+            .limit(5)
+            .collect(Collectors.toList());
+    }
+
+    public Member findById(Long userId) {
+        return memberRepository.findById(userId)
+            .orElseThrow(() -> new EntityNotFoundException("해당 유저를 찾을 수 없습니다."));
     }
 }
