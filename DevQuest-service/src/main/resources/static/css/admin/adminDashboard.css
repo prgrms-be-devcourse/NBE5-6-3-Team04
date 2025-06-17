@@ -252,6 +252,7 @@ body nav.top-bar, header nav {
   max-width: unset !important;
   width: 100% !important;
   box-sizing: border-box;
+  min-height: 416px;
 }
 
 .card {
@@ -623,10 +624,10 @@ canvas {
 /*레벨 상위 유저 Top 5*/
 .top-level-card {
   padding: 1rem;
-  margin-bottom: 2rem;
   background: #f8fafc;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  min-height: 231.5px;
 }
 
 .top-member-list {
@@ -637,9 +638,10 @@ canvas {
 
 .top-member-item {
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.5rem 0;
+  align-items: center; /* 수직 정렬 */
+  justify-content: space-between; /* 좌우 간격 조절 */
+  gap: 2rem;
+  padding: 0.5rem 1rem;
 }
 
 .rank {
@@ -647,12 +649,15 @@ canvas {
 }
 
 .username {
-  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-weight: 500;
 }
 
 .level {
-  color: #3F2296;
   font-weight: bold;
+  color: #3F2296;
 }
 
 .profile-img {
@@ -660,7 +665,6 @@ canvas {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  margin: 5px auto;
   object-fit: cover;
 }
 
@@ -680,6 +684,19 @@ canvas {
 }
 
 /*기업 유사어 관리*/
+
+.alias-container {
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 40px;
+  width: 100%;
+  max-width: 1000px;
+  height: auto;
+  min-height: 600px;
+  margin: 40px auto;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-sizing: border-box;
+}
 .alias-table th,
 .alias-table td {
   text-align: center;
@@ -734,12 +751,29 @@ canvas {
   background-color: #3F2296 !important;
   color: white !important;
 }
+.alias-card-body {
+  min-height: 200px;
+  width: 100%;
+  display: block;
+  padding: 2rem;
+}
 
+.alias-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+.form-label {
+  font-weight: bold;
+  font-size: 14px;
+  color: #333; /* 원하는 색상 */
+}
 /* 추가 버튼 정중앙 정렬 */
 #aliasForm.row {
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
 }
 
 .btn-wrapper {
@@ -795,6 +829,7 @@ canvas {
   width: 1000px;
   display: flex;
   justify-content: center;
+  min-height: 600px;
 }
 
 table td,
@@ -827,17 +862,21 @@ td input[type="color"] {
 .color-table {
   table-layout: fixed;
   width: 100%;
+  height: 8rem;
   border-collapse: collapse;
 }
 
 /* 기업 색상관리 -테이블 정렬 */
 .color-table th,
 .color-table td {
-  width: 33.33%;
+  width: auto;
   text-align: center;
   vertical-align: middle;
-  padding: 1.5rem;
+  padding: 0.8rem 0.5rem;
+  white-space: nowrap; /* 줄바꿈 방지 */
 }
+
+
 
 /*업적 관리 모달*/
 #editAchievementModal .modal-content {
@@ -896,4 +935,8 @@ td input[type="color"] {
 
 .modal .modal-footer {
   background-color: transparent;
+}
+
+.material-icons .menu-icon{
+  margin-left: 1rem;
 }

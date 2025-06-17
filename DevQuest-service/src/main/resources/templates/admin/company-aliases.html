@@ -16,6 +16,7 @@
   <!--css-->
   <link rel="stylesheet" href="/css/common.css">
   <link rel="stylesheet" href="/css/admin/header.css">
+  <link rel="stylesheet" href="/css/admin/sidenav.css">
   <link rel="stylesheet" href="/css/admin/adminDashboard.css">
   <style>
     .alias-table th, .alias-table td {
@@ -33,11 +34,11 @@
 
 <main style="margin-top:3rem;">
   <h4 class="mb-4">기업 유사어 관리</h4>
-  <div class="container mt-4">
+  <div class="alias-container mt-4">
     <!-- 별칭 추가 폼 -->
     <h5 class="card-title">새 별칭 추가</h5>
     <div class="card mb-4">
-      <div class="card-body">
+      <div class="alias-card-body">
         <form id="aliasForm" class="row g-3">
           <div class="col-md-5">
             <label for="originalName" class="form-label">기업명(한글)</label>
@@ -57,14 +58,14 @@
     <!-- 별칭 목록 테이블 -->
     <h5 class="card-title">별칭 목록</h5>
     <div class="card">
-      <div class="card-body">
+      <div class="alias-card-body">
         <div class="table-responsive">
           <table class="table table-hover alias-table">
             <thead>
             <tr>
               <th class="col-company">기업명(한글)</th>
               <th class="col-alias">별칭</th>
-              <th class="col-action">작업</th>
+              <th class="col-action">관리</th>
             </tr>
             </thead>
             <tbody>
