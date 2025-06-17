@@ -26,7 +26,7 @@ function goalComplete(goalId) {
           setTimeout(() => {
             document.getElementById('levelUpModal').style.display = 'none';
             location.reload();
-          }, 4000);
+          }, 400);
         } else {
           alert('목표 완료! 경험치 +10');
           location.reload();
@@ -167,6 +167,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function sendAiMessage(message) {
+
+    console.log("선택된 성격:", selectedPersonality);
+
     fetch("/api/ai/feedback", {
       method: "POST",
       headers: {
@@ -285,12 +288,24 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.addEventListener("click", () => {
       document.querySelectorAll(".personality-option").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
-      selectedPersonality = btn.textContent;
+      selectedPersonality = btn.dataset.personality; // ✅ 중요: .textContent → .dataset.personality
       console.log("선택된 성격:", selectedPersonality);
     });
   });
 });
 
+// 선택된 성격 표시 UI 업데이트
+const personalityDisplay = document.getElementById("selectedPersonalityDisplay");
 
+document.querySelectorAll(".personality-option").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".personality-option").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    selectedPersonality = btn.dataset.personality;
+
+    // ✅ 선택된 성격 UI에 표시
+    personalityDisplay.textContent = `현재 선택된 성격: ${selectedPersonality}`;
+  });
+});
 
 //===========================

@@ -6,12 +6,14 @@ import com.grepp.nbe563team04.model.ai.dto.GeminiResponseDto;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import lombok.extern.slf4j.XSlf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class GeminiService {
@@ -22,6 +24,7 @@ public class GeminiService {
     private final WebClient webClient = WebClient.create();
 
     public String getGeminiReply(List<ChatMessageDto> history, String mode) {
+        log.info("💬 전달받은 mode: {}", mode);
 
         String personalityPrompt;
         switch (mode == null ? "DEFAULT" : mode.toUpperCase()) {
@@ -29,7 +32,8 @@ public class GeminiService {
                 personalityPrompt = "넌 창의적이고 유쾌한 토론가 스타일의 AI야. 재치 있게 설명하고, 새로운 관점을 제시해줘. 반말을 쓰고, 이모지도 꼭 사용해. 답변은 50자 이내로 간결하게 해줘.";
                 break;
             case "ENFP":
-                personalityPrompt = "넌 열정적이고 상상력이 풍부한 AI야. 유쾌하고 따뜻한 말투로 격려와 희망을 전해줘. 반말로, 이모지 꼭 사용! 답변은 50자 이내.";
+                personalityPrompt = "넌 열정적이고 상상력이 풍부한 AI야. 유쾌하고 따뜻한 말투로 격려와 희망을 전해줘. 반말로, 이모지 꼭 사용! 답변은 50자 이내."
+                + "그리고 현재 설정된 MBTI가 뭔지 물어보면 알려줘";
                 break;
             case "ENTJ":
                 personalityPrompt = "넌 리더십 강하고 단호한 AI야. 명확한 조언과 현실적인 충고를 줘. 감정보단 논리를 강조해. 반말로, 이모지도 사용해.";
@@ -73,10 +77,10 @@ public class GeminiService {
             case "INTP":
                 personalityPrompt = "넌 호기심 많고 논리적인 AI야. 감정보다 아이디어와 가능성에 집중해. 분석적이고 창의적으로, 반말 쓰고 말은 부드럽게 해줘.";
                 break;
-            case "RUDE":
+            case "매운맛":
                 personalityPrompt = "너는 사용자의 멘탈을 깨우는 거친 스타일의 AI야. 거칠고 직설적인 말투로 짧게 조언해. 반말, 팩폭, 이모지 필수. 50자 이내 유지.";
                 break;
-            case "KIND":
+            case "착한맛":
             case "DEFAULT":
             default:
                 personalityPrompt = "넌 사용자의 멘탈을 케어하는 따뜻한 AI야. 오은영 선생님처럼 위로해주고, 반말로 50자 이내로 대답해. 이모지도 꼭 써줘.";

@@ -61,6 +61,9 @@
           <div class="ai-header">
             <img src="/img/dev.png" alt="AI 데브 캐릭터" class="ai-avatar" />
             <h3 class="ai-title">AI 데브</h3>
+            <!-- 선택된 성격 표시용 -->
+            <div id="selectedPersonalityDisplay" class="selected-personality-display">선택된 성격 없음</div>
+
           </div>
           <div id="chatHistory" class="chat-history"></div> <!--대화목록-->
 
@@ -68,28 +71,29 @@
 
           <div id="personalityModal" class="personality-modal">
             <div class="personality-grid">
-              <button class="personality-option">INTJ</button>
-              <button class="personality-option">INFP</button>
-              <button class="personality-option">ENTP</button>
-              <button class="personality-option">ESFJ</button>
-              <button class="personality-option">ISTP</button>
-              <button class="personality-option">ENFP</button>
-              <button class="personality-option">ISFJ</button>
-              <button class="personality-option">ESTJ</button>
-              <button class="personality-option">ISTJ</button>
-              <button class="personality-option">INFJ</button>
-              <button class="personality-option">ENFJ</button>
-              <button class="personality-option">ESTP</button>
-              <button class="personality-option">INTP</button>
-              <button class="personality-option">ISFP</button>
-              <button class="personality-option">ESFP</button>
-              <button class="personality-option">ENTJ</button>
+              <button class="personality-option" data-personality="INTJ">INTJ</button>
+              <button class="personality-option" data-personality="INFP">INFP</button>
+              <button class="personality-option" data-personality="ENTP">ENTP</button>
+              <button class="personality-option" data-personality="ESFJ">ESFJ</button>
+              <button class="personality-option" data-personality="ISTP">ISTP</button>
+              <button class="personality-option" data-personality="ENFP">ENFP</button>
+              <button class="personality-option" data-personality="ISFJ">ISFJ</button>
+              <button class="personality-option" data-personality="ESTJ">ESTJ</button>
+              <button class="personality-option" data-personality="ISTJ">ISTJ</button>
+              <button class="personality-option" data-personality="INFJ">INFJ</button>
+              <button class="personality-option" data-personality="ENFJ">ENFJ</button>
+              <button class="personality-option" data-personality="ESTP">ESTP</button>
+              <button class="personality-option" data-personality="INTP">INTP</button>
+              <button class="personality-option" data-personality="ISFP">ISFP</button>
+              <button class="personality-option" data-personality="ESFP">ESFP</button>
+              <button class="personality-option" data-personality="ENTJ">ENTJ</button>
             </div>
             <div class="spice-options">
-              <button class="personality-option">순한맛</button>
-              <button class="personality-option">매운맛</button>
+              <button class="personality-option" data-personality="매운맛">매운맛</button>
+              <button class="personality-option" data-personality="순한맛">순한맛</button>
             </div>
           </div>
+
 
 
           <div class="chat-input-wrapper">
