@@ -226,11 +226,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-
-
-
-
-
 // 목표 진행률 상 목표 완료 버튼 이벤트 리스너
 document.addEventListener("DOMContentLoaded", () => {
   const btn = document.querySelector('.goal-complete-btn');
@@ -291,10 +286,10 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// 목표 생성 함수
+// 목표 생성 함수 (업적 응답 처리 추가)
 function createGoal() {
   const form = document.getElementById("goal-form");
-  const companyId = form.dataset.companyId; // 필요시 상위에서 설정
+  const companyId = form.dataset.companyId;
 
   const data = {
     companyId: companyId,
@@ -311,12 +306,19 @@ function createGoal() {
     },
     body: JSON.stringify(data)
   }).then(res => {
-    if (res.ok) {
-      alert("등록 완료!");
-      closeModal("goalModal");
-      location.reload();
+    if (!res.ok) throw new Error("등록 실패");
+    return res.json();
+  }).then(data => {
+    closeModal("goalModal");
+
+    if (data.achievementName) {
+      // 업적 획득 시 URL 파라미터로 전달
+      const baseUrl = `${window.location.origin}${window.location.pathname}`;
+      const redirectUrl = `${baseUrl}?achievementName=${encodeURIComponent(data.achievementName)}`;
+      window.location.href = redirectUrl;
     } else {
-      alert("등록 실패");
+      alert("등록 완료!");
+      location.reload();
     }
   }).catch(err => {
     console.error(err);
