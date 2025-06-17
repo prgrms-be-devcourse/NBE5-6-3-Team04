@@ -241,16 +241,16 @@ public class MemberService implements UserDetailsService {
         SecurityContextHolder.getContext().setAuthentication(newAuth);
     }
 
-    public void verify(String token, SignupRequest request) {
+    public void sendSignupCompleteMail(SignupRequest request) {
         SmtpDto dto = SmtpDto.builder()
             .from("DevQuest")
             .to(List.of(request.getEmail()))
-            .subject("회원 가입을 완료해주세요.")
+            .subject("[DevQuest] 회원가입이 완료되었습니다 ")
             .properties(new HashMap<>() {{
-                put("token", token);
+                put("nickname", request.getNickname());
                 put("domain", "http://localhost:8080");
             }})
-            .eventType("signup_verify")
+            .eventType("signup_complete")
             .build();
 
         mailApi.sendMail("DevQuest-mail", "ROLE_SERVER", dto);

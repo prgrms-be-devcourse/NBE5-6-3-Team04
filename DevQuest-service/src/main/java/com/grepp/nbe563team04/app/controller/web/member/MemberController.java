@@ -99,6 +99,7 @@ public class MemberController {
 
         Long userId = memberService.signup(signupForm.toDto(), Role.ROLE_USER);
         memberService.receiveInterest(userId, roleId, skillIds);
+        memberService.sendSignupCompleteMail(signupForm);
 
         session.removeAttribute("signupForm");
         return "member/signupSuccess";
