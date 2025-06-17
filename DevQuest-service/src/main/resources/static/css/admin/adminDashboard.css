@@ -838,3 +838,62 @@ td input[type="color"] {
   vertical-align: middle;
   padding: 1.5rem;
 }
+
+/*업적 관리 모달*/
+#editAchievementModal .modal-content {
+  padding: 2rem 3rem;
+}
+
+#editAchievementModal .input-field {
+  margin-bottom: 2rem;
+}
+
+#editAchievementModal .file-field .btn {
+  background-color: #6c5ce7;
+}
+
+#editAchievementModal .file-path-wrapper input {
+  padding-left: 0.5rem;
+}
+
+#editAchievementModal .modal-footer {
+  padding: 1rem 2.5rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+#editAchievementModal .modal-footer .btn {
+  min-width: 80px;
+}
+
+/*모달 길이*/
+#editAchievementModal {
+  max-width: 600px;
+}
+
+/* 모달 기본 높이 제한 제거 */
+.modal {
+  max-height: unset !important;
+  height: auto !important;
+  overflow: visible !important;
+  margin-top: 5% !important;
+  margin-bottom: 5% !important;
+}
+
+/* 내용 영역 강제 높이 제거 */
+.modal-content {
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* 푸터 여백 제거 */
+.modal-footer {
+  margin-bottom: 5% !important;
+  padding-bottom: 0 !important;
+  background-color: transparent;
+}
+
+.modal .modal-footer {
+  background-color: transparent;
+}
