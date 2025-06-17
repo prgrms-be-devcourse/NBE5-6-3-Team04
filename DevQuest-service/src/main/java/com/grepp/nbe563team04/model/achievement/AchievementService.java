@@ -187,4 +187,7 @@ public class AchievementService {
                 .collect(Collectors.toList());
     }
 
+    public List<Achievement> getAllAchieve() {
+        return null;
+    }
 }
