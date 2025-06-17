@@ -1,4 +1,3 @@
-
 /*
   goal 화면에서 사용하는 modal 관련 이벤트 리스너, 함수를 모아 두었습니다.
 */
@@ -45,23 +44,25 @@ function createGoal() {
     }).then(res => {
         if (!res.ok) throw new Error("등록 실패");
         return res.json();
-    }).then(data => {
-        closeModal("goalModal");
+    })
+        .then(data => {
+            closeModal("goalModal");
 
-        if (data.achievementName) {
-            // 업적 획득 시 URL 파라미터로 전달
-            const baseUrl = `${window.location.origin}${window.location.pathname}`;
-            const redirectUrl = `${baseUrl}?achievementName=${encodeURIComponent(data.achievementName)}`;
-            window.location.href = redirectUrl;
-        } else {
-            alert("등록 완료!");
-            location.reload();
-        }
-    }).catch(err => {
-        console.error(err);
-        alert("에러 발생");
-    });
+            if (data.achievementName) {
+                const baseUrl = `${window.location.origin}${window.location.pathname}`;
+                const redirectUrl = `${baseUrl}?achievementName=${encodeURIComponent(data.achievementName)}`;
+                window.location.href = redirectUrl;
+            } else {
+                alert("등록 완료!");
+                location.reload();
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert("에러 발생");
+        });
 }
+
 
 
 // '목표 생성' modal 닫기 이벤트 리스너
@@ -189,6 +190,7 @@ function deleteGoal(goalId) {
         });
     }
 }
+
 function closeModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
