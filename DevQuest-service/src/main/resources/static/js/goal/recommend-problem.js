@@ -83,6 +83,7 @@ let checkedProblemIds = new Set();// 체크된 문제들
 let currentSort = { key: null, ascending: true };
 let currentPage = 1;
 
+
 // 추천 문제 조회 함수
 function selectProblem() {
     fetch('/problem/select', {
@@ -102,6 +103,8 @@ function selectProblem() {
             alert("문제 목록 조회 실패");
         });
 }
+
+
 
 // 문제 리스트 렌더링 함수
 function renderProblemList(problems) {
