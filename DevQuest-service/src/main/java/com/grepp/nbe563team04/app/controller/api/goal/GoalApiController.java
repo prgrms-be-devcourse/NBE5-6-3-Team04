@@ -20,7 +20,7 @@ public class GoalApiController {
 
     //  목표 생성
     @PostMapping("/{companyId}/create")
-    public ResponseEntity<?> createGoal(@RequestBody GoalRequestDto dto, @AuthenticationPrincipal Principal principal) {
+    public ResponseEntity<?> createGoal( @RequestBody GoalRequestDto dto, @AuthenticationPrincipal Principal principal) {
         Long userId = principal.getMember().getUserId();
         String achievementName = goalService.createGoal(dto, userId);// 로그인된 유저 ID 꺼내기
 
@@ -57,6 +57,7 @@ public class GoalApiController {
         return ResponseEntity.ok("목표 삭제 완료");
     }
 
+    // 목표 완료
     @PostMapping("/{goalId}/complete")
     public ResponseEntity<Map<String, Object>> completeGoal(
             @PathVariable Long goalId,

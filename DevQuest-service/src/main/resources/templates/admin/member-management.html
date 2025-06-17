@@ -9,31 +9,17 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <!--css-->
   <link rel="stylesheet" href="/css/common.css">
-  <link rel="stylesheet" href="/css/header.css">
+  <link rel="stylesheet" href="/css/admin/header.css">
   <link rel="stylesheet" href="/css/admin/adminDashboard.css">
+
 </head>
 <body>
-<div class="logo">
-  <a href="/admin/dashboard">DevQuest</a>
-</div>
-
-<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/admin-header :: header}"></div>
 <div th:replace="~{fragments/admin-sidenav :: sidenav}"></div>
 
-<!--sidenav-->
-<nav class="top-bar">
-  <div class="nav-wrapper">
-    <div class="nav-container">
-      <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large">
-        <i class="material-icons material-icons-menu">menu</i>
-      </a>
-    </div>
-  </div>
-</nav>
-
 <main>
-  <h2><b th:text="${nickname} + ' 관리자님, 안녕하세요!'"></b></h2>
 
   <div class="container">
     <h2 class="member-title">
@@ -63,7 +49,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="member, iterStat : ${activeUsers}">
+        <tr th:each="member, iterStat : ${activeMembers}">
           <td style="width: 0"></td>
           <td th:text="${iterStat.count}">1</td>
           <td>
@@ -76,11 +62,11 @@
             <span th:unless="${member.role.name() == 'ROLE_ADMIN'}"></span>
           </td>
           <td>
-            <form th:action="@{/admin/removeUser}" method="post">
+            <form th:action="@{/admin/removeMember}" method="post">
               <input type="hidden" name="email" th:value="${member.email}"/>
               <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
             </form>
-            <span th:if="${member.email == currentUserEmail}" style="color: gray;">본인</span>
+            <span th:if="${member.email == currentMemberEmail}" style="color: gray;">본인</span>
           </td>
         </tr>
         </tbody>
@@ -101,7 +87,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="member, iterStat : ${adminUsers}">
+        <tr th:each="member, iterStat : ${adminMembers}">
           <td style="width: 0"></td>
           <td th:text="${iterStat.count}">1</td>
           <td>
@@ -111,7 +97,7 @@
           <td th:text="${member.createdAt}">2025-05-15</td>
           <td><span class="role-admin">관리자</span></td>
           <td>
-            <form th:action="@{/admin/removeUser}" method="post">
+            <form th:action="@{/admin/removeMember}" method="post">
               <input type="hidden" name="email" th:value="${member.email}"/>
               <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
             </form>
@@ -135,7 +121,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="member, iterStat : ${deletedUsers}">
+        <tr th:each="member, iterStat : ${deletedMembers}">
           <td style="width: 0"></td>
           <td th:text="${iterStat.count}">1</td>
           <td>
@@ -160,18 +146,26 @@
   </div>
 </main>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
-<!--sidenav-->
+<!--sidenav 제이쿼리-->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script
-    src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<!--DataTables-->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<!--Materialize-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>-->
+
 <!-- sidenav 초기화 JS -->
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const elems = document.querySelectorAll('.sidenav');
-    M.Sidenav.init(elems);
+    M.Sidenav.init(elems, {
+      onOpenStart: function() {
+        document.querySelector('.top-header').style.display = 'none';
+      },
+      onCloseEnd: function() {
+        document.querySelector('.top-header').style.display = '';
+      }
+    });
   });
 </script>
 

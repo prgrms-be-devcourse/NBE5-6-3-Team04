@@ -61,4 +61,21 @@ public class Member {
         if (this.exp == null) this.exp = 0; // null 방어
         this.exp += amount;
     }
+
+    // admin-dashboard 내 Top5 Member 이미지 표시
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MemberImage> images;
+
+    public String getActiveProfileImageUrl() {
+        if (images == null || images.isEmpty()) {
+            return "/img/default-profile.png";
+        }
+
+        return images.stream()
+            .filter(MemberImage::getActivated)
+            .sorted((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt()))
+            .map(img -> img.getSavePath() + "/" + img.getRenameFileName())
+            .findFirst()
+            .orElse("/img/default-profile.png");
+    }
 }

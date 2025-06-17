@@ -40,7 +40,7 @@ public class GoalCompanyApiController {
     // 목표 기업 단건 조회(단순 dto 조회용)
     @GetMapping("/{companyId}") // /companies/{companyId}
     public GoalCompanyResponseDto selectCompany(@PathVariable Long companyId) {
-        return goalCompanyService.getCompanyById(companyId);
+        return goalCompanyService.getGoalCompanyById(companyId);
     }
 
     // 목표 기업 수정

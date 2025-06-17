@@ -11,9 +11,7 @@
   <link rel="stylesheet" href="/css/common.css">
   <link rel="stylesheet" href="/css/admin/header.css">
   <link rel="stylesheet" href="/css/admin/adminDashboard.css">
-  
-  <meta name="_csrf" th:content="${_csrf.token}"/>
-  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
 </head>
 <body>
 
@@ -28,24 +26,24 @@
       <div class="card-body">
         <table class="table table-hover">
           <thead>
-            <tr>
-              <th>기업명</th>
-              <th>색상</th>
-              <th>관리</th>
-            </tr>
+          <tr>
+            <th>기업명</th>
+            <th>색상</th>
+            <th>관리</th>
+          </tr>
           </thead>
           <tbody>
-            <tr th:each="company : ${companies}">
-              <td th:text="${company.standardName}"></td>
-              <td>
-                <input type="color" th:value="${company.color != null && !#strings.isEmpty(company.color) ? company.color : '#000000'}" th:id="'color-'+${company.id}" style="width: 50px; height: 30px; border: none; background: none;"/>
-                <span th:text="${company.color}"></span>
-              </td>
-              <td>
-                <button class="btn btn-sm btn-outline-primary edit-color-btn" th:data-id="${company.id}">수정</button>
-                <button class="btn btn-sm btn-outline-danger delete-company-btn" th:data-id="${company.id}">삭제</button>
-              </td>
-            </tr>
+          <tr th:each="company : ${companies}">
+            <td th:text="${company.standardName}"></td>
+            <td>
+              <input type="color" th:value="${company.color != null && !#strings.isEmpty(company.color) ? company.color : '#000000'}" th:id="'color-'+${company.id}" style="width: 50px; height: 30px; border: none; background: none;"/>
+              <span th:text="${company.color}"></span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-outline-primary edit-color-btn" th:data-id="${company.id}">수정</button>
+              <button class="btn btn-sm btn-outline-danger delete-company-btn" th:data-id="${company.id}">삭제</button>
+            </td>
+          </tr>
           </tbody>
         </table>
       </div>
@@ -54,26 +52,19 @@
 </main>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script>
   $(function() {
     // 색상 수정
     $('.edit-color-btn').click(function() {
       const id = $(this).data('id');
       const color = $('#color-' + id).val();
-      function getCsrfToken() {
-        return $('meta[name=\"_csrf\"]').attr('content');
-      }
-      function getCsrfHeader() {
-        return $('meta[name=\"_csrf_header\"]').attr('content');
-      }
+
       $.ajax({
         url: '/api/admin/company/colors/' + id,
         type: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify({ color }),
-        headers: {
-          [getCsrfHeader()]: getCsrfToken()
-        },
         success: function() {
           alert('색상 수정 완료');
           location.reload();
@@ -88,18 +79,10 @@
     $('.delete-company-btn').click(function() {
       if (!confirm('정말로 삭제하시겠습니까?')) return;
       const id = $(this).data('id');
-      function getCsrfToken() {
-        return $('meta[name=\"_csrf\"]').attr('content');
-      }
-      function getCsrfHeader() {
-        return $('meta[name=\"_csrf_header\"]').attr('content');
-      }
+
       $.ajax({
         url: '/api/admin/company/colors/' + id,
         type: 'DELETE',
-        headers: {
-          [getCsrfHeader()]: getCsrfToken()
-        },
         success: function() {
           alert('삭제 완료');
           location.reload();
