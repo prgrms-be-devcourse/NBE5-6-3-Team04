@@ -155,7 +155,7 @@ function renderProblemList(problems) {
       <td>${p.problemId}</td>
       <td>${p.site}</td>
       <td><a href="${p.url}" target="_blank">${p.title}</a></td>
-      <td>${p.level}</td>
+      <td>${p.site==="백준"? "-" : p.level}</td> 
       <td>${p.solveCount}</td>
     `;
 
@@ -196,6 +196,7 @@ function renderProblemList(problems) {
 //     document.getElementById("problem-list").appendChild(pagination);
 // }
 
+// 페이지네이션 렌더링(블록 방식 페이지네이션)
 function renderPagination(totalItems, itemsPerPage) {
     const pagination = document.createElement("div");
     pagination.className = "pagination";
