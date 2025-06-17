@@ -99,6 +99,9 @@
   </style>
 </head>
 <body>
+<div th:replace="~{fragments/admin-header :: header}"></div>
+<div th:replace="~{fragments/admin-sidenav :: sidenav}"></div>
+
 <div class="logo">
   <a href="/">DevQuest</a>
 </div>
@@ -184,6 +187,18 @@
     }
 
     ev.target.submit();
+  });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const elems = document.querySelectorAll('.sidenav');
+    if (window.M && M.Sidenav) M.Sidenav.init(elems, {
+      onOpenStart: function() {
+        document.querySelector('.top-header').style.display = 'none';
+      },
+      onCloseEnd: function() {
+        document.querySelector('.top-header').style.display = '';
+      }
+    });
   });
 
 </script>
