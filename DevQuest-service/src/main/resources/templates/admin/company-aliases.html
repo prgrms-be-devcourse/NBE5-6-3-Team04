@@ -31,7 +31,6 @@
         <div class="card mb-4">
             <div class="card-body">
                 <form id="aliasForm" class="row g-3">
-                    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
                     <div class="col-md-5">
                         <label for="originalName" class="form-label">원본 기업명</label>
                         <input type="text" class="form-control" id="originalName" name="originalName" required>
@@ -54,29 +53,29 @@
                 <div class="table-responsive">
                     <table class="table table-hover alias-table">
                         <thead>
-                            <tr>
-                                <th>원본 기업명</th>
-                                <th>별칭</th>
-                                <th>작업</th>
-                            </tr>
+                        <tr>
+                            <th>원본 기업명</th>
+                            <th>별칭</th>
+                            <th>작업</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="alias : ${aliases}">
-                                <td th:text="${alias.normalizedCompany?.normalizedName}"></td>
-                                <td th:text="${alias.aliasName}"></td>
-                                <td class="action-buttons">
-                                    <button class="btn btn-sm btn-outline-primary edit-btn" 
-                                            th:data-id="${alias.id}"
-                                            th:data-original="${alias.normalizedCompany?.normalizedName}"
-                                            th:data-alias="${alias.aliasName}">
-                                        <i class="bi bi-pencil"></i> 수정
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-danger delete-btn" 
-                                            th:data-id="${alias.id}">
-                                        <i class="bi bi-trash"></i> 삭제
-                                    </button>
-                                </td>
-                            </tr>
+                        <tr th:each="alias : ${aliases}">
+                            <td th:text="${alias.normalizedCompany?.normalizedName}"></td>
+                            <td th:text="${alias.aliasName}"></td>
+                            <td class="action-buttons">
+                                <button class="btn btn-sm btn-outline-primary edit-btn"
+                                        th:data-id="${alias.id}"
+                                        th:data-original="${alias.normalizedCompany?.normalizedName}"
+                                        th:data-alias="${alias.aliasName}">
+                                    <i class="bi bi-pencil"></i> 수정
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger delete-btn"
+                                        th:data-id="${alias.id}">
+                                    <i class="bi bi-trash"></i> 삭제
+                                </button>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -94,7 +93,6 @@
                 <div class="modal-body">
                     <form id="editForm">
                         <input type="hidden" id="editId" name="id">
-                        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
                         <div class="mb-3">
                             <label for="editOriginalName" class="form-label">원본 기업명</label>
                             <input type="text" class="form-control" id="editOriginalName" name="originalName" required>
@@ -131,7 +129,6 @@
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const csrfToken = document.querySelector('input[name="_csrf"]').value;
         const aliasForm = document.getElementById('aliasForm');
         const editModal = new bootstrap.Modal(document.getElementById('editModal'));
         const editForm = document.getElementById('editForm');
@@ -150,8 +147,7 @@
                 const response = await fetch('/api/admin/company/stats/aliases', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(data)
                 });
@@ -194,8 +190,7 @@
                 const response = await fetch(`/api/admin/company/stats/aliases/${id}`, {
                     method: 'PUT',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(data)
                 });
@@ -221,10 +216,7 @@
                 const id = this.dataset.id;
                 try {
                     const response = await fetch(`/api/admin/company/stats/aliases/${id}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'X-CSRF-TOKEN': csrfToken
-                        }
+                        method: 'DELETE'
                     });
 
                     if (response.ok) {

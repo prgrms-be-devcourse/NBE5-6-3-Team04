@@ -40,7 +40,7 @@ public class CompanyNormalizationService {
     /**
      * 입력된 기업명을 정규화하여 표준 기업명을 반환합니다.
      * GoalCompany와는 독립적으로 동작하며, 단순히 기업명 정규화만 담당합니다.
-     * 
+     *
      * @param inputCompanyName 사용자가 입력한 기업명
      * @return 정규화된 기업명 (표준 기업명)
      */
