@@ -1,0 +1,47 @@
+.sidenav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 220px;
+  height: 100vh;
+  background: white;
+  z-index: 1000;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.04);
+}
+
+.sidenav-trigger {
+  margin-left: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.user-view {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidenav-title {
+  text-align: center !important;
+  display: block !important;
+  font-size: 1.2rem !important;
+  font-weight: 600 !important;
+  padding: 0.5rem 0 !important;
+  margin-bottom: 0.5rem;
+}
+
+.sidenav .user-view .circle {
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #e6e5e5;
+}

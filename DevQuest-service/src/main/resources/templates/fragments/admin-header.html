@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="header">
+  <div class="top-header">
+    <!-- 로고 -->
+    <div class="logo">
+      <a href="/admin/dashboard">DevQuest</a>
+    </div>
+
+    <!-- 로그아웃 -->
+      <form id="logoutForm" th:action="@{/auth/logout}" method="post"></form>
+      <span class="logout" onclick="document.getElementById('logoutForm').submit()">로그아웃</span>
+  </div>
+
+  <!-- 햄버거 메뉴 -->
+  <a href="#" data-target="slide-out" class="sidenav-trigger">
+    <i class="material-icons menu-icon">menu</i>
+  </a>
+</div>
+</body>
+</html>

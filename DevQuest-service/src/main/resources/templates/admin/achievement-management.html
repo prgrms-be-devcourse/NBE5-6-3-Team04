@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>DevQuest 업적 관리</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+        rel="stylesheet">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/admin/header.css">
+  <link rel="stylesheet" href="/css/admin/sidenav.css">
+  <link rel="stylesheet" href="/css/admin/adminDashboard.css">
+</head>
+<body>
+<!-- 관리자 헤더 -->
+<div th:replace="~{fragments/admin-header :: header}"></div>
+<!-- 관리자 사이드네브 -->
+<div th:replace="~{fragments/admin-sidenav :: sidenav}"></div>
+
+<main>
+  <h4 class="mb-4">업적 관리</h4>
+  <!--  <div class="container mt-4">-->
+
+  <div class="card">
+    <div class="card-body">
+
+      <table class="table">
+        <thead>
+        <tr>
+          <th>업적 ID</th>
+          <th>이름 및 설명</th>
+          <th>이미지</th>
+          <!-- 필요시 더 추가 -->
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="achievement : ${achievements}">
+          <td th:text="${achievement.name}">튜토리얼 완료</td>
+          <td th:text="${achievement.description}">첫 업적</td>
+          <td>
+            <img th:src="@{${achievement.imageUrl}}" alt="업적 이미지" style="height: 40px;">
+          </td>
+          <td>
+            <!-- 케밥 메뉴 버튼 -->
+            <a class="dropdown-trigger" href="#!"
+               th:attr="data-target='dropdown-' + ${achievement.achieveId}">
+              <i class="material-icons">more_vert</i>
+            </a>
+
+            <!-- 드롭다운 메뉴 -->
+            <ul th:attr="id='dropdown-' + ${achievement.achieveId}" class="dropdown-content">
+              <li>
+                <a href="#!"
+                   th:data-id="${achievement.achieveId}"
+                   th:data-name="${achievement.name}"
+                   th:data-description="${achievement.description}"
+                   th:data-imageurl="${achievement.imageUrl}"
+                   onclick="openEditModalFromAttr(this)">
+                  수정
+                </a>
+              </li>
+              <li>
+                <a th:href="@{'/admin/achievement/delete/' + ${achievement.achieveId}}"
+                   onclick="return confirm('정말 삭제하시겠습니까?')">삭제</a>
+              </li>
+            </ul>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+      <div id="editAchievementModal" class="modal">
+        <div class="modal-content">
+          <h4>업적 수정</h4>
+          <form id="editAchievementForm" method="post" enctype="multipart/form-data">
+            <input type="hidden" id="edit-id" name="id">
+            <div class="input-field">
+              <input type="text" id="edit-name" name="name" required>
+              <label for="edit-name">업적 이름</label>
+            </div>
+            <div class="input-field">
+                <textarea id="edit-description" name="description" class="materialize-textarea"
+                          required></textarea>
+              <label for="edit-description">설명</label>
+            </div>
+            <div class="file-field input-field">
+              <div class="btn">
+                <span>파일 선택</span>
+                <input type="file" name="imageFile">
+              </div>
+              <div class="file-path-wrapper">
+                <input class="file-path validate" type="text" placeholder="업적 이미지를 선택하세요">
+              </div>
+            </div>
+          </form>
+        <div class="modal-footer">
+          <button class="modal-close btn grey lighten-1">취소</button>
+          <button class="btn blue" onclick="submitEditForm()">저장</button>
+        </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!--  </div>-->
+</main>
+
+<!-- Materialize JS 및 사이드네브 초기화 -->
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const elems = document.querySelectorAll('.sidenav');
+    if (window.M && M.Sidenav) {
+      M.Sidenav.init(elems, {
+        onOpenStart: function () {
+          document.querySelector('.top-header').style.display = 'none';
+        },
+        onCloseEnd: function () {
+          document.querySelector('.top-header').style.display = '';
+        }
+      });
+    }
+    const dropdowns = document.querySelectorAll('.dropdown-trigger');
+    M.Dropdown.init(dropdowns, {
+      constrainWidth: false,
+      coverTrigger: false
+    });
+    // 모달
+    const modals = document.querySelectorAll('.modal');
+    M.Modal.init(modals);
+  });
+
+  function openEditModalFromAttr(elem) {
+    document.getElementById('edit-id').value = elem.dataset.id;
+    document.getElementById('edit-name').value = elem.dataset.name;
+    document.getElementById('edit-description').value = elem.dataset.description;
+
+    M.updateTextFields(); // 라벨 고정
+
+    const modal = M.Modal.getInstance(document.getElementById('editAchievementModal'));
+    modal.open();
+  }
+
+  function submitEditForm() {
+    const form = document.getElementById('editAchievementForm');
+    const id = document.getElementById('edit-id').value;
+    form.action = `/admin/achievement/edit/${id}`;
+    form.submit();
+  }
+</script>
+</body>
+</html> 

@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>마이페이지 수정 | DevQuest</title>
-    <meta name="_csrf" th:content="${_csrf.token}" />
-    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
     <link rel="stylesheet" th:href="@{/css/mypage/mypageUpdate.css}">
 </head>
 <body>
@@ -23,23 +21,22 @@
 </div>
 
 <div class="container">
-    <div class="nickname" th:text="${user.nickname} + ' 님의 마이페이지'"></div>
-    <img class="profile-img" th:src="@{'/images/profile/' + ${user.userImage}}" alt="프로필 이미지">
+    <div class="nickname" th:text="${member.nickname} + ' 님의 마이페이지'"></div>
+    <img alt="프로필 이미지" class="profile-img" th:src="@{'/profile/' + ${image.renameFileName}}">
 
-    <div class="level-title" th:text="${user.level.levelName}"></div>
-    <div class="level" th:text="'Lv.' + ${user.level.levelId}"></div>
+    <div class="level-title" th:text="${member.level.levelName}"></div>
+    <div class="level" th:text="'Lv.' + ${member.level.levelId}"></div>
 
     <div class="progress-bar">
         <div class="progress" th:style="'width:' + ${progressPercent} + '%'"></div>
     </div>
 
-    <form class="edit-box" method="post" action="/user/update" enctype="multipart/form-data">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <form class="edit-box" method="post" action="/member/update" enctype="multipart/form-data">
         <label for="userImageFile">프로필 이미지 업로드</label>
         <input type="file" id="userImageFile" name="userImageFile">
 
         <label for="nickname">닉네임</label>
-        <input type="text" id="nickname" name="nickname" th:value="${user.nickname}">
+        <input type="text" id="nickname" name="nickname" th:value="${member.nickname}">
 
         <label for="currentPassword">현재 비밀번호</label>
         <input type="password" id="currentPassword" name="currentPassword" placeholder="현재 비밀번호를 입력해주세요">
@@ -50,7 +47,7 @@
         <input type="password" id="password" name="password">
 
         <label for="comment">한마디</label>
-        <input type="text" id="comment" name="comment" th:value="${user.comment}">
+        <input type="text" id="comment" name="comment" th:value="${member.comment}">
 
         <button type="submit" class="submit-btn">수정 완료</button>
     </form>

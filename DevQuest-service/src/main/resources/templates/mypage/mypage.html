@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>마이페이지 | DevQuest</title>
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <link rel="stylesheet" th:href="@{/css/achievement/congratulation.css}">
     <link rel="stylesheet" th:href="@{/css/mypage/mypage.css}">
 </head>
@@ -24,10 +22,10 @@
 </div>
 
 <div class="container">
-    <div class="nickname" th:text="${user.nickname} + ' 님의 마이페이지'"></div>
-    <img alt="프로필 이미지" class="profile-img" th:src="@{'/images/profile/' + ${user.userImage}}">
-    <div class="level-title" th:text="${user.level.levelName}"></div>
-    <div class="level" th:text="'Lv.' + ${user.level.levelId}"></div>
+    <div class="nickname" th:text="${member.nickname} + ' 님의 마이페이지'"></div>
+    <img alt="프로필 이미지" class="profile-img"  th:src="@{'/profile/'+ ${image.renameFileName}}"/>
+    <div class="level-title" th:text="${member.level.levelName}"></div>
+    <div class="level" th:text="'Lv.' + ${member.level.levelId}"></div>
 
     <div class="progress-bar">
         <div class="progress" th:style="'width:' + ${progressPercent} + '%'">
@@ -35,8 +33,8 @@
     </div>
 
     <div class="info-box">
-        <p><b>이메일</b> <span th:text="${user.email}"></span></p>
-        <p><b>한마디</b> <span th:text="${user.comment}"></span></p>
+        <p><b>이메일</b> <span th:text="${member.email}"></span></p>
+        <p><b>한마디</b> <span th:text="${member.comment}"></span></p>
     </div>
 
     <div class="achievements">
@@ -52,15 +50,21 @@
         </div>
     </div>
 
-    <div class="ccmModal" id="achievementListModal">
+    <div class="ccmModal" id="achievementListModal" onclick="outsideModalClick(event)">
         <div class="ccmModal-content">
-            <span class="close" onclick="closeListModal()">×</span>
             <h3>🏅 획득 업적 목록</h3>
             <div id="achievementList">
             </div>
         </div>
     </div>
-    <div class="edit" onclick="location.href='/user/update'">수정하기</div>
+    <div class="ccmModal" id="achievementDetailModal" onclick="closeDetailModalOutside(event)" style="display:none;">
+        <div class="ccmModal-content">
+            <h4 id="detailTitle">업적 제목</h4>
+            <p id="detailDescription">업적 상세 설명</p>
+        </div>
+    </div>
+
+    <div class="edit" onclick="location.href='/member/update'">수정하기</div>
 </div>
 
 <div class="logout" onclick="deleteAccount()">
@@ -74,5 +78,5 @@
 <script defer src="/js/withdraw.js"></script>
 <script defer src="/js/achievement/mypageAchieve.js"></script>
 <script defer src="/js/achievement/congratulation.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
 </html>

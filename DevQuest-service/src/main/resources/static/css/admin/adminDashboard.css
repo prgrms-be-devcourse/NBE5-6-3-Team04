@@ -1,0 +1,975 @@
+body {
+  background-color: #f4f4f4;
+  font-family: 'Noto Sans KR', sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 40px;
+  width: 100%;
+  max-width: 1000px;
+  margin: 40px auto;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 3rem;
+}
+
+h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+h3.member-title {
+  font-size: 18px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+th {
+  text-align: center;
+}
+
+hr {
+  margin: 1rem 0rem 1rem 0rem;
+}
+
+.tab-menu, .tabs {
+  display: flex;
+  justify-content: right;
+  margin-bottom: 20px;
+  gap: 20px;
+}
+
+.tab-btn {
+  font-size: 16px;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 6px 10px;
+  transition: all 0.3s;
+}
+
+.tab-btn:hover {
+  color: #3b4bd3;
+  border-bottom: 2px solid #3b4bd3;
+}
+
+.tab-btn.active {
+  color: #3b4bd3;
+  border-bottom: 2px solid #3b4bd3;
+  font-weight: bold;
+}
+
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  table-layout: fixed;
+  word-break: break-word;
+}
+
+.table-container th, .table-container td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+td {
+  text-align: center;
+}
+
+table.dataTable thead th {
+  text-align: center;
+}
+
+
+.email-small {
+  font-size: 13px;
+  color: #666;
+  display: block;
+  margin-top: 4px;
+}
+
+.role-admin {
+  color: #1a73e8;
+}
+
+button {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  background-color: #d9534f;
+  color: white;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.table-scroll-area {
+  overflow-y: auto;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  max-height: 400px;
+  margin-top: -1px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  padding: 6px 12px;
+!important;
+  margin: 2px;
+!important;
+  border-radius: 4px;
+!important;
+  border: none;
+!important;
+  background-color: #eee;
+!important;
+  color: #333 !important;
+  font-weight: 500;
+!important;
+  transition: all 0.3s ease;
+!important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  background-color: #3f51b5;
+!important;
+  color: white !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background-color: #dcdcdc;
+!important;
+  color: #111 !important;
+}
+
+/* search bar */
+.dataTables_filter {
+  float: right;
+  margin-bottom: 16px;
+}
+
+.dataTables_filter input[type="search"] {
+  border: none;
+  border-bottom: 1.5px solid #aaa;
+  background-color: transparent;
+  font-size: 14px;
+  padding: 6px 4px;
+  width: 220px;
+  transition: border-color 0.3s ease;
+  outline: none;
+}
+
+.dataTables_filter input[type="search"]::placeholder {
+  color: #ccc;
+}
+
+.dataTables_filter input[type="search"]:focus {
+  border-bottom: 2px solid #3f51b5;
+  background-color: transparent;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 20px;
+    max-width: 100%;
+  }
+
+  .table-container table {
+    font-size: 12px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .tab-btn {
+    font-size: 0.9rem;
+    padding: 4px 10px;
+  }
+}
+
+/* 공통 배경 없애기 */
+body nav.top-bar, header nav {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.material-icons-menu {
+  font-size: 24px;
+  color: #333;
+  cursor: pointer;
+}
+
+.admin-dashboard-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-family: sans-serif;
+  background: #f8f8f8;
+}
+
+.admin-dashboard-card {
+  width: 400px;
+  padding: 20px;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.dashboard-charts-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1.5rem;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.dashboard-chart-card {
+  flex: 1 1 calc(33.333% - 1.5rem);
+  min-width: 0;
+  max-width: unset !important;
+  width: 100% !important;
+  box-sizing: border-box;
+  min-height: 316px;
+}
+
+.card {
+  box-shadow: 0 4px 16px rgba(99, 49, 177, 0.08), 0 1.5px 4px rgba(0, 0, 0, 0.04);
+  border-radius: 18px;
+  background: #fff;
+  border: none;
+  max-width: unset !important;
+}
+
+.card-content {
+  padding: 1rem;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #6331b1;
+  margin-bottom: 1.2rem;
+}
+
+.chart-wrapper {
+  width: 100% !important;
+  min-width: unset !important;
+  max-width: unset !important;
+}
+
+canvas {
+  width: 100% !important;
+  min-width: unset !important;
+  max-width: unset !important;
+  height: 260px !important;
+}
+
+@media (max-width: 1100px) {
+  .dashboard-charts-row {
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .dashboard-chart-card {
+    max-width: 100%;
+    min-width: 0;
+  }
+}
+
+/* 차트 카드 스타일 */
+.card-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.card-toolbar-title {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.card-toolbar-actions {
+  display: flex;
+  align-items: center;
+}
+
+.chips-wrapper {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.chip {
+  font-weight: 500;
+  padding: 0 16px;
+  height: 28px;
+  border-radius: 16px;
+  font-size: 13px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.chip .close {
+  margin-left: 8px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.lang-chip {
+  box-shadow: 0 1px 4px rgba(255, 99, 132, 0.15);
+}
+
+.company-chip {
+  box-shadow: 0 1px 4px rgba(102, 153, 255, 0.15);
+}
+
+.lang-chip:hover,
+.company-chip:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+  transition: 0.2s;
+}
+
+.chip.sql {
+  background-color: #e38c00;
+}
+
+.chip.computer-science {
+  background-color: #9b59b6;
+}
+
+.chip.react {
+  background-color: #61dafb;
+}
+
+.chip.vue {
+  background-color: #42b883;
+}
+
+.chip.angular {
+  background-color: #dd0031;
+}
+
+.chip.javascript {
+  background-color: #f7df1e;
+  color: #000;
+}
+
+.chip.node-js {
+  background-color: #339933;
+}
+
+.chip.typescript {
+  background-color: #3178c6;
+}
+
+.chip.python {
+  background-color: #3776ab;
+}
+
+.chip.system-design {
+  background-color: #6c5ce7;
+}
+
+.chip.api-design {
+  background-color: #00cec9;
+}
+
+.chip.aspnet-core {
+  background-color: #512bd4;
+}
+
+.chip.java {
+  background-color: #007396;
+}
+
+.chip.c + + {
+  background-color: #00599c;
+}
+
+.chip.flutter {
+  background-color: #02569b;
+}
+
+.chip.spring-boot {
+  background-color: #6db33f;
+}
+
+.chip.go-roadmap {
+  background-color: #00acd7;
+}
+
+.chip.rust {
+  background-color: #dea584;
+}
+
+.chip.graphql {
+  background-color: #e10098;
+}
+
+.chip.design-and-architecture {
+  background-color: #e17055;
+}
+
+.chip.design-system {
+  background-color: #dfe6e9;
+  color: #000;
+}
+
+.chip.react-native {
+  background-color: #61dafb;
+}
+
+.chip.aws {
+  background-color: #ff9900;
+}
+
+.chip.code-review {
+  background-color: #2d3436;
+  color: #fff;
+}
+
+.chip.docker {
+  background-color: #2496ed;
+}
+
+.chip.kubernetes {
+  background-color: #326ce5;
+}
+
+.chip.linux {
+  background-color: #fcc624;
+  color: #000;
+}
+
+.chip.mongodb {
+  background-color: #47a248;
+}
+
+.chip.prompt-engineering {
+  background-color: #6c5ce7;
+}
+
+.chip.terraform {
+  background-color: #623ce4;
+}
+
+.chip.data-structures-and-algorithms {
+  background-color: #fd79a8;
+}
+
+.chip.git-and-github {
+  background-color: #181717;
+  color: #fff;
+}
+
+.chip.redis {
+  background-color: #dc382d;
+}
+
+.chip.php {
+  background-color: #777bb4;
+}
+
+.chip.cloudflare {
+  background-color: #f38020;
+}
+
+.chip.ai-agents {
+  background-color: #8e44ad;
+}
+
+.chip.ai-red-teaming {
+  background-color: #c0392b;
+}
+
+.chip.reactjs {
+  background-color: #61dafb;
+}
+
+.chip.vuejs {
+  background-color: #42b883;
+}
+
+.chip.angularjs {
+  background-color: #dd0031;
+}
+
+.chip.cs {
+  background-color: #9b59b6;
+}
+
+.chip.backend {
+  background-color: #2c3e50;
+  color: #fff;
+}
+
+.chip.frontend {
+  background-color: #f39c12;
+}
+
+.chip.devops {
+  background-color: #16a085;
+}
+
+.chip.database {
+  background-color: #8e44ad;
+}
+
+.chip.ai {
+  background-color: #9b59b6;
+}
+
+.chip.ml {
+  background-color: #3498db;
+}
+
+.chip.cloud {
+  background-color: #3498db;
+}
+
+.chip.security {
+  background-color: #e74c3c;
+}
+
+.chip.infra {
+  background-color: #7f8c8d;
+}
+
+.chip.testing {
+  background-color: #34495e;
+  color: #fff;
+}
+
+.chip.html-css {
+  background-color: #e67e22;
+}
+
+.chip.algorithms {
+  background-color: #d35400;
+}
+
+.chip.networking {
+  background-color: #2980b9;
+}
+
+
+.card-content {
+  position: relative;
+}
+
+.dashboard-summary-card {
+  margin-bottom: 2rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  min-height: 243px;
+}
+
+.summary-content {
+  margin-top: 1rem;
+}
+
+.summary-row {
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.summary-row b {
+  color: #1976d2;
+}
+
+.logo-col {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+}
+
+.card .card-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #3F2296;
+  margin-bottom: 1.2rem;
+}
+
+.summary-row b {
+  color: #3F2296;
+}
+
+/* dashboard-summary */
+.dashboard-summary-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+  flex-wrap: wrap;
+  min-height: 295px;
+}
+
+.dashboard-summary-card,
+.top-level-card {
+  min-width: 300px;
+}
+
+/*기업 유사어 관리*/
+
+.alias-container {
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 40px;
+  width: 100%;
+  max-width: 1000px;
+  height: auto;
+  min-height: 600px;
+  margin: 40px auto;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+.alias-table th,
+.alias-table td {
+  text-align: center;
+  padding-left: 1rem;
+}
+
+.alias-table th:nth-child(1),
+.alias-table td:nth-child(1) {
+  text-align: center;
+  padding-left: 1rem;
+}
+
+.alias-table th:nth-child(2),
+.alias-table td:nth-child(2) {
+  text-align: center;
+  padding-left: 1rem;
+}
+
+.alias-table th:nth-child(3),
+.alias-table td:nth-child(3) {
+  text-align: center;
+}
+
+.alias-table th.col-company {
+  width: 40%;
+  text-align: center;
+}
+
+.alias-table th.col-alias {
+  width: 30%;
+  text-align: center;
+}
+
+.alias-table th.col-action {
+  width: 30%;
+  text-align: center;
+}
+
+.alias-table td.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.add-btn {
+  background-color: #3F2296 !important;
+  color: white !important;
+}
+.alias-card-body {
+  min-height: 200px;
+  width: 100%;
+  display: block;
+  padding: 2rem;
+}
+
+.alias-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+.form-label {
+  font-weight: bold;
+  font-size: 14px;
+  color: #333; /* 원하는 색상 */
+}
+/* 추가 버튼 정중앙 정렬 */
+#aliasForm.row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.btn-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.edit-btn {
+  background-color: #3F2296 !important;
+  color: white !important;
+}
+
+.delete-btn {
+  background-color: #3F2296 !important;
+  color: white !important;
+}
+
+.add-btn:hover {
+  background-color: #564098 !important;
+}
+
+.edit-btn:hover {
+  background-color: #564098 !important;
+}
+
+.delete-btn:hover {
+  background-color: #564098 !important;
+}
+
+/*기업 색상 관리 버튼*/
+.edit-color-btn {
+  background-color: #3F2296 !important;
+  color: white !important;
+}
+
+.delete-color-btn {
+  background-color: #3F2296 !important;
+  color: white !important;
+}
+
+.edit-color-btn:hover {
+  background-color: #564098 !important;
+}
+
+.delete-color-btn:hover {
+  background-color: #564098 !important;
+}
+
+.card-body {
+  height: auto;
+  width: 1000px;
+  display: flex;
+  justify-content: center;
+  min-height: 600px;
+}
+
+table td,
+table th {
+  text-align: center;
+}
+
+/* 1. td 안에 정렬 개선 */
+td {
+  vertical-align: middle;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* 2. 색상 input + span 같이 정렬 */
+td input[type="color"] {
+  vertical-align: middle;
+  margin-right: 0.5rem;
+}
+
+/* 3. 색상 span (hex 텍스트) 정렬 */
+.color-name {
+  vertical-align: middle;
+  display: inline-block;
+  font-weight: 500;
+  font-family: monospace;
+}
+
+/* 컬러 테이블 전체 균등 분배 */
+.color-table {
+  table-layout: fixed;
+  width: 100%;
+  height: 8rem;
+  border-collapse: collapse;
+}
+
+/* 기업 색상관리 -테이블 정렬 */
+.color-table th,
+.color-table td {
+  width: auto;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0.8rem 0.5rem;
+  white-space: nowrap; /* 줄바꿈 방지 */
+}
+
+
+
+/*업적 관리 모달*/
+#editAchievementModal .modal-content {
+  padding: 2rem 3rem;
+}
+
+#editAchievementModal .input-field {
+  margin-bottom: 2rem;
+}
+
+#editAchievementModal .file-field .btn {
+  background-color: #6c5ce7;
+}
+
+#editAchievementModal .file-path-wrapper input {
+  padding-left: 0.5rem;
+}
+
+#editAchievementModal .modal-footer {
+  padding: 1rem 2.5rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+#editAchievementModal .modal-footer .btn {
+  min-width: 80px;
+}
+
+/*모달 길이*/
+#editAchievementModal {
+  max-width: 600px;
+}
+
+/* 모달 기본 높이 제한 제거 */
+.modal {
+  max-height: unset !important;
+  height: auto !important;
+  overflow: visible !important;
+  margin-top: 5% !important;
+  margin-bottom: 5% !important;
+}
+
+/* 내용 영역 강제 높이 제거 */
+.modal-content {
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* 푸터 여백 제거 */
+.modal-footer {
+  margin-bottom: 5% !important;
+  padding-bottom: 0 !important;
+  background-color: transparent;
+}
+
+.modal .modal-footer {
+  background-color: transparent;
+}
+
+.material-icons .menu-icon{
+  margin-left: 1rem;
+}
+
+/*랭킹*/
+/*레벨 상위 유저 Top 5*/
+.top-level-card {
+  background: #f8fafc;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  min-height: 231.5px;
+  width: 500px;
+}
+
+.top-member-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.top-member-item {
+  display: flex;
+  align-items: center; /* 수직 정렬 */
+  justify-content: space-between; /* 좌우 간격 조절 */
+  gap: 2rem;
+  padding: 0.5rem 1rem;
+}
+
+.rank {
+  font-weight: bold;
+}
+
+.username {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-weight: 500;
+}
+
+.level {
+  font-weight: bold;
+  color: #3F2296;
+}
+
+.profile-img {
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.card.top-level-card {
+  position: relative;
+}
+
+.card.top-level-card .card-footer {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+}
+
+.card-header-with-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1rem 0 1rem;
+}
+
+.card-header-with-link {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.view-all-link {
+  font-size: 0.9rem;
+  color: #666;
+  text-decoration: none;
+}
+
+.view-all-link:hover {
+  text-decoration: underline;
+}

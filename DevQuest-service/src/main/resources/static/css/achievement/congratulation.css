@@ -16,5 +16,27 @@
     width: 600px;
     border-radius: 10px;
     max-height: 600px;
-    overflow-y: auto;
+    overflow: hidden; /* 내부 둥근 테두리 유지 */
+    display: flex;
+    flex-direction: column;
+}
+
+.ccmModal-content h3 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+#achievementCongratsModal {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+
+#achievementCongratsModal.active {
+    display: block;
+    opacity: 1;
+    pointer-events: auto;
 }

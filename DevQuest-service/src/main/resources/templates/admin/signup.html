@@ -99,6 +99,7 @@
   </style>
 </head>
 <body>
+
 <div class="logo">
   <a href="/">DevQuest</a>
 </div>
@@ -120,13 +121,13 @@
   </form>
 
   <div class="login-link">계정이 있으신가요? <a href="/signin">로그인</a></div>
-
+</div>
 <script>
   const validElement = document.querySelector('#emailCheckMsg');
   document.querySelector('#email').addEventListener('focusout', async ev => {
     const email = encodeURIComponent(ev.target.value);
     if(!email) return;
-    const response = await fetch('/api/user/exists/' + email);
+    const response = await fetch('/api/member/exists/' + email);
     const data = await response.json();
 
     validElement.style.display = 'block';
@@ -163,7 +164,7 @@
 
     // 이메일 중복 체크
     const email = encodeURIComponent(document.querySelector('#email').value);
-    const emailRes = await fetch('/api/user/exists/' + email);
+    const emailRes = await fetch('/api/member/exists/' + email);
     const emailData = await emailRes.json();
 
     if(emailData.data){
@@ -186,7 +187,18 @@
     ev.target.submit();
   });
 
-</script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const elems = document.querySelectorAll('.sidenav');
+    if (window.M && M.Sidenav) M.Sidenav.init(elems, {
+      onOpenStart: function() {
+        document.querySelector('.top-header').style.display = 'none';
+      },
+      onCloseEnd: function() {
+        document.querySelector('.top-header').style.display = '';
+      }
+    });
+  });
 
+</script>
 </body>
 </html>

@@ -68,43 +68,167 @@
 .tags .tag:hover {
   text-decoration: underline;
 }
-
-/* AI */
+/* AI 박스 전체 */
+/* ai-box를 모달에 맞게 채움 */
 .ai-box {
+  position: relative;
   width: 87%;
   margin-bottom: 10px;
   padding: 1rem;
-  background-color: white; /* 연한 초록색 */
+  background-color: white;
   border: 2px solid rgba(85, 67, 168, 0.47);
   border-radius: 12px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  height: 100%;
+  width: 100%;
+  gap: 10px;
+  box-sizing: border-box;
 }
 
+/* AI 헤더 */
 .ai-header {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.3rem;
-  margin-bottom: 0.5rem;
+  align-items: center;
+  gap: 10px;
 }
 
 .ai-avatar {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   object-fit: cover;
 }
 
 .ai-title {
-  font-size: 11pt;
-  font-weight: 700;
-  color: #4a4a4a;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* 채팅 내역 */
+/* 채팅 히스토리 (스크롤만 이 안에 적용됨) */
+.chat-history {
+  flex: 1;
+  overflow-y: auto;
+  background-color: #f4f4ff;
+  padding: 10px;
+  border-radius: 8px;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 메시지 */
+.chat-history p {
+  max-width: 80%;
+  padding: 8px 12px;
+  border-radius: 16px;
+  font-size: 0.9rem;
+  white-space: pre-line;
+  word-break: break-word;
   margin: 0;
 }
 
+.chat-history .user {
+  align-self: flex-end;
+  background-color: #dcf8c6;
+  color: #333;
+  border-bottom-right-radius: 0;
+}
+
+.chat-history .ai {
+  align-self: flex-start;
+  color: #4a2fa7;
+  border-bottom-left-radius: 0;
+}
+
+
+/*채팅 입력창 */
+.chat-input-wrapper {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  background-color: #f5f5f5;
+  border-radius: 20px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid #ddd;
+}
+
+
+/*input과 버튼 높이 일치 */
+#userMessageInput {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  outline: none;
+  height: 100%;
+}
+
+.send-btn {
+  background-color: #8c6eff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 20px;
+  cursor: pointer;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+/*챗봇 말풍선 스타일*/
+.chat-message.ai {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.chat-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.chat-bubble-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 260px;
+}
+
+.chat-name {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 4px;
+  margin-left: 4px;
+}
+
+.chat-bubble {
+  background-color: #e0e4ff;
+  color: inherit;
+  padding: 10px 14px;
+  border-radius: 16px;
+  border-top-left-radius: 4px;
+  font-size: 14px;
+  line-height: 1.5;
+  word-break: break-word;
+  white-space: pre-line;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+}
+/*----------------------------*/
+
+
+/* 챗봇 응답 텍스트 영역 */
 #aiFeedBack {
   display: inline-block;
   font-weight: bold;
@@ -116,17 +240,19 @@
   white-space: pre-line;
   max-width: 100%;
   max-height: 30vh;
-  overflow-y: auto;       /* 내용이 넘칠 때만 세로 스크롤 */
+  overflow-y: auto;
 }
 
+
+/* 버튼 컨테이너 */
 .reaction {
   display: flex;
   gap: 10px;
   justify-content: center;
-  margin-top: 10px;
   align-self: flex-end;
 }
 
+/* 전송 버튼 (초록색) */
 .btn-positive {
   background-color: #89ca67;
   color: white;
@@ -135,23 +261,209 @@
   border-radius: 8px;
   cursor: pointer;
 }
-
-.btn-negative {
-  background-color: #ff8279;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
 .btn-positive:hover {
   background-color: #519502;
 }
 
-.btn-negative:hover {
-  background-color: #e64509;
+/* 오른쪽 하단에 고정된 채팅창 모달 */
+.chat-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  bottom: 80px;
+  right: 20px; /* ✅ 왼쪽 → 오른쪽 */
+  width: 360px;
+  max-width: 90vw; /* ✅ 반응형 */
+  height: 480px;
+  background-color: white;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  animation-duration: 0.4s;
+  animation-fill-mode: forwards;
 }
+
+/*모달 내부 콘텐츠 설정 */
+.chat-modal-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1rem; /* ✅ 상하좌우 간격 동일 */
+  box-sizing: border-box;
+}
+
+/* 모달 닫기 버튼 */
+.chat-modal .close {
+  position: absolute;
+  top: 15px;        /* 원하는 값 */
+  right: 25px;      /* 원하는 값 */
+  font-size: 20px;
+  font-weight: bold;
+  font-family: Arial, sans-serif;
+  color: #333;
+  background: transparent;
+  z-index: 10;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+/*열기 애니메이션 (오른쪽 기준) */
+@keyframes slideUpRight {
+  from {
+    transform: translateY(100%) translateX(20%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) translateX(0);
+    opacity: 1;
+  }
+}
+
+/* 닫기 애니메이션 */
+@keyframes slideDownRight {
+  from {
+    transform: translateY(0) translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%) translateX(20%);
+    opacity: 0;
+  }
+}
+
+/* 채팅 열기 버튼 */
+#openChatBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px; /* ✅ 왼쪽 → 오른쪽 */
+  background-color: rgb(136, 115, 193);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+
+/* 입력 필드 */
+#userMessageInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  outline: none;
+}
+#userMessageInput::placeholder {
+  color: #aaa;
+}
+
+/* 전송 버튼 */
+.send-btn {
+  background-color: #8c6eff;
+  color: white;
+  border: none;
+  border-radius: 16px;
+  padding: 6px 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.send-btn:hover {
+  background-color: #6d4ce9;
+}
+
+/*성격변환 버튼 스타일*/
+#togglePersonalityBtn {
+  background-color: #e4d4ff;
+  color: #4a2fa7;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  /*margin: 8px 0;*/
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+}
+#togglePersonalityBtn:hover {
+  background-color: #c1b2f2;
+}
+
+/* 성격 선택 모달 */
+.personality-modal {
+  position: absolute;
+  bottom: 60px;
+  left: 0;
+  transform: translateX(-320px);
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  background: #ffffff;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 9999;
+  width: 300px;
+}
+
+.personality-modal.visible {
+  display: flex;
+}
+
+.personality-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.personality-option {
+  padding: 6px 8px;
+  font-size: 0.8rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  font-weight: bold; /* ✅ 글씨를 굵게 */
+}
+
+
+.personality-option.active {
+  background-color: #6d84ef;
+  color: white;
+  font-weight: bold;
+}
+
+.emotion-options {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+
+
+/*성격선택 모달*/
+.personality-modal {
+  background-color: #ece3ff;
+}
+/*현재 선택한 성격 유형*/
+.selected-personality-display {
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #6d4ce9;
+  margin: 4px 0 8px;
+  background-color: #f2ecff;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+/*---------------------------------------------*/
+
 
 /* goal 진행률 */
 
@@ -381,6 +693,31 @@
     color: white;
   }
 
+/* add-recommend-btn 추가 버튼 */
+.add-recommend-btn {
+  padding: 5px 10px;
+  font-size: 11px;
+  font-weight: bolder;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.2;
+  color: white;
+  background-color: rgb(136, 115, 193);
+  border: transparent;
+  transition: background-color 0.2s ease;
+}
+
+
+.add-recommend-btn:hover {
+  background-color: #5a37c9;
+  color: white;
+}
+
+
 
 .todo-list-container {
   max-height: 100%;
@@ -484,23 +821,23 @@
     background-color: rgba(255, 98, 98, 0.5);
   }
 
-.completed-toggle-wrapper {
-  margin: 2em 0 0 0;
-  text-align: left;
-}
+/*.completed-toggle-wrapper {*/
+/*  margin: 2em 0 0 0;*/
+/*  text-align: left;*/
+/*}*/
 
-#toggleCompletedBtn {
-  padding: 8px 16px;
-  background-color: #566a7c;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
+/*#toggleCompletedBtn {*/
+/*  padding: 8px 16px;*/
+/*  background-color: #566a7c;*/
+/*  color: white;*/
+/*  border: none;*/
+/*  border-radius: 6px;*/
+/*  cursor: pointer;*/
+/*}*/
 
-#toggleCompletedBtn:hover {
-  background-color: #080909;
-}
+/*#toggleCompletedBtn:hover {*/
+/*  background-color: #080909;*/
+/*}*/
 
   .ccmModal {
     display: none;
@@ -558,6 +895,15 @@
     max-width: 350px;
   }
 
+
+.modal-content select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
   .modal-content {
     display: flex;
     flex-direction: column;
@@ -596,16 +942,16 @@
     background-color: #4c29c6;
   }
 
-  .close {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.9rem;
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #aaa;
-    cursor: pointer;
-    transition: color 0.2s ease;
-  }
+.close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.9rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #aaa;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
 
   .close:hover {
     color: #000;
@@ -655,3 +1001,477 @@
 .dropdown ul li:hover {
   background-color: #f0f0f0;
 }
+
+.done-goal {
+  display: block;
+}
+.done-goal.hidden {
+  display: none;
+}
+
+
+  #toggleDoneGoalsBtn {
+    padding: 5px 10px;
+    font-size: 11px;
+    font-weight: bolder;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.2;
+    color: white;
+    background-color: rgb(136, 115, 193);
+    border: transparent;
+    transition: background-color 0.2s ease;
+    float: right;
+    margin-bottom: 10px;
+  }
+
+
+.view-toggle-wrapper {
+  display: flex;
+  gap: 11px;
+  margin-bottom: 2rem;
+}
+
+.view-toggle-btn {
+  padding: 10px 20px;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: background-color 0.2s ease;
+}
+
+.view-toggle-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.view-toggle-btn.active {
+  background-color: #577590;
+  color: white;
+}
+
+
+.todo-done .fc-event-title {
+  text-decoration: line-through;
+  color: gray !important;
+}
+
+/*풀캘린더 관련 설정*/
+
+
+#calendar {
+  min-height: 600px;
+  width: 100%;
+}
+
+/* 전체 폰트 */
+.fc {
+  font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+}
+
+/* 요일 헤더 */
+.fc .fc-col-header-cell {
+  background-color: #f3f0ff;
+  color: #5e49b0;
+  font-weight: 600;
+  border: none;
+  border-bottom: 1px solid #ddd;
+}
+
+/* 날짜 셀 */
+.fc-daygrid-day-frame {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.fc-daygrid-day:hover {
+  background-color: #f3f0ff;
+  cursor: pointer;
+}
+
+/* 오늘 날짜 */
+.fc-day-today {
+  background-color: #eae7f8 !important;
+  border: 2px solid #7860c6;
+  border-radius: 10px;
+}
+
+/* 이벤트 */
+.fc-event {
+  color: #ffffff !important;        /* 글자색 흰색 고정 */
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  padding: 2px 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* 셀 간격 */
+.fc-scrollgrid-sync-table {
+  border-spacing: 6px;
+}
+
+/* 상단 툴바 제목 (예: June 2025) */
+.fc-toolbar-title {
+  color: #5e49b0; /* 진보라 */
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+/* 상단 버튼 (today, <, >) */
+.fc .fc-button {
+  background-color: #7860c6;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+/* 버튼 hover 시 */
+.fc .fc-button:hover {
+  background-color: #5e49b0;
+}
+
+/* 비활성화된 버튼 스타일 */
+.fc .fc-button:disabled {
+  background-color: #ccc;
+  color: #fff;
+  opacity: 0.6;
+}
+
+.fc-toolbar-title::after {
+  content: " 🐱";
+  margin-left: 6px;
+}
+
+/* 일요일: 빨간 글씨 */
+.fc-day-sun {
+  color: #d32f2f;
+  font-weight: 600;
+}
+
+/* 토요일: 파란 글씨 */
+.fc-day-sat {
+  color: #1976d2;
+  font-weight: 600;
+}
+
+
+
+/* 추천 문제 */
+/* ===== 폰트 & 기본 설정 ===== */
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+}
+
+/* ===== 모달 ===== */
+.modal-problem {
+  width: 90vw;
+  max-width: 1400px;
+  height: 80vh;
+  overflow-y: auto;
+  padding: 24px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  margin: auto;
+}
+
+.centered-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: auto;
+}
+
+/* ===== 테이블 ===== */
+.problem-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.problem-table thead {
+  background-color: #f5f7fa;
+  font-weight: bold;
+  color: #333;
+}
+
+.problem-table th,
+.problem-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+  vertical-align: middle;
+}
+
+/* hover 효과 */
+.problem-table tbody tr:hover {
+  background-color: #f9fcff;
+  transition: background-color 0.2s ease-in-out;
+}
+
+/* 체크박스 정렬 */
+.problem-table td:first-child {
+  text-align: center;
+  width: 48px;
+}
+.problem-table td:first-child input[type="checkbox"] {
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+.problem-table th:nth-child(0),
+.problem-table td:nth-child(0) {
+  width: 50px;
+  text-align: center;
+  white-space: nowrap;
+  color: #666;
+}
+.problem-table th:nth-child(1),
+.problem-table td:nth-child(1) {
+  width: 120px;
+  text-align: center;
+  white-space: nowrap;
+  color: #666;
+}
+
+/* 문제 번호 */
+.problem-table th:nth-child(2),
+.problem-table td:nth-child(2) {
+  width: 100px;
+  text-align: center;
+}
+
+/* 사이트 */
+.problem-table th:nth-child(3),
+.problem-table td:nth-child(3) {
+  width: 120px;
+  text-align: center;
+  white-space: nowrap;
+  color: #666;
+}
+
+/* 문제 제목 */
+.problem-table th:nth-child(4),
+.problem-table td:nth-child(4) {
+  weight: 200px;
+  word-break: keep-all;
+}
+
+/* 레벨 */
+.problem-table th:nth-child(5),
+.problem-table td:nth-child(5) {
+  width: 60px;
+  text-align: center;
+  font-weight: bold;
+  color: #444;
+}
+
+/* 푼 횟수 */
+.problem-table th:nth-child(6),
+.problem-table td:nth-child(6) {
+  width: 100px;
+  text-align: center;
+  color: #666;
+}
+
+
+.problem-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(128, 0, 255, 0.1); /* 보라 그림자 */
+}
+
+.problem-table th,
+.problem-table td {
+  border-bottom: 1px solid #c7a8ff;  /* 가로선 (보라색) */
+  border-right: 1px solid #e5ccff;   /* 세로선 (옅은 보라) */
+  padding: 12px 16px;
+  text-align: left;
+  color: #3e206d;
+}
+
+.problem-table th:last-child,
+.problem-table td:last-child {
+  border-right: none; /* 마지막 열에는 오른쪽 선 제거 */
+}
+
+.problem-table thead {
+  background-color: #f5f0ff; /* 연보라 배경 */
+  font-weight: bold;
+  color: #5e35b1; /* 진보라 텍스트 */
+}
+
+.problem-table tr:hover {
+  background-color: #f3eaff; /* hover시 옅은 보라 */
+}
+
+.problem-table td:first-child input[type="checkbox"] {
+  transform: scale(1.2);
+  accent-color: #7e57c2; /* 체크박스 보라색 */
+}
+
+.pagination button {
+  background-color: #e0d4ff;
+  color: #4b0082;
+  border: none;
+  margin: 7px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background-color: #9575cd;
+  color: white;
+}
+
+.pagination button:hover {
+  background-color: #b39ddb;
+}
+
+
+#itemsPerPage {
+  padding: 4px 8px;
+  font-size: 13px;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #f9f0ff;
+  color: #4a148c;
+  width: auto; /* 너무 넓어지지 않도록 */
+  max-width: 150px;
+}
+
+.problem-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(128, 0, 255, 0.1); /* 보라 그림자 */
+}
+
+.problem-table th,
+.problem-table td {
+  border-bottom: 1px solid #c7a8ff;  /* 가로선 (보라색) */
+  border-right: 1px solid #e5ccff;   /* 세로선 (옅은 보라) */
+  padding: 12px 16px;
+  text-align: left;
+  color: #3e206d;
+}
+
+.problem-table th:last-child,
+.problem-table td:last-child {
+  border-right: none; /* 마지막 열에는 오른쪽 선 제거 */
+}
+
+.problem-table thead {
+  background-color: #f5f0ff; /* 연보라 배경 */
+  font-weight: bold;
+  color: #5e35b1; /* 진보라 텍스트 */
+}
+
+.problem-table tr:hover {
+  background-color: #f3eaff; /* hover시 옅은 보라 */
+}
+
+.problem-table td:first-child input[type="checkbox"] {
+  transform: scale(1.2);
+  accent-color: #7e57c2; /* 체크박스 보라색 */
+}
+
+
+
+.pagination button {
+  background-color: #e0d4ff;
+  color: #4b0082;
+  border: none;
+  margin: 2px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background-color: #9575cd;
+  color: white;
+}
+
+.pagination button:hover {
+  background-color: #b39ddb;
+}
+
+
+#itemsPerPage {
+  padding: 4px 8px;
+  font-size: 13px;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #f9f0ff;
+  color: #4a148c;
+  width: auto; /* 너무 넓어지지 않도록 */
+  max-width: 150px;
+}
+
+/* 보라색 커스텀 체크박스 */
+.custom-checkbox {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  appearance: none;
+  border: 2px solid #7e57c2;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #fff;
+  transition: all 0.2s ease-in-out;
+}
+
+.custom-checkbox:checked {
+  background-color: #7e57c2;
+  border-color: #7e57c2;
+}
+
+.custom-checkbox:checked::after {
+  content: "✔";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.problem-table td a {
+  text-decoration: none;
+  color: inherit;
+}
+.problem-table td a:hover {
+  background-color: #f3e5f5;
+}
+

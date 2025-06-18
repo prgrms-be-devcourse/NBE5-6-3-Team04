@@ -3,8 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>DevQuest Dashboard</title>
-  <meta name="_csrf" th:content="${_csrf.token}"/>
-  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
   <link rel="stylesheet" th:href="@{/css/common.css}">
   <link rel="stylesheet" th:href="@{/css/header.css}">
   <link rel="stylesheet" th:href="@{/css/dashboard.css}">
@@ -56,7 +54,7 @@
 
     <!--  마이페이지  -->
     <p class="mypage">
-      <a th:href="@{/user/mypage}">
+      <a th:href="@{/member/mypage}">
         <span class="material-icons">account_circle</span>마이페이지
       </a>
     </p>
@@ -65,15 +63,11 @@
     <div class="profile-card">
       <div class="profile-card">
         <div class="profile-info">
-          <img class="profile-img"
-               th:src="${dashboard.userImage != null && !dashboard.userImage.isEmpty()
-             ? '/images/profile/' + dashboard.userImage
-             : '/images/profile/default.png'}"
-               alt="프로필 이미지"/>
+          <img alt="프로필 이미지" class="profile-img" th:src="@{'/profile/' + ${image.renameFileName}}">
 
           <div class="level-info">
-            <p class="level-title" th:text="${user.level.levelName}">레벨명</p>
-            <p class="level" th:text="'Lv. ' + ${user.level.levelId}">Lv. N</p>
+            <p class="level-title" th:text="${member.level.levelName}">레벨명</p>
+            <p class="level" th:text="'Lv. ' + ${member.level.levelId}">Lv. N</p>
           </div>
 
         </div>
@@ -90,7 +84,6 @@
     <!--  알림 토글  -->
     <div class="toggle-box">
       <form th:action="@{/dashboard/notification-toggle}" method="post">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <input type="checkbox"
                name="notification"
                th:checked="${dashboard.notificationOn}" onchange="this.form.submit()">
@@ -125,24 +118,21 @@
 
     <div class="company-list">
 
+      <!--admin-dashboard 에서 수정한 기업 색상으로 반영-->
       <div th:each="company : ${dashboard.goalCompanies}"
            class="company-card"
-           th:classappend="|
-             ${company.companyName.toLowerCase()}
-             ${(company.companyName == '네이버') ? ' naver' : ''}
-             ${(company.companyName == '토스') ? ' toss' : ''}
-             ${(company.companyName == '당근') ? ' danggeun' : ''}
-             ${(company.companyName == '배달의민족') ? ' baemin' : ''}
-             ${(company.companyName == '카카오') ? ' kakao' : ''}
-           |">
+           th:style="'background-color:' + ${company.color} + '; color:' + ${company.textColor} + '; border: 3px solid ' + ${company.borderColor}">
 
         <div class="card-header">
-          <span class="status" th:text="${company.statusLabel}">진행 상태</span>
-          <span class="dDay" th:text="'D-' + ${company.DDay}">D-day</span>
+          <span class="status" th:text="${company.statusLabel}"
+                th:style="'color:' + ${company.textColor}">진행 상태</span>
+          <span class="dDay" th:text="'D-' + ${company.DDay}"
+                th:style="'color:' + ${company.textColor}">D-day</span>
 
           <!-- 수정/삭제 드롭다운  -->
           <div class="dropdown" onclick="event.stopPropagation()">
-            <button class="dropdown-toggle" type="button"> ⋮  </button>
+            <button class="dropdown-toggle" type="button"
+                    th:style="'color:' + ${company.textColor}"> ⋮ </button>
             <ul class="dropdown-menu">
               <li class="update-btn" th:attr="data-id=${company.companyId}">수정</li>
               <li class="delete-btn" th:attr="data-id=${company.companyId}">삭제</li>
@@ -249,15 +239,6 @@
 
 
   <script>
-    const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-
-    function getCsrfHeaders() {
-      return {
-        [csrfHeader]: csrfToken
-      };
-    }
-
     document.addEventListener("DOMContentLoaded", () => {
       const form = document.getElementById("create-form");
 
@@ -312,8 +293,7 @@
       fetch('/companies/create', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          ...getCsrfHeaders()
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
       })
@@ -349,9 +329,6 @@
       if (confirm("정말 삭제하시겠습니까?")) {
         fetch(`/companies/${companyId}/delete`, {
           method: 'DELETE',
-          headers: {
-            ...getCsrfHeaders()
-          }
         })
         .then(res => {
           if (res.ok) {
@@ -401,8 +378,7 @@
       fetch(`/companies/${companyId}/update`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
-          ...getCsrfHeaders()
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
       })
@@ -433,6 +409,6 @@
   </script>
 </body>
 <script defer src="/js/achievement/congratulation.js"></script>
-<script
-    src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+
 </html>
