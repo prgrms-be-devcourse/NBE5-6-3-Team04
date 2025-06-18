@@ -71,10 +71,11 @@
 /* AI 박스 전체 */
 /* ai-box를 모달에 맞게 채움 */
 .ai-box {
+  position: relative;
   width: 87%;
   margin-bottom: 10px;
   padding: 1rem;
-  background-color: white; /* 연한 초록색 */
+  background-color: white;
   border: 2px solid rgba(85, 67, 168, 0.47);
   border-radius: 12px;
   display: flex;
@@ -109,11 +110,11 @@
 /* 채팅 히스토리 (스크롤만 이 안에 적용됨) */
 .chat-history {
   flex: 1;
-  overflow-y: auto; /* ✅ 스크롤 여기에만 */
+  overflow-y: auto;
   background-color: #f4f4ff;
   padding: 10px;
   border-radius: 8px;
-  min-height: 0; /* ✅ flex scroll layout 이슈 방지 */
+  min-height: 0;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -148,13 +149,13 @@
 .chat-input-wrapper {
   display: flex;
   align-items: center;
-  gap: 10px;
-  background-color: #f5f5f5;
   padding: 10px 12px;
-  border-radius: 24px;
+  background-color: #f5f5f5;
+  border-radius: 20px;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
   border: 1px solid #ddd;
 }
+
 
 /*input과 버튼 높이 일치 */
 #userMessageInput {
@@ -163,7 +164,7 @@
   background: transparent;
   font-size: 14px;
   outline: none;
-  height: 100%; /* ✅ 전송 버튼과 높이 맞춤 */
+  height: 100%;
 }
 
 .send-btn {
@@ -175,16 +176,18 @@
   font-weight: bold;
   border-radius: 20px;
   cursor: pointer;
-  height: 36px; /* ✅ 버튼 높이 고정 */
+  height: 36px;
   display: flex;
   align-items: center;
+  justify-content: center;
+
 }
 
 /*챗봇 말풍선 스타일*/
 .chat-message.ai {
   display: flex;
-  flex-direction: row;         /* ✅ 가로 정렬 */
-  align-items: flex-start;     /* ✅ 위쪽 정렬 */
+  flex-direction: row;
+  align-items: flex-start;
   gap: 10px;
   margin-bottom: 14px;
 }
@@ -212,7 +215,7 @@
 
 .chat-bubble {
   background-color: #e0e4ff;
-  color: inherit; /* ✅ 부모로부터 상속 받게 만들기 */
+  color: inherit;
   padding: 10px 14px;
   border-radius: 16px;
   border-top-left-radius: 4px;
@@ -246,7 +249,6 @@
   display: flex;
   gap: 10px;
   justify-content: center;
-  margin-top: 10px;
   align-self: flex-end;
 }
 
@@ -292,11 +294,16 @@
 /* 모달 닫기 버튼 */
 .chat-modal .close {
   position: absolute;
-  top: 10px;
-  right: 14px;
+  top: 15px;        /* 원하는 값 */
+  right: 25px;      /* 원하는 값 */
   font-size: 20px;
   font-weight: bold;
+  font-family: Arial, sans-serif;
+  color: #333;
+  background: transparent;
+  z-index: 10;
   cursor: pointer;
+  transition: color 0.2s ease;
 }
 
 /*열기 애니메이션 (오른쪽 기준) */
@@ -311,7 +318,7 @@
   }
 }
 
-/* 4. 닫기 애니메이션 */
+/* 닫기 애니메이션 */
 @keyframes slideDownRight {
   from {
     transform: translateY(0) translateX(0);
@@ -328,7 +335,7 @@
   position: fixed;
   bottom: 20px;
   right: 20px; /* ✅ 왼쪽 → 오른쪽 */
-  background-color: #6d84ef;
+  background-color: rgb(136, 115, 193);
   color: white;
   border: none;
   border-radius: 50px;
@@ -339,15 +346,6 @@
   z-index: 1000;
 }
 
-/* 채팅 입력창 */
-.chat-input-wrapper {
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
-  background-color: #eee;
-  border-radius: 20px;
-  padding: 8px 12px;
-}
 
 /* 입력 필드 */
 #userMessageInput {
@@ -375,7 +373,94 @@
   background-color: #6d4ce9;
 }
 
+/*성격변환 버튼 스타일*/
+#togglePersonalityBtn {
+  background-color: #e4d4ff;
+  color: #4a2fa7;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  /*margin: 8px 0;*/
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+}
+#togglePersonalityBtn:hover {
+  background-color: #c1b2f2;
+}
 
+/* 성격 선택 모달 */
+.personality-modal {
+  position: absolute;
+  bottom: 60px;
+  left: 0;
+  transform: translateX(-320px);
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  background: #ffffff;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 9999;
+  width: 300px;
+}
+
+.personality-modal.visible {
+  display: flex;
+}
+
+.personality-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.personality-option {
+  padding: 6px 8px;
+  font-size: 0.8rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  font-weight: bold; /* ✅ 글씨를 굵게 */
+}
+
+
+.personality-option.active {
+  background-color: #6d84ef;
+  color: white;
+  font-weight: bold;
+}
+
+.emotion-options {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+
+
+/*성격선택 모달*/
+.personality-modal {
+  background-color: #ece3ff;
+}
+/*현재 선택한 성격 유형*/
+.selected-personality-display {
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #6d4ce9;
+  margin: 4px 0 8px;
+  background-color: #f2ecff;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
 
 /*---------------------------------------------*/
 
@@ -857,16 +942,6 @@
     background-color: #4c29c6;
   }
 
-  .close {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.9rem;
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #aaa;
-    cursor: pointer;
-    transition: color 0.2s ease;
-  }
 
   .close:hover {
     color: #000;

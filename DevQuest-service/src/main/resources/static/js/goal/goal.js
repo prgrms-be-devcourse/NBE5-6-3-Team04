@@ -128,23 +128,27 @@ function showCompletedGoals() {
   document.querySelector('#completedGoalsSection').style.display = 'flex';
 }
 
-//Gemini 답장 메시지
 
+
+//Gemini 답장 메시지
 document.addEventListener("DOMContentLoaded", () => {
-  // DOM 요소 초기화
   const inputBox = document.getElementById("userMessageInput");
   const chatHistory = document.getElementById("chatHistory");
   const modal = document.getElementById("chatModal");
   const openBtn = document.getElementById("openChatBtn");
   const closeBtn = document.getElementById("closeChatBtn");
+  const personalityBtn = document.getElementById("togglePersonalityBtn");
+  const personalityModal = document.getElementById("personalityModal");
 
   let isModalOpen = false;
+  let personalityTimer = null;
+  let selectedPersonality = null;
 
-  // 채팅 입력 처리 및 자동 리사이징
+  // 채팅 입력 처리
   inputBox.addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
-      if (event.shiftKey) return; // 줄바꿈 허용
-      event.preventDefault();     // 기본 Enter 동작 막기
+      if (event.shiftKey) return;
+      event.preventDefault();
       handleUserInput();
     }
     autoResizeTextarea(this);
@@ -164,12 +168,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function sendAiMessage(message) {
+
+    console.log("선택된 성격:", selectedPersonality);
+
     fetch("/api/ai/feedback", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ prompt: message })
+      body: JSON.stringify({
+        prompt: message,
+        personality: selectedPersonality
+      })
     })
     .then(res => res.json())
     .then(data => {
@@ -224,7 +234,7 @@ document.addEventListener("DOMContentLoaded", () => {
     el.style.height = (el.scrollHeight + 2) + "px";
   }
 
-  // 모달 열기
+  // 모달 열고 닫기
   openBtn.addEventListener("click", () => {
     if (!isModalOpen) {
       modal.style.display = "block";
@@ -235,10 +245,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // 모달 닫기
   closeBtn.addEventListener("click", closeModalWithAnimation);
 
-  // 모달 바깥 클릭 시 닫기
   window.addEventListener("click", (e) => {
     if (
         isModalOpen &&
@@ -251,13 +259,54 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function closeModalWithAnimation() {
     modal.style.animation = "slideDownRight 0.3s ease forwards";
-    modal.addEventListener(
-        "animationend",
-        () => {
-          modal.style.display = "none";
-          isModalOpen = false;
-        },
-        { once: true }
-    );
+    modal.addEventListener("animationend", () => {
+      modal.style.display = "none";
+      isModalOpen = false;
+    }, { once: true });
   }
+
+  // MBTI 모달 hover 제어
+  personalityBtn.addEventListener("mouseenter", () => {
+    personalityModal.classList.add("visible");
+  });
+
+  personalityBtn.addEventListener("mouseleave", () => {
+    personalityTimer = setTimeout(() => {
+      personalityModal.classList.remove("visible");
+    }, 400);
+  });
+
+  personalityModal.addEventListener("mouseenter", () => {
+    clearTimeout(personalityTimer);
+  });
+
+  personalityModal.addEventListener("mouseleave", () => {
+    personalityModal.classList.remove("visible");
+  });
+
+  // 성격 선택
+  document.querySelectorAll(".personality-option").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".personality-option").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      selectedPersonality = btn.dataset.personality; // ✅ 중요: .textContent → .dataset.personality
+      console.log("선택된 성격:", selectedPersonality);
+    });
+  });
 });
+
+// 선택된 성격 표시 UI 업데이트
+const personalityDisplay = document.getElementById("selectedPersonalityDisplay");
+
+document.querySelectorAll(".personality-option").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".personality-option").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    selectedPersonality = btn.dataset.personality;
+
+    // ✅ 선택된 성격 UI에 표시
+    personalityDisplay.textContent = `현재 선택된 성격: ${selectedPersonality}`;
+  });
+});
+
+//===========================

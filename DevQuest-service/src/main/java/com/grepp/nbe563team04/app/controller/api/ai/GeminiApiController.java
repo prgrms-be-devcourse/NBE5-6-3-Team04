@@ -29,6 +29,7 @@ public class GeminiApiController {
         HttpSession session
     ) {
         String userMessage = inputDto.getPrompt();
+        String personality = inputDto.getPersonality(); // AI 성격 가져옴
 
         // 세션에 사용자 메시지 저장
         List<ChatMessageDto> history = chatHistoryService.saveMessage(
@@ -40,7 +41,7 @@ public class GeminiApiController {
         );
 
         // Gemini 응답 받기
-        String aiReply = geminiService.getGeminiReply(history);
+        String aiReply = geminiService.getGeminiReply(history, personality);
 
         // 응답 메시지도 세션에 저장
         chatHistoryService.saveMessage(
