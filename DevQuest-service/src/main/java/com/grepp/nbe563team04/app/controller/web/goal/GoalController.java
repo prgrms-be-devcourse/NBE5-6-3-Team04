@@ -3,28 +3,26 @@ package com.grepp.nbe563team04.app.controller.web.goal;
 import com.grepp.nbe563team04.model.auth.domain.Principal;
 import com.grepp.nbe563team04.model.dashboard.DashboardService;
 import com.grepp.nbe563team04.model.dashboard.dto.DashboardDto;
-import com.grepp.nbe563team04.model.dashboard.dto.GoalCompanyDto;
 import com.grepp.nbe563team04.model.goal.GoalService;
 import com.grepp.nbe563team04.model.goal.dto.GoalResponseDto;
-import com.grepp.nbe563team04.model.goalCategory.GoalCategoryRepository;
 import com.grepp.nbe563team04.model.goalCategory.GoalCategoryService;
 import com.grepp.nbe563team04.model.goalCategory.dto.GoalCategoryResponseDto;
-import com.grepp.nbe563team04.model.goalCategory.entity.GoalCategory;
 import com.grepp.nbe563team04.model.goalcompany.GoalCompanyService;
 import com.grepp.nbe563team04.model.goalcompany.dto.GoalCompanyResponseDto;
-import com.grepp.nbe563team04.model.todo.TodoService;
-import com.grepp.nbe563team04.model.todo.dto.TodoResponseDto;
 import com.grepp.nbe563team04.model.member.MemberRepository;
 import com.grepp.nbe563team04.model.member.entity.Member;
+import com.grepp.nbe563team04.model.todo.TodoService;
+import com.grepp.nbe563team04.model.todo.dto.TodoResponseDto;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
@@ -35,7 +33,6 @@ public class GoalController {
 
     // Repository 주입
     private final MemberRepository memberRepository;
-    private final GoalCategoryRepository goalCategoryRepository;
 
     // Service 주입
     private final DashboardService dashboardService;

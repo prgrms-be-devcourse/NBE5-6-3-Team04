@@ -93,6 +93,12 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+function closeAllModals() {
+  document.querySelectorAll(".modal").forEach(modal => {
+    modal.style.display = "none";
+  });
+}
+
 
 // 버튼 함수
 
@@ -101,6 +107,7 @@ function showCalendar() {
   document.querySelector('#ongoingGoalsSection').style.display = 'none';
   document.querySelector('.calendar').style.display = 'flex';
   document.querySelector('#completedGoalsSection').style.display = 'none';
+  closeAllModals()
 
   setTimeout(() => {
     if (calendar) {
@@ -117,6 +124,7 @@ function showGoalList() {
   document.querySelector('#ongoingGoalsSection').style.display = 'flex';
   document.querySelector('.calendar').style.display = 'none';
   document.querySelector('#completedGoalsSection').style.display = 'none';
+  closeAllModals()
 
 
 }
@@ -126,6 +134,7 @@ function showCompletedGoals() {
   document.querySelector('#ongoingGoalsSection').style.display = 'none';
   document.querySelector('.calendar').style.display = 'none';
   document.querySelector('#completedGoalsSection').style.display = 'flex';
+  closeAllModals()
 }
 
 

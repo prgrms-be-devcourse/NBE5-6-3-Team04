@@ -13,11 +13,9 @@ import com.grepp.nbe563team04.model.member.dto.MemberDto;
 import com.grepp.nbe563team04.model.member.entity.Member;
 import com.grepp.nbe563team04.model.member.entity.MemberImage;
 import jakarta.validation.Valid;
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,14 +33,14 @@ import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -76,7 +74,6 @@ public class AdminController {
     // 관리자페이지 대시보드
     @GetMapping("/dashboard")
     public String dashboard(@AuthenticationPrincipal Principal principal, Model model) {
-        log.info("대시보드 접근 - 사용자: {}", principal.getUsername());
 
         try {
             // 관리자 정보 조회
@@ -85,7 +82,6 @@ public class AdminController {
 
             // 회원 그룹별 통계
             Map<String, List<MemberDto>> memberGroups = memberService.findMembersGroupedByStatus();
-            log.info("회원 그룹 통계 조회 완료 - 그룹 수: {}", memberGroups.size());
 
             // null 체크 및 빈 리스트로 초기화
             List<MemberDto> activeUsers = memberGroups.get("activeUsers");
@@ -96,15 +92,9 @@ public class AdminController {
             deletedUsers = deletedUsers != null ? deletedUsers : new ArrayList<>();
             adminUsers = adminUsers != null ? adminUsers : new ArrayList<>();
 
-            log.info("회원 그룹 크기 - 활성: {}, 탈퇴: {}, 관리자: {}",
-                activeUsers.size(), deletedUsers.size(), adminUsers.size());
-
             model.addAttribute("activeMembers", activeUsers);
             model.addAttribute("deletedMembers", deletedUsers);
             model.addAttribute("adminMembers", adminUsers);
-
-            // 차트 데이터 조회 시작
-            log.info("차트 데이터 조회 시작");
 
             // 모든 활성 회원의 언어 관심도 데이터 수집 - N+1 문제 해결
             Map<String, Integer> langCounts = new HashMap<>();
@@ -118,7 +108,7 @@ public class AdminController {
             List<Map.Entry<String, Integer>> topLangs = langCounts.entrySet().stream()
                 .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
                 .limit(5)
-                .collect(Collectors.toList());
+                .toList();
 
             List<String> langLabels = topLangs.stream()
                 .map(Map.Entry::getKey)
@@ -127,8 +117,6 @@ public class AdminController {
             List<Integer> langScores = topLangs.stream()
                 .map(Map.Entry::getValue)
                 .collect(Collectors.toList());
-
-            log.info("언어 관심도 데이터 - 언어: {}, 점수: {}", langLabels, langScores);
 
             model.addAttribute("langLabels", langLabels);
             model.addAttribute("langScores", langScores);
@@ -192,10 +180,6 @@ public class AdminController {
         if (deletedMembers == null) deletedMembers = List.of();
         if (adminMembers == null) adminMembers = List.of();
 
-        log.info("✅ 관리자 수: {}", adminMembers != null ? adminMembers.size() : 0);
-        log.info("✅ 현재 회원 수: {}", activeMembers != null ? activeMembers.size() : 0);
-        log.info("✅ 탈퇴 회원 수: {}", deletedMembers != null ? deletedMembers.size() : 0);
-
         // 모델에 값 설정
         model.addAttribute("admin", admin);
         model.addAttribute("activeMembers", activeMembers);
@@ -203,8 +187,6 @@ public class AdminController {
         model.addAttribute("adminMembers", adminMembers);
         model.addAttribute("_csrf", csrfToken);
         model.addAttribute("nickname", principal.getMember().getNickname());
-
-        log.info("닉네임: {}", principal.getMember().getNickname());
 
         return "admin/member-management";
     }
@@ -229,14 +211,6 @@ public class AdminController {
         return "admin/achievement-management";
     }
 
-//    @GetMapping("/edit/{id}")
-//    public String editForm(@PathVariable Long id, Model model) {
-//        Achievement achievement = achieveRepository.findById(id)
-//                .orElseThrow(() -> new IllegalArgumentException("업적 없음: " + id));
-//        model.addAttribute("achievement", achievement);
-//        return "admin/edit-achievement";
-//    }
-
     @PostMapping("/achievement/edit/{id}")
     public String update(@PathVariable Long id, @ModelAttribute Achievement updated,
                          @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
@@ -254,14 +228,7 @@ public class AdminController {
         return "redirect:/admin/achievement-management";
     }
 
-    // 대시보드-방사형 차트
-//    @GetMapping("/dashboard/rader")
-//    public String raderChart(Model model, Principal principal) {
-//        String memberId = principal.getUsername();
-//        List<String> langLabels = memberInterestService.getTop6Langs(memberId);
-//        model.addAttribute("langLabels", langLabels);
-//        return "dashboard";
-//    }
+
     // admin-dashboard Top5 Member 조회
     @GetMapping("/dashboard/top-members")
     @ResponseBody

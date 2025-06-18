@@ -1,28 +1,34 @@
 package com.grepp.nbe563team04.app.controller.web.admin;
 
 import com.grepp.nbe563team04.model.auth.domain.Principal;
+import com.grepp.nbe563team04.model.company.CompanyAliasRepository;
+import com.grepp.nbe563team04.model.company.NormalizedCompanyRepository;
+import com.grepp.nbe563team04.model.company.dto.CompanyAliasRequestDto;
+import com.grepp.nbe563team04.model.company.entity.CompanyAlias;
+import com.grepp.nbe563team04.model.company.entity.NormalizedCompany;
+import com.grepp.nbe563team04.model.goalcompany.GoalCompanyRepository;
+import com.grepp.nbe563team04.model.goalcompany.GoalCompanyService;
+import com.grepp.nbe563team04.model.goalcompany.entity.GoalCompany;
 import com.grepp.nbe563team04.model.member.MemberService;
 import com.grepp.nbe563team04.model.member.entity.Member;
-import com.grepp.nbe563team04.model.goalcompany.GoalCompanyRepository;
-import com.grepp.nbe563team04.model.company.CompanyNormalizationService;
-import com.grepp.nbe563team04.model.company.CompanyAliasRepository;
-import com.grepp.nbe563team04.model.company.entity.CompanyAlias;
-import com.grepp.nbe563team04.model.company.dto.CompanyAliasRequestDto;
-import com.grepp.nbe563team04.model.company.entity.NormalizedCompany;
-import com.grepp.nbe563team04.model.company.NormalizedCompanyRepository;
-import com.grepp.nbe563team04.model.goalcompany.GoalCompanyService;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.http.ResponseEntity;
-
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @Slf4j
@@ -32,7 +38,6 @@ public class AdminCompanyController {
 
     private final MemberService memberService;
     private final GoalCompanyRepository goalCompanyRepository;
-    private final CompanyNormalizationService companyNormalizationService;
     private final CompanyAliasRepository companyAliasRepository;
     private final NormalizedCompanyRepository normalizedCompanyRepository;
     private final GoalCompanyService goalCompanyService;
@@ -44,7 +49,7 @@ public class AdminCompanyController {
         // 기업별 지원자 수 통계
         Map<String, Long> companyStats = goalCompanyRepository.findAll().stream()
             .collect(Collectors.groupingBy(
-                company -> company.getCompanyName(),
+                GoalCompany::getCompanyName,
                 Collectors.counting()
             ));
 
@@ -52,16 +57,16 @@ public class AdminCompanyController {
         List<Map.Entry<String, Long>> topCompanies = companyStats.entrySet().stream()
             .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
             .limit(10)
-            .collect(Collectors.toList());
+            .toList();
 
         // 차트 데이터 포맷팅
         List<String> labels = topCompanies.stream()
             .map(Map.Entry::getKey)
-            .collect(Collectors.toList());
+            .toList();
 
         List<Long> data = topCompanies.stream()
             .map(Map.Entry::getValue)
-            .collect(Collectors.toList());
+            .toList();
 
         return Map.of(
             "labels", labels,
@@ -73,8 +78,7 @@ public class AdminCompanyController {
     @GetMapping("/stats/aliases")
     public String showCompanyAliasesPage(
         @AuthenticationPrincipal Principal principal,
-        Model model,
-        CsrfToken csrfToken) {
+        Model model) {
 
         // 로그인한 관리자 정보
         Member admin = memberService.findByEmail(principal.getUsername());

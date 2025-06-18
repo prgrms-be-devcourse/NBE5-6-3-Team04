@@ -1,17 +1,15 @@
 package com.grepp.nbe563team04.infra.util.file;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class FileUtil {
@@ -32,6 +30,7 @@ public class FileUtil {
 
         for (MultipartFile file : files) {
             String originFileName = file.getOriginalFilename();
+            assert originFileName != null;
             String renameFileName = generateRenameFileName(originFileName);
             FileDto fileDto = new FileDto(originFileName, renameFileName, savePath);
             fileDtos.add(fileDto);
@@ -55,7 +54,7 @@ public class FileUtil {
     }
     private String generateRenameFileName(String originFileName) {
         String ext = originFileName.substring(originFileName.lastIndexOf("."));
-        return UUID.randomUUID().toString() + ext;
+        return UUID.randomUUID() + ext;
     }
 
     private String createSavePath(String depth) {

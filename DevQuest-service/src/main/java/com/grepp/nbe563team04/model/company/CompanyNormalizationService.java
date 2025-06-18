@@ -51,33 +51,28 @@ public class CompanyNormalizationService {
 
         // 1. 입력값 정규화 (소문자 변환, 공백 제거)
         String normalizedInput = normalizeInput(inputCompanyName);
-        log.info("정규화된 입력값: {}", normalizedInput);
 
         // 2. DB에서 정규화된 기업명 검색
         Optional<NormalizedCompany> existingCompany = normalizedCompanyRepository.findByNormalizedName(normalizedInput);
         if (existingCompany.isPresent()) {
-            log.info("기존 정규화된 기업명 발견: {}", existingCompany.get().getStandardName());
             return existingCompany.get().getStandardName();
         }
 
         // 3. 별칭으로 검색
         Optional<CompanyAlias> existingAlias = companyAliasRepository.findByAliasName(normalizedInput);
         if (existingAlias.isPresent()) {
-            log.info("기존 별칭 발견: {} -> {}", normalizedInput, existingAlias.get().getNormalizedCompany().getStandardName());
             return existingAlias.get().getNormalizedCompany().getStandardName();
         }
 
         // 4. 매핑 규칙에서 검색
         String standardName = COMPANY_MAPPINGS.get(normalizedInput);
         if (standardName != null) {
-            log.info("매핑 규칙에서 발견: {} -> {}", normalizedInput, standardName);
             // 새로운 정규화된 기업명과 별칭 저장
             saveNewNormalizedCompany(normalizedInput, standardName, inputCompanyName);
             return standardName;
         }
 
         // 5. 새로운 기업명으로 처리
-        log.info("새로운 기업명으로 처리: {}", inputCompanyName);
         saveNewNormalizedCompany(normalizedInput, inputCompanyName, inputCompanyName);
         return inputCompanyName;
     }
@@ -117,6 +112,5 @@ public class CompanyNormalizationService {
     @Transactional
     public void addCompanyMapping(String normalizedName, String standardName) {
         COMPANY_MAPPINGS.put(normalizedName, standardName);
-        log.info("새로운 기업 매핑 규칙 추가: {} -> {}", normalizedName, standardName);
     }
 } 

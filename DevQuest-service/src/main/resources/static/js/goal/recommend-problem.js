@@ -2,6 +2,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".add-recommend-btn").forEach(btn => {
         btn.addEventListener("click", (event) => {
+            closeAllModals();
             const btn = event.currentTarget;
             const goalId = btn.dataset.goalId;
             const form = document.getElementById("problem-form");

@@ -1,10 +1,9 @@
 package com.grepp.nbe563team04.model.member.dto;
 
 import com.grepp.nbe563team04.infra.util.file.FileDto;
+import java.time.LocalDateTime;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor

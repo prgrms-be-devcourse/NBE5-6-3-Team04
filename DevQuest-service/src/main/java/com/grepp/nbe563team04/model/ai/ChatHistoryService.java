@@ -18,8 +18,6 @@ public class ChatHistoryService {
 
           List<ChatMessageDto> history = (List<ChatMessageDto>) session.getAttribute("chatHistory");
 
-
-
         if (ObjectUtils.isEmpty(history)) {
             history = new ArrayList<>();
         }

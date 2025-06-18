@@ -4,27 +4,22 @@ import com.grepp.nbe563team04.infra.util.file.FileDto;
 import com.grepp.nbe563team04.infra.util.file.FileUtil;
 import com.grepp.nbe563team04.model.achievement.dto.AchievementDto;
 import com.grepp.nbe563team04.model.achievement.entity.Achievement;
-import com.grepp.nbe563team04.model.member.entity.Member;
-import com.grepp.nbe563team04.model.todo.TodoRepository;
-import com.grepp.nbe563team04.model.member.entity.MembersAchieve;
 import com.grepp.nbe563team04.model.member.MemberRepository;
 import com.grepp.nbe563team04.model.member.MembersAchieveRepository;
+import com.grepp.nbe563team04.model.member.entity.Member;
+import com.grepp.nbe563team04.model.member.entity.MembersAchieve;
+import com.grepp.nbe563team04.model.todo.TodoRepository;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -102,7 +97,6 @@ public class AchievementService {
         ua.setAchievedAt(LocalDateTime.now());
 
         membersAchieveRepository.save(ua);
-        log.info("업적 : {}", achievement.getName());
         return achievement.getName();
     }
 
@@ -213,9 +207,6 @@ public class AchievementService {
         List<Achievement> allAchievements = achieveRepository.findAll();
         List<Long> achievedIds = membersAchieveRepository.findAchievedIdsByUserId(userId);
         Set<Long> achievedSet = new HashSet<>(achievedIds);
-
-        log.info("💡 전체 업적 수: {}", allAchievements.size());
-        log.info("💡 사용자 획득 업적 ID: {}", achievedSet);
 
         return allAchievements.stream()
                 .map(a -> new AchievementDto(

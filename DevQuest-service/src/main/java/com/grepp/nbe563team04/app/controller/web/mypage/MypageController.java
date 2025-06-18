@@ -99,9 +99,6 @@ public class MypageController {
         memberService.updateUser(email, dto, file);
 
         Member updatedMember = memberService.findByEmail(email);
-        MemberImage latestImage = memberImageRepository.findTopByMemberAndActivatedOrderByCreatedAtDesc(
-                updatedMember, true)
-                .orElse(null);
         boolean isProfileComplete = updatedMember.getNickname() != null && !updatedMember.getNickname().isBlank()
                 && updatedMember.getComment() != null && !updatedMember.getComment().isBlank()
                 && updatedMember.isProfile();

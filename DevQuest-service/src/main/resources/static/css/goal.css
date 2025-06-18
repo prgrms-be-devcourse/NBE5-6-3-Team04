@@ -942,6 +942,16 @@
     background-color: #4c29c6;
   }
 
+.close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.9rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #aaa;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
 
   .close:hover {
     color: #000;
@@ -1182,6 +1192,13 @@ body {
   margin: auto;
 }
 
+.centered-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: auto;
+}
+
 /* ===== 테이블 ===== */
 .problem-table {
   width: 100%;
@@ -1321,7 +1338,7 @@ body {
   background-color: #e0d4ff;
   color: #4b0082;
   border: none;
-  margin: 2px;
+  margin: 7px;
   padding: 6px 12px;
   border-radius: 6px;
   cursor: pointer;
@@ -1457,3 +1474,4 @@ body {
 .problem-table td a:hover {
   background-color: #f3e5f5;
 }
+

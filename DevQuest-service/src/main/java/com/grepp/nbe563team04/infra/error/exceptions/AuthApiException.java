@@ -7,8 +7,4 @@ public class AuthApiException extends CommonException{
     public AuthApiException(ResponseCode code) {
         super(code);
     }
-    
-    public AuthApiException(ResponseCode code, Exception e) {
-        super(code, e);
-    }
 }
