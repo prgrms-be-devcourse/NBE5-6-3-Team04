@@ -6,6 +6,7 @@ import com.grepp.nbe563team04.infra.auth.token.TokenCookieFactory;
 import com.grepp.nbe563team04.infra.auth.token.code.GrantType;
 import com.grepp.nbe563team04.infra.auth.token.code.TokenType;
 import com.grepp.nbe563team04.infra.response.ApiResponse;
+import com.grepp.nbe563team04.infra.response.ResponseCode;
 import com.grepp.nbe563team04.model.auth.AuthService;
 import com.grepp.nbe563team04.model.auth.token.dto.TokenResponseDto;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,7 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +38,7 @@ public class AuthController {
     ) {
         try {
             TokenResponseDto dto = authService.signin(req.getEmail(), req.getPassword());
+
             ResponseCookie accessTokenCookie = TokenCookieFactory.create(TokenType.ACCESS_TOKEN.name(),
                 dto.getAccessToken(), dto.getAtExpiresIn());
             ResponseCookie refreshTokenCookie = TokenCookieFactory.create(TokenType.REFRESH_TOKEN.name(),
@@ -51,18 +55,18 @@ public class AuthController {
 
             return ResponseEntity.ok(ApiResponse.success(tokenResponse));
 
-        } catch (AuthenticationException e) {
-            // 어떤 인증 에러든 통일된 실패 응답 반환
+        } catch (BadCredentialsException e) {
             return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
-                .body(ApiResponse.error());
+                .body(ApiResponse.error(ResponseCode.INVALID_PASSWORD));
+        } catch (UsernameNotFoundException e) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(ApiResponse.error(ResponseCode.EMAIL_NOT_FOUND));
+        } catch (AuthenticationException e) {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(ApiResponse.error(ResponseCode.BAD_REQUEST));
         }
-    }
-
-    @PostMapping("logout")
-    public ResponseEntity<ApiResponse<Void>> logout(
-        HttpServletResponse response
-    ){
-        return ResponseEntity.ok(ApiResponse.noContent());
     }
 }

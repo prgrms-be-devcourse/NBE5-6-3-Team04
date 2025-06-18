@@ -152,7 +152,9 @@
 
     // 401 코드이거나 res.ok가 false이면 에러 박스 보이기
     if (!res.ok || data.code === "401") {
-      document.querySelector("#errorBox").style.display = "block";
+      const errorBox = document.querySelector("#errorBox");
+      errorBox.innerText = data.message || "이메일 또는 비밀번호를 확인하세요";
+      errorBox.style.display = "block";
       return;
     }
 
