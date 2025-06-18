@@ -93,6 +93,12 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+function closeAllModals() {
+  document.querySelectorAll(".modal").forEach(modal => {
+    modal.style.display = "none";
+  });
+}
+
 
 // 버튼 함수
 

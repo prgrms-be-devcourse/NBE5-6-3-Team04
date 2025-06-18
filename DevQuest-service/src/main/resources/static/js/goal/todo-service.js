@@ -3,6 +3,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".add-todo-btn").forEach(btn => {
         btn.addEventListener("click", () => {
+            closeAllModals();
             const form = document.getElementById("todo-form");
             form.reset();
             form.goalId.value = btn.dataset.goalId;
@@ -70,6 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // '투두 수정' modal 열기 이벤트 리스너
 document.querySelectorAll(".update-todo-btn").forEach(btn => {
     btn.addEventListener("click", async () => {
+        closeAllModals();
         const todoId = btn.dataset.todoId;
 
         try {

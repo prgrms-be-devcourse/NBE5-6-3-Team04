@@ -9,6 +9,7 @@
 // '목표 생성' modal 열기 이벤트 리스너
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelector(".goal-create-btn").addEventListener("click", () => {
+        closeAllModals();
         const form = document.getElementById("goal-form");
         form.reset();
         form.removeAttribute("data-id");
@@ -85,6 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".update-btn").forEach(btn => {
         btn.addEventListener("click", async () => {
+            closeAllModals();
             const goalId = btn.dataset.goalId;
 
             const form = document.getElementById("goal-form");
