@@ -13,4 +13,6 @@ public interface MemberImageRepository extends JpaRepository<MemberImage, Long> 
     Optional<MemberImage> findTopByMemberAndActivatedOrderByCreatedAtDesc(Member member, Boolean activated);
 
     List<MemberImage> findByMemberAndActivatedTrue(Member member);
+
+    Optional<MemberImage> findTopByMemberAndActivatedTrueOrderByCreatedAtDesc(Member member);
 }

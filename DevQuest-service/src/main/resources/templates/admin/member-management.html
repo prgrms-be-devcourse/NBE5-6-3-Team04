@@ -12,6 +12,7 @@
   <!--css-->
   <link rel="stylesheet" href="/css/common.css">
   <link rel="stylesheet" href="/css/admin/header.css">
+  <link rel="stylesheet" href="/css/admin/sidenav.css">
   <link rel="stylesheet" href="/css/admin/adminDashboard.css">
 
 </head>
@@ -21,11 +22,12 @@
 
 <main>
 
+  <h4 class="member-title">
+    <i class="material-icons"
+       style="vertical-align: middle; margin-right: 6px;"></i>
+    회원 목록
+  </h4>
   <div class="container">
-    <h2 class="member-title">
-      <i class="material-icons" style="vertical-align: middle; margin-right: 6px;">supervisor_account</i>
-      회원 목록
-    </h2>
 
     <div class="tabs">
       <a href="#" class="tab-btn" onclick="showTab('admin'); return false;">관리자</a>
@@ -151,7 +153,8 @@
 <!--DataTables-->
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <!--Materialize-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>-->
 
 <!-- sidenav 초기화 JS -->
@@ -159,10 +162,10 @@
   document.addEventListener('DOMContentLoaded', function () {
     const elems = document.querySelectorAll('.sidenav');
     M.Sidenav.init(elems, {
-      onOpenStart: function() {
+      onOpenStart: function () {
         document.querySelector('.top-header').style.display = 'none';
       },
-      onCloseEnd: function() {
+      onCloseEnd: function () {
         document.querySelector('.top-header').style.display = '';
       }
     });
@@ -193,7 +196,7 @@
         ordering: true,
         info: true,
         columnDefs: [
-          { orderable: false, targets: 0 }
+          {orderable: false, targets: 0}
         ],
         scrollY: '400px',
         scrollCollapse: false
@@ -205,7 +208,8 @@
       // 전체 선택
       $(targetTab).find('.select-all').on('click', function () {
         const checked = this.checked;
-        $(table.rows({ search: 'applied' }).nodes()).find('input[type="checkbox"]').prop('checked', checked);
+        $(table.rows({search: 'applied'}).nodes()).find('input[type="checkbox"]').prop('checked',
+            checked);
       });
 
       initializedTables[type] = true;

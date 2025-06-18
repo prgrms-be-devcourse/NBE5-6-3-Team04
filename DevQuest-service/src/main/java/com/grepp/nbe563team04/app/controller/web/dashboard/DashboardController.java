@@ -32,11 +32,9 @@ public class DashboardController {
     private final TodoService todoService;
     private final MemberService memberService;
 
-
     public DashboardController(DashboardService dashboardService, MemberRepository memberRepository,
-                               DashboardRepository dashboardRepository, MemberImageRepository memberImageRepository,   GoalService goalService, TodoService todoService,
-        MemberService memberService) {
-
+                               DashboardRepository dashboardRepository, MemberImageRepository memberImageRepository, 
+                               GoalService goalService, TodoService todoService, MemberService memberService) {
         this.dashboardService = dashboardService;
         this.memberRepository = memberRepository;
         this.dashboardRepository = dashboardRepository;

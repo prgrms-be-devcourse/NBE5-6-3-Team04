@@ -1,17 +1,16 @@
 <div th:fragment="sidenav">
-  <ul id="slide-out" class="sidenav">
+  <ul id="slide-out" class="sidenav custom-sidenav">
     <li>
-      <div class="user-view" style="text-align:center; display:flex; flex-direction:column; align-items:center;">
-        <div class="background">
-        </div>
-        <a href="#member" style="display:flex; justify-content:center; align-items:center;">
+      <div class="user-view">
+        <div class="background"></div>
+        <a href="#member" class="profile-link">
           <img class="circle" src="/img/profile.png">
         </a>
       </div>
     </li>
 
     <li>
-      <a href="/admin/dashboard" style="text-align:center; display:block; font-weight:bold; font-size:1.2rem;">DevQuest</a>
+      <a href="/admin/dashboard" class="sidenav-title">DevQuest</a>
     </li>
     <li><a href="/admin/dashboard"><i class="material-icons">desktop_mac</i>대시 보드</a></li>
     <li><a href="/admin/company/colors"><i class="material-icons">brush</i>기업 색상 관리</a></li>
