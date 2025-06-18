@@ -1,6 +1,6 @@
 package com.grepp.nbe563team04.app.controller.web.member.payload;
 
-import com.grepp.nbe563team04.model.member.dto.MemberDto;
+import com.grepp.nbe563team04.app.model.member.dto.MemberDto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

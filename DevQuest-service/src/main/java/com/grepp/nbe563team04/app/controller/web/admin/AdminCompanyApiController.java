@@ -1,12 +1,12 @@
 package com.grepp.nbe563team04.app.controller.web.admin;
 
-import com.grepp.nbe563team04.model.company.CompanyAliasRepository;
-import com.grepp.nbe563team04.model.company.dto.CompanyAliasRequestDto;
-import com.grepp.nbe563team04.model.company.entity.CompanyAlias;
-import com.grepp.nbe563team04.model.company.entity.NormalizedCompany;
-import com.grepp.nbe563team04.model.company.NormalizedCompanyRepository;
-import com.grepp.nbe563team04.model.goalcompany.GoalCompanyRepository;
-import com.grepp.nbe563team04.model.goalcompany.entity.GoalCompany;
+import com.grepp.nbe563team04.app.model.company.CompanyAliasRepository;
+import com.grepp.nbe563team04.app.model.company.dto.CompanyAliasRequestDto;
+import com.grepp.nbe563team04.app.model.company.entity.CompanyAlias;
+import com.grepp.nbe563team04.app.model.company.entity.NormalizedCompany;
+import com.grepp.nbe563team04.app.model.company.NormalizedCompanyRepository;
+import com.grepp.nbe563team04.app.model.goalcompany.GoalCompanyRepository;
+import com.grepp.nbe563team04.app.model.goalcompany.entity.GoalCompany;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;

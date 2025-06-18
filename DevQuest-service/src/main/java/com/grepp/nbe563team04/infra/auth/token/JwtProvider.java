@@ -1,10 +1,10 @@
 package com.grepp.nbe563team04.infra.auth.token;
 
 import com.grepp.nbe563team04.infra.auth.token.code.TokenType;
-import com.grepp.nbe563team04.model.auth.domain.Principal;
-import com.grepp.nbe563team04.model.auth.token.dto.AccessTokenDto;
-import com.grepp.nbe563team04.model.member.MemberRepository;
-import com.grepp.nbe563team04.model.member.entity.Member;
+import com.grepp.nbe563team04.app.model.auth.domain.Principal;
+import com.grepp.nbe563team04.app.model.auth.token.dto.AccessTokenDto;
+import com.grepp.nbe563team04.app.model.member.MemberRepository;
+import com.grepp.nbe563team04.app.model.member.entity.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;

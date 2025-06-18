@@ -1,10 +1,10 @@
 package com.grepp.nbe563team04.app.controller.api.problem;
 
-import com.grepp.nbe563team04.model.auth.domain.Principal;
-import com.grepp.nbe563team04.model.problem.ProblemService;
-import com.grepp.nbe563team04.model.problem.dto.ProblemResponseDto;
-import com.grepp.nbe563team04.model.userProblemSolve.UserProblemSolveService;
-import com.grepp.nbe563team04.model.userProblemSolve.dto.UserProblemSolveRequestDto;
+import com.grepp.nbe563team04.app.model.auth.domain.Principal;
+import com.grepp.nbe563team04.app.model.problem.ProblemService;
+import com.grepp.nbe563team04.app.model.problem.dto.ProblemResponseDto;
+import com.grepp.nbe563team04.app.model.userProblemSolve.UserProblemSolveService;
+import com.grepp.nbe563team04.app.model.userProblemSolve.dto.UserProblemSolveRequestDto;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

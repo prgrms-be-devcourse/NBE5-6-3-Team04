@@ -1,16 +1,16 @@
 package com.grepp.nbe563team04.app.controller.web.admin;
 
-import com.grepp.nbe563team04.model.auth.domain.Principal;
-import com.grepp.nbe563team04.model.company.CompanyAliasRepository;
-import com.grepp.nbe563team04.model.company.NormalizedCompanyRepository;
-import com.grepp.nbe563team04.model.company.dto.CompanyAliasRequestDto;
-import com.grepp.nbe563team04.model.company.entity.CompanyAlias;
-import com.grepp.nbe563team04.model.company.entity.NormalizedCompany;
-import com.grepp.nbe563team04.model.goalcompany.GoalCompanyRepository;
-import com.grepp.nbe563team04.model.goalcompany.GoalCompanyService;
-import com.grepp.nbe563team04.model.goalcompany.entity.GoalCompany;
-import com.grepp.nbe563team04.model.member.MemberService;
-import com.grepp.nbe563team04.model.member.entity.Member;
+import com.grepp.nbe563team04.app.model.auth.domain.Principal;
+import com.grepp.nbe563team04.app.model.company.CompanyAliasRepository;
+import com.grepp.nbe563team04.app.model.company.NormalizedCompanyRepository;
+import com.grepp.nbe563team04.app.model.company.dto.CompanyAliasRequestDto;
+import com.grepp.nbe563team04.app.model.company.entity.CompanyAlias;
+import com.grepp.nbe563team04.app.model.company.entity.NormalizedCompany;
+import com.grepp.nbe563team04.app.model.goalcompany.GoalCompanyRepository;
+import com.grepp.nbe563team04.app.model.goalcompany.GoalCompanyService;
+import com.grepp.nbe563team04.app.model.goalcompany.entity.GoalCompany;
+import com.grepp.nbe563team04.app.model.member.MemberService;
+import com.grepp.nbe563team04.app.model.member.entity.Member;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;

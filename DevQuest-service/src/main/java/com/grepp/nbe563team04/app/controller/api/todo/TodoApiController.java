@@ -1,10 +1,10 @@
 package com.grepp.nbe563team04.app.controller.api.todo;
 
-import com.grepp.nbe563team04.model.achievement.AchievementService;
-import com.grepp.nbe563team04.model.auth.domain.Principal;
-import com.grepp.nbe563team04.model.todo.dto.TodoRequestDto;
-import com.grepp.nbe563team04.model.todo.dto.TodoResponseDto;
-import com.grepp.nbe563team04.model.todo.TodoService;
+import com.grepp.nbe563team04.app.model.achievement.AchievementService;
+import com.grepp.nbe563team04.app.model.auth.domain.Principal;
+import com.grepp.nbe563team04.app.model.todo.dto.TodoRequestDto;
+import com.grepp.nbe563team04.app.model.todo.dto.TodoResponseDto;
+import com.grepp.nbe563team04.app.model.todo.TodoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

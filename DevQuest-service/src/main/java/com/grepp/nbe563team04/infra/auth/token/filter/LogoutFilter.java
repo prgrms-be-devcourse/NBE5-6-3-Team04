@@ -3,7 +3,7 @@ package com.grepp.nbe563team04.infra.auth.token.filter;
 import com.grepp.nbe563team04.infra.auth.token.JwtProvider;
 import com.grepp.nbe563team04.infra.auth.token.TokenCookieFactory;
 import com.grepp.nbe563team04.infra.auth.token.code.TokenType;
-import com.grepp.nbe563team04.model.auth.token.RefreshTokenService;
+import com.grepp.nbe563team04.app.model.auth.token.RefreshTokenService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

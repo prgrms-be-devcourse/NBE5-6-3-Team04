@@ -1,9 +1,9 @@
 package com.grepp.nbe563team04.app.controller.api.calendar;
 
-import com.grepp.nbe563team04.model.goal.GoalService;
-import com.grepp.nbe563team04.model.goal.dto.GoalResponseDto;
-import com.grepp.nbe563team04.model.todo.TodoService;
-import com.grepp.nbe563team04.model.todo.dto.TodoResponseDto;
+import com.grepp.nbe563team04.app.model.goal.GoalService;
+import com.grepp.nbe563team04.app.model.goal.dto.GoalResponseDto;
+import com.grepp.nbe563team04.app.model.todo.TodoService;
+import com.grepp.nbe563team04.app.model.todo.dto.TodoResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

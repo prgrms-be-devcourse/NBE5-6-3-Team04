@@ -1,7 +1,7 @@
 package com.grepp.nbe563team04.app.controller.api.admin;
 
-import com.grepp.nbe563team04.model.admin.CompanyService;
-import com.grepp.nbe563team04.model.admin.dto.CompanyStatsDto;
+import com.grepp.nbe563team04.app.model.admin.CompanyService;
+import com.grepp.nbe563team04.app.model.admin.dto.CompanyStatsDto;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,7 +1,7 @@
 package com.grepp.nbe563team04.app.controller.api.goalCategory;
 
-import com.grepp.nbe563team04.model.goalCategory.GoalCategoryRepository;
-import com.grepp.nbe563team04.model.goalCategory.entity.GoalCategory;
+import com.grepp.nbe563team04.app.model.goalCategory.GoalCategoryRepository;
+import com.grepp.nbe563team04.app.model.goalCategory.entity.GoalCategory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

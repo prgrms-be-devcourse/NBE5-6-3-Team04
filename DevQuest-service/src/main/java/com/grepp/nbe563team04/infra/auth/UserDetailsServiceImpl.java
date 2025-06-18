@@ -1,8 +1,8 @@
 package com.grepp.nbe563team04.infra.auth;
 
-import com.grepp.nbe563team04.model.auth.domain.Principal;
-import com.grepp.nbe563team04.model.member.MemberRepository;
-import com.grepp.nbe563team04.model.member.entity.Member;
+import com.grepp.nbe563team04.app.model.auth.domain.Principal;
+import com.grepp.nbe563team04.app.model.member.MemberRepository;
+import com.grepp.nbe563team04.app.model.member.entity.Member;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

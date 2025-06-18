@@ -2,10 +2,10 @@ package com.grepp.nbe563team04.app.controller.web.member;
 
 import com.grepp.nbe563team04.app.controller.web.member.payload.SigninRequest;
 import com.grepp.nbe563team04.app.controller.web.member.payload.SignupRequest;
-import com.grepp.nbe563team04.model.auth.code.Role;
-import com.grepp.nbe563team04.model.interest.InterestService;
-import com.grepp.nbe563team04.model.interest.dto.InterestDto;
-import com.grepp.nbe563team04.model.member.MemberService;
+import com.grepp.nbe563team04.app.model.auth.code.Role;
+import com.grepp.nbe563team04.app.model.interest.InterestService;
+import com.grepp.nbe563team04.app.model.interest.dto.InterestDto;
+import com.grepp.nbe563team04.app.model.member.MemberService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import java.util.Arrays;

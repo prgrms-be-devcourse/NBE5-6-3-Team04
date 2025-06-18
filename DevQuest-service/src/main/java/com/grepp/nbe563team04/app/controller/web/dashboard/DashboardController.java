@@ -1,12 +1,12 @@
 package com.grepp.nbe563team04.app.controller.web.dashboard;
 
-import com.grepp.nbe563team04.model.auth.domain.Principal;
-import com.grepp.nbe563team04.model.dashboard.DashboardService;
-import com.grepp.nbe563team04.model.dashboard.dto.DashboardDto;
-import com.grepp.nbe563team04.model.member.MemberImageRepository;
-import com.grepp.nbe563team04.model.member.MemberRepository;
-import com.grepp.nbe563team04.model.member.entity.Member;
-import com.grepp.nbe563team04.model.member.entity.MemberImage;
+import com.grepp.nbe563team04.app.model.auth.domain.Principal;
+import com.grepp.nbe563team04.app.model.dashboard.DashboardService;
+import com.grepp.nbe563team04.app.model.dashboard.dto.DashboardDto;
+import com.grepp.nbe563team04.app.model.member.MemberImageRepository;
+import com.grepp.nbe563team04.app.model.member.MemberRepository;
+import com.grepp.nbe563team04.app.model.member.entity.Member;
+import com.grepp.nbe563team04.app.model.member.entity.MemberImage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;

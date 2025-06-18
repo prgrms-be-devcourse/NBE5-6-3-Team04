@@ -1,7 +1,7 @@
 package com.grepp.nbe563team04.app.controller.api.member;
 
 import com.grepp.nbe563team04.infra.response.ApiResponse;
-import com.grepp.nbe563team04.model.member.MemberService;
+import com.grepp.nbe563team04.app.model.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

@@ -1,9 +1,9 @@
 package com.grepp.nbe563team04.app.controller.api.goalCompany;
 
-import com.grepp.nbe563team04.model.auth.domain.Principal;
-import com.grepp.nbe563team04.model.goalcompany.GoalCompanyService;
-import com.grepp.nbe563team04.model.goalcompany.dto.GoalCompanyRequestDto;
-import com.grepp.nbe563team04.model.goalcompany.dto.GoalCompanyResponseDto;
+import com.grepp.nbe563team04.app.model.auth.domain.Principal;
+import com.grepp.nbe563team04.app.model.goalcompany.GoalCompanyService;
+import com.grepp.nbe563team04.app.model.goalcompany.dto.GoalCompanyRequestDto;
+import com.grepp.nbe563team04.app.model.goalcompany.dto.GoalCompanyResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

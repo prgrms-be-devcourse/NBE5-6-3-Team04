@@ -1,9 +1,9 @@
 package com.grepp.nbe563team04.app.controller.api.goal;
 
-import com.grepp.nbe563team04.model.auth.domain.Principal;
-import com.grepp.nbe563team04.model.goal.GoalService;
-import com.grepp.nbe563team04.model.goal.dto.GoalRequestDto;
-import com.grepp.nbe563team04.model.goal.dto.GoalResponseDto;
+import com.grepp.nbe563team04.app.model.auth.domain.Principal;
+import com.grepp.nbe563team04.app.model.goal.GoalService;
+import com.grepp.nbe563team04.app.model.goal.dto.GoalRequestDto;
+import com.grepp.nbe563team04.app.model.goal.dto.GoalResponseDto;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

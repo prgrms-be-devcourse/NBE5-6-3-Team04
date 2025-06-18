@@ -1,10 +1,10 @@
 package com.grepp.nbe563team04.app.controller.api.ai;
 
-import com.grepp.nbe563team04.model.ai.dto.ChatMessageDto;
-import com.grepp.nbe563team04.model.ai.dto.GeminiInputDto;
-import com.grepp.nbe563team04.model.ai.dto.Role;
-import com.grepp.nbe563team04.model.ai.ChatHistoryService;
-import com.grepp.nbe563team04.model.ai.GeminiService;
+import com.grepp.nbe563team04.app.model.ai.dto.ChatMessageDto;
+import com.grepp.nbe563team04.app.model.ai.dto.GeminiInputDto;
+import com.grepp.nbe563team04.app.model.ai.dto.Role;
+import com.grepp.nbe563team04.app.model.ai.ChatHistoryService;
+import com.grepp.nbe563team04.app.model.ai.GeminiService;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;

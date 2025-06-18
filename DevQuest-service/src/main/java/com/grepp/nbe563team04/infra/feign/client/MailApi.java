@@ -1,6 +1,6 @@
 package com.grepp.nbe563team04.infra.feign.client;
 
-import com.grepp.nbe563team04.model.member.dto.SmtpDto;
+import com.grepp.nbe563team04.app.model.member.dto.SmtpDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

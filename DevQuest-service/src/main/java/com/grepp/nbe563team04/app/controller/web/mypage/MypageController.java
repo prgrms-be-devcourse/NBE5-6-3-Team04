@@ -1,15 +1,15 @@
 package com.grepp.nbe563team04.app.controller.web.mypage;
 
-import com.grepp.nbe563team04.model.achievement.AchievementService;
-import com.grepp.nbe563team04.model.achievement.dto.AchievementDto;
-import com.grepp.nbe563team04.model.auth.domain.Principal;
-import com.grepp.nbe563team04.model.level.LevelService;
-import com.grepp.nbe563team04.model.member.MemberImageRepository;
-import com.grepp.nbe563team04.model.member.MemberService;
-import com.grepp.nbe563team04.model.member.dto.MemberDto;
-import com.grepp.nbe563team04.model.member.entity.Member;
-import com.grepp.nbe563team04.model.member.entity.MemberImage;
-import com.grepp.nbe563team04.model.member.entity.MembersAchieve;
+import com.grepp.nbe563team04.app.model.achievement.AchievementService;
+import com.grepp.nbe563team04.app.model.achievement.dto.AchievementDto;
+import com.grepp.nbe563team04.app.model.auth.domain.Principal;
+import com.grepp.nbe563team04.app.model.level.LevelService;
+import com.grepp.nbe563team04.app.model.member.MemberImageRepository;
+import com.grepp.nbe563team04.app.model.member.MemberService;
+import com.grepp.nbe563team04.app.model.member.dto.MemberDto;
+import com.grepp.nbe563team04.app.model.member.entity.Member;
+import com.grepp.nbe563team04.app.model.member.entity.MemberImage;
+import com.grepp.nbe563team04.app.model.member.entity.MembersAchieve;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
