@@ -1,5 +1,6 @@
 package com.grepp.nbe563team04.model.goalcompany.entity;
 
+import com.grepp.nbe563team04.model.company.entity.NormalizedCompany;
 import com.grepp.nbe563team04.model.goal.entity.Goal;
 import com.grepp.nbe563team04.model.goalcompany.code.GoalStatus;
 import com.grepp.nbe563team04.model.member.entity.Member;
@@ -58,4 +59,8 @@ public class GoalCompany {
     @Builder.Default
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Goal> goals = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "normalized_company_id")
+    private NormalizedCompany normalizedCompany;
 }

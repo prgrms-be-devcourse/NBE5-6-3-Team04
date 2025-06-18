@@ -2,6 +2,8 @@ package com.grepp.nbe563team04.model.goalcompany;
 
 import com.grepp.nbe563team04.model.achievement.AchievementService;
 import com.grepp.nbe563team04.model.company.CompanyNormalizationService;
+import com.grepp.nbe563team04.model.company.NormalizedCompanyRepository;
+import com.grepp.nbe563team04.model.company.entity.NormalizedCompany;
 import com.grepp.nbe563team04.model.goal.GoalRepository;
 import com.grepp.nbe563team04.model.goal.entity.Goal;
 import com.grepp.nbe563team04.model.goalcompany.dto.GoalCompanyRequestDto;
@@ -31,6 +33,8 @@ public class GoalCompanyService {
 
     private final AchievementService achievementService;
     private final CompanyNormalizationService companyNormalizationService;
+    private final NormalizedCompanyRepository normalizedCompanyRepository;
+
 
     // 목표 기업 생성
     @Transactional
@@ -40,6 +44,9 @@ public class GoalCompanyService {
 
         // 기업명 정규화
         String normalizedCompanyName = companyNormalizationService.normalizeCompanyName(dto.getCompanyName());
+        NormalizedCompany normalizedCompany = normalizedCompanyRepository
+            .findByStandardName(normalizedCompanyName)
+            .orElseThrow(() -> new RuntimeException("정규화된 기업명을 찾을 수 없습니다."));
 
         // GoalCompany Entity 생성
         GoalCompany company = GoalCompany.builder()
@@ -49,6 +56,7 @@ public class GoalCompanyService {
             .status(dto.getStatus())
             .endDate(dto.getEndDate())
             .createdAt(LocalDate.now())
+            .normalizedCompany(normalizedCompany)
             .build();
 
         goalCompanyRepository.save(company);
@@ -132,7 +140,8 @@ public class GoalCompanyService {
             String original = company.getCompanyName();
             String normalized = companyNormalizationService.normalizeCompanyName(original);
             // 정규화된 기업명으로 업데이트 (JPA dirty checking으로 자동 반영)
-            company.setCompanyName(normalized);
+            normalizedCompanyRepository.findByStandardName(normalized)
+                .ifPresent(company::setNormalizedCompany);
         }
     }
 }

@@ -24,7 +24,7 @@ public class NormalizedCompany {
     private String normalizedName;
 
     // 표준 기업명 (예: 토스)
-    @Column(name = "standard_name", nullable = false)
+    @Column(nullable = false, unique = true)
     private String standardName;
 
     // 기업 로고 URL

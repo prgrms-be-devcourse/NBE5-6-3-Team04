@@ -308,6 +308,7 @@
   justify-content: space-between;
   text-decoration: none;
   color: #5f3dc4;
+  transition: all 0.3s ease-in-out;
 }
 
 .company-card.create {

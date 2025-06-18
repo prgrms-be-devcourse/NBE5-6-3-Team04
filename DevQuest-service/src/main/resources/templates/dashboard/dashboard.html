@@ -118,24 +118,21 @@
 
     <div class="company-list">
 
+      <!--admin-dashboard 에서 수정한 기업 색상으로 반영-->
       <div th:each="company : ${dashboard.goalCompanies}"
            class="company-card"
-           th:classappend="|
-             ${company.companyName.toLowerCase()}
-             ${(company.companyName == '네이버') ? ' naver' : ''}
-             ${(company.companyName == '토스') ? ' toss' : ''}
-             ${(company.companyName == '당근') ? ' danggeun' : ''}
-             ${(company.companyName == '배달의민족') ? ' baemin' : ''}
-             ${(company.companyName == '카카오') ? ' kakao' : ''}
-           |">
+           th:style="'background-color:' + ${company.color} + '; color:' + ${company.textColor} + '; border: 2px solid ' + ${company.borderColor}">
 
         <div class="card-header">
-          <span class="status" th:text="${company.statusLabel}">진행 상태</span>
-          <span class="dDay" th:text="'D-' + ${company.DDay}">D-day</span>
+          <span class="status" th:text="${company.statusLabel}"
+                th:style="'color:' + ${company.textColor}">진행 상태</span>
+          <span class="dDay" th:text="'D-' + ${company.DDay}"
+                th:style="'color:' + ${company.textColor}">D-day</span>
 
           <!-- 수정/삭제 드롭다운  -->
           <div class="dropdown" onclick="event.stopPropagation()">
-            <button class="dropdown-toggle" type="button"> ⋮  </button>
+            <button class="dropdown-toggle" type="button"
+                    th:style="'color:' + ${company.textColor}"> ⋮ </button>
             <ul class="dropdown-menu">
               <li class="update-btn" th:attr="data-id=${company.companyId}">수정</li>
               <li class="delete-btn" th:attr="data-id=${company.companyId}">삭제</li>
