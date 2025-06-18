@@ -229,11 +229,11 @@ public class AdminController {
     }
 
 
-    // admin-dashboard Top5 Member 조회
+    // admin-dashboard Top3 Member 조회
     @GetMapping("/dashboard/top-members")
     @ResponseBody
     public List<MemberDto> getTopUsers() {
-        return memberService.getTop5MembersByLevel()
+        return memberService.getTop3MembersByLevel()
             .stream()
             .map(MemberDto::from)
             .collect(Collectors.toList());

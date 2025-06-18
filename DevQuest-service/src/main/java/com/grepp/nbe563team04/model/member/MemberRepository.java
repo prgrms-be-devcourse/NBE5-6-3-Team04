@@ -23,5 +23,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     List<Member> findAllByDeletedAtIsNull();
 
-    List<Member> findTop5ByOrderByLevelDesc();
+    List<Member> findTop3ByOrderByLevelDesc();
 }

@@ -17,9 +17,9 @@ public class MemberInterestService {
     private final MemberInterestRepository memberInterestRepository;
     private final MemberService memberService;
 
-    public List<String> getTop6Langs(String email) {
+    public List<String> getTop5Langs(String email) {
         Member member = memberService.findByEmail(email);
-        List<String> langs = memberInterestRepository.findTop6SkillsByUserId(member.getUserId());
+        List<String> langs = memberInterestRepository.findTop5SkillsByUserId(member.getUserId());
         return langs;
     }
 
@@ -33,19 +33,14 @@ public class MemberInterestService {
         return allLangs;
     }
 
-    /**
-     * 사용자의 상위 6개 언어 관심도 점수를 조회합니다.
-     * 관심도 점수는 해당 언어를 선택한 전체 사용자 수를 기준으로 계산됩니다.
-     * @param email 사용자 이메일
-     * @return 상위 6개 언어의 관심도 점수 리스트 (0-100 사이의 정수)
-     */
-    public List<Integer> getTop6LangScores(String email) {
+
+    public List<Integer> getTop5LangScores(String email) {
         Member member = memberService.findByEmail(email);
-        List<String> top6Langs = memberInterestRepository.findTop6SkillsByUserId(member.getUserId());
+        List<String> top5Langs = memberInterestRepository.findTop5SkillsByUserId(member.getUserId());
 
         long totalUsers = memberService.countActiveUsers();
 
-        List<Integer> scores = top6Langs.stream()
+        List<Integer> scores = top5Langs.stream()
             .map(lang -> {
                 Integer count = memberInterestRepository.countByInterestName(lang);
                 if (count == null || totalUsers == 0) return 0;
@@ -53,7 +48,7 @@ public class MemberInterestService {
                 return score;
             })
             .collect(Collectors.toList());
-        
+
         return scores;
     }
 }

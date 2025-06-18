@@ -24,7 +24,6 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 3rem;
   margin-bottom: 3rem;
 }
 
@@ -252,7 +251,7 @@ body nav.top-bar, header nav {
   max-width: unset !important;
   width: 100% !important;
   box-sizing: border-box;
-  min-height: 416px;
+  min-height: 316px;
 }
 
 .card {
@@ -581,7 +580,6 @@ canvas {
 
 
 .card-content {
-  padding: 1rem;
   position: relative;
 }
 
@@ -590,6 +588,7 @@ canvas {
   background: #f8fafc;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  min-height: 243px;
 }
 
 .summary-content {
@@ -628,8 +627,8 @@ canvas {
   justify-content: center;
   align-items: flex-start;
   gap: 2rem;
-  margin-bottom: 2rem;
   flex-wrap: wrap;
+  min-height: 295px;
 }
 
 .dashboard-summary-card,
@@ -898,7 +897,6 @@ td input[type="color"] {
 /*랭킹*/
 /*레벨 상위 유저 Top 5*/
 .top-level-card {
-  padding: 1rem;
   background: #f8fafc;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
@@ -938,19 +936,40 @@ td input[type="color"] {
 
 .profile-img {
   align-items: center;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
 }
 
 .card.top-level-card {
   position: relative;
-  padding-bottom: 2.5rem; /* 하단 공간 확보 */
 }
 
 .card.top-level-card .card-footer {
   position: absolute;
   right: 1rem;
   bottom: 1rem;
+}
+
+.card-header-with-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1rem 0 1rem;
+}
+
+.card-header-with-link {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.view-all-link {
+  font-size: 0.9rem;
+  color: #666;
+  text-decoration: none;
+}
+
+.view-all-link:hover {
+  text-decoration: underline;
 }
