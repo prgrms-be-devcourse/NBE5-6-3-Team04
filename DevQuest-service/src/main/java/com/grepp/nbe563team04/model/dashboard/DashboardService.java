@@ -13,6 +13,7 @@ import com.grepp.nbe563team04.model.level.LevelRepository;
 import com.grepp.nbe563team04.model.level.entity.Level;
 import com.grepp.nbe563team04.model.member.MemberRepository;
 import com.grepp.nbe563team04.model.member.entity.Member;
+import java.awt.Color;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
@@ -192,6 +193,50 @@ public class DashboardService {
         dto.setEndDate(company.getEndDate());
         dto.setDDay(dDay);
 
+        String companyName = company.getCompanyName().toLowerCase();
+
+        String style = switch (companyName) {
+            case "네이버" ->
+                "background-color: rgba(232, 245, 233, 0.5); color: #1a7f37; border: 2px solid #81c784;";
+            case "토스" ->
+                "background-color: rgba(232, 241, 255, 0.5); color: #0075ff; border: 2px solid #64b5f6;";
+            case "당근" ->
+                "background-color: rgba(255, 243, 224, 0.5); color: #f57c00; border: 2px solid #f57c00;";
+            case "배달의민족" ->
+                "background-color: rgba(224, 247, 250, 0.5); color: #00c4c4; border: 2px solid #00c4c4;";
+            case "카카오" ->
+                "background-color: rgba(255, 248, 225, 0.5); color: #3c1e1e; border: 2px solid #f2c300;";
+            default -> "background-color: #f5f5f5; color: #333; border: 2px solid #ccc;";
+        };
+
+        dto.setStyle(style);
+
+        // 1. 관리자에서 지정한 색상
+        String textColor = (company.getNormalizedCompany() != null
+            && company.getNormalizedCompany().getColor() != null)
+            ? company.getNormalizedCompany().getColor()
+            : "#000000"; // 기본값은 검정
+
+        dto.setTextColor(textColor);
+
+        // 2. 연한 배경색 만들기 (투명도 0.1로)
+        String transparentBackground = textColorToRgba(textColor, 0.1);
+        dto.setColor(transparentBackground);  // 배경에 쓰기
+
+        // 3. 테두리도 살짝 연하게
+        String borderColor = textColorToRgba(textColor, 0.4);
+        dto.setBorderColor(borderColor);
         return dto;
+    }
+
+    // HEX 색상을 RGBA로 변환
+    private String textColorToRgba(String hexColor, double alpha) {
+        try {
+            Color color = Color.decode(hexColor);
+            return String.format("rgba(%d, %d, %d, %.2f)",
+                color.getRed(), color.getGreen(), color.getBlue(), alpha);
+        } catch (NumberFormatException e) {
+            return "rgba(0, 0, 0, 0.1)"; // fallback
+        }
     }
 }

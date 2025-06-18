@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface NormalizedCompanyRepository extends JpaRepository<NormalizedCompany, Long> {
     Optional<NormalizedCompany> findByNormalizedName(String normalizedName);
+
+    Optional<NormalizedCompany> findByStandardName(String standardName);
 } 

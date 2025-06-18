@@ -1,26 +1,20 @@
 package com.grepp.nbe563team04.app.controller.web.admin;
 
 import com.grepp.nbe563team04.model.company.CompanyAliasRepository;
-import com.grepp.nbe563team04.model.company.NormalizedCompanyRepository;
 import com.grepp.nbe563team04.model.company.dto.CompanyAliasRequestDto;
 import com.grepp.nbe563team04.model.company.entity.CompanyAlias;
 import com.grepp.nbe563team04.model.company.entity.NormalizedCompany;
+import com.grepp.nbe563team04.model.company.NormalizedCompanyRepository;
 import com.grepp.nbe563team04.model.goalcompany.GoalCompanyRepository;
 import com.grepp.nbe563team04.model.goalcompany.entity.GoalCompany;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
@@ -36,15 +30,15 @@ public class AdminCompanyApiController {
     public Map<String, Object> getCompanyStats() {
         Map<String, Long> companyStats = goalCompanyRepository.findAll().stream()
             .collect(Collectors.groupingBy(
-                GoalCompany::getCompanyName,
+                company -> company.getCompanyName(),
                 Collectors.counting()
             ));
         List<Map.Entry<String, Long>> topCompanies = companyStats.entrySet().stream()
             .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
             .limit(10)
-            .toList();
-        List<String> labels = topCompanies.stream().map(Map.Entry::getKey).toList();
-        List<Long> data = topCompanies.stream().map(Map.Entry::getValue).toList();
+            .collect(Collectors.toList());
+        List<String> labels = topCompanies.stream().map(Map.Entry::getKey).collect(Collectors.toList());
+        List<Long> data = topCompanies.stream().map(Map.Entry::getValue).collect(Collectors.toList());
         return Map.of("labels", labels, "data", data);
     }
 
@@ -132,6 +126,18 @@ public class AdminCompanyApiController {
             if (!normalizedCompanyRepository.existsById(id)) {
                 return ResponseEntity.notFound().build();
             }
+
+            // 연결된 GoalCompany 있는지 확인
+            List<GoalCompany> linkedCompanies = goalCompanyRepository.findByNormalizedCompanyId(id);
+            log.info("🔗 연결된 GoalCompany 개수: {}", linkedCompanies.size());
+
+            if (!linkedCompanies.isEmpty()) {
+                return ResponseEntity
+                    .badRequest()
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body("삭제 실패: 연결된 목표 기업이 존재합니다.");
+            }
+
             normalizedCompanyRepository.deleteById(id);
             return ResponseEntity.ok().build();
         } catch (Exception e) {

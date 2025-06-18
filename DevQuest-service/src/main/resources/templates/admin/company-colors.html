@@ -69,7 +69,7 @@
         url: '/api/admin/company/colors/' + id,
         type: 'PUT',
         contentType: 'application/json',
-        data: JSON.stringify({color}),
+        data: JSON.stringify({ color }),
         success: function () {
           alert('색상 수정 완료');
           location.reload();
@@ -94,14 +94,20 @@
           alert('삭제 완료');
           location.reload();
         },
-        error: function () {
-          alert('삭제 실패');
+        error: function (xhr) {
+          const errorText = xhr.responseText;
+          console.log("❌ 삭제 실패 응답:", errorText);
+
+          if (errorText.includes("연결된")) {
+            alert(errorText);
+          } else {
+            alert("삭제 실패: 서버 오류");
+          }
         }
       });
     });
-  });
 
-  document.addEventListener('DOMContentLoaded', function () {
+    // 사이드네비게이션 (Materialize)
     const elems = document.querySelectorAll('.sidenav');
     if (window.M && M.Sidenav) {
       M.Sidenav.init(elems, {
@@ -113,7 +119,7 @@
         }
       });
     }
-  });
+  }); // ✅ 닫는 괄호 정리 완료
 </script>
 
 </body>

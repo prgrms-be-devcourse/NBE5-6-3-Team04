@@ -18,4 +18,7 @@ public interface GoalCompanyRepository extends JpaRepository<GoalCompany, Long> 
 
     // 알림 생성 시 유저의 모든 목표 기업 조회
     List<GoalCompany> findAllByMember(Member member);
+
+    // 연결된 기업이 있는지 확인 후 삭제
+    List<GoalCompany> findByNormalizedCompanyId(Long normalizedCompanyId);
 }

@@ -22,4 +22,12 @@ public class GoalCompanyDto {
     private LocalDate endDate;
 
     private String statusLabel; // GoalStatus 라벨을 한글로 변환
+
+    // admin-dashboard 에서 지정한 값
+    private String color;
+
+    // dashboard 에 적용될 값
+    private String style;
+    private String textColor;
+    private String borderColor;
 }
