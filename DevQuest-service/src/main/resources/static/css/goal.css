@@ -294,11 +294,16 @@
 /* 모달 닫기 버튼 */
 .chat-modal .close {
   position: absolute;
-  top: 10px;
-  right: 14px;
+  top: 15px;        /* 원하는 값 */
+  right: 25px;      /* 원하는 값 */
   font-size: 20px;
   font-weight: bold;
+  font-family: Arial, sans-serif;
+  color: #333;
+  background: transparent;
+  z-index: 10;
   cursor: pointer;
+  transition: color 0.2s ease;
 }
 
 /*열기 애니메이션 (오른쪽 기준) */
@@ -422,14 +427,17 @@
   border-radius: 6px;
   background-color: #f0f0f0;
   cursor: pointer;
+  font-weight: bold; /* ✅ 글씨를 굵게 */
 }
+
+
 .personality-option.active {
   background-color: #6d84ef;
   color: white;
   font-weight: bold;
 }
 
-.spice-options {
+.emotion-options {
   display: flex;
   gap: 10px;
   margin-top: 10px;
@@ -934,16 +942,6 @@
     background-color: #4c29c6;
   }
 
-  .close {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.9rem;
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #aaa;
-    cursor: pointer;
-    transition: color 0.2s ease;
-  }
 
   .close:hover {
     color: #000;

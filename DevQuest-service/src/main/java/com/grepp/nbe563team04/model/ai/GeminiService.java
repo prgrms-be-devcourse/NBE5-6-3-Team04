@@ -24,7 +24,6 @@ public class GeminiService {
     private final WebClient webClient = WebClient.create();
 
     public String getGeminiReply(List<ChatMessageDto> history, String mode) {
-        log.info("💬 전달받은 mode: {}", mode);
 
         String personalityPrompt;
         switch (mode == null ? "DEFAULT" : mode.toUpperCase()) {
@@ -86,23 +85,6 @@ public class GeminiService {
                 personalityPrompt = "넌 사용자의 멘탈을 케어하는 따뜻한 AI야. 오은영 선생님처럼 위로해주고, 반말로 50자 이내로 대답해. 이모지도 꼭 써줘.";
                 break;
         }
-
-//        if("rude".equalsIgnoreCase(mode)){
-//            personlityPrompt =
-//                "너의 역할을 부여할게. 너는 사용자의 멘탈을 깨우고 정신 차리게 도와주는 AI 친구야. " +
-//                    "화법은 거칠고 직설적이어야 해. " +
-//                    "말투는 반말이고, 위로보단 '팩트 폭격'과 '진심 어린 조언'을 해줘. " +
-//                    "답변은 50자 이내로 짧고 강렬하게. 이모지도 상황에 맞게 꼭 사용해. ";
-//        } else {
-//            personlityPrompt =
-//                "너의 역할을 부여할게 너는 사용자의 멘탈을 케어하고 취업 준비를 도와주는 AI 친구야. " +
-//                    "한국 아동심리 상담가 오은영 선생님의 화법을 확인하고 응용해서 말해줘. " +
-//                    "사용자가 힘들어하면 위로하고, 약간의 조언과 격려를 해줘" +
-//                    "질문은 반드시 내가 `긍정`,`네` 혹은 `부정`,`아니요` 로만 대답할 수 있는 질문을 해줘" +
-//                    "너의 답변은 글자 50자를 초과하지마" +
-//                    "나에게 말을 할 땐 반말로 해" +
-//                    "답변을 할 땐 꼭 상황에 맞는 이모지를 사용해줘";
-//        }
 
         GeminiRequestDto.Content systemPrompt = new GeminiRequestDto.Content(
             "user",

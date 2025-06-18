@@ -27,10 +27,10 @@ spring:
 
   sql:
     init:
-      mode: always  # 초기 데이터 넣을 때: always / 업데이트만 할 떄: never
+      mode: never  # 초기 데이터 넣을 때: always / 업데이트만 할 떄: never
   jpa:
     hibernate:
-      ddl-auto: create  # 기존 테이블 삭제 후 다시 생성: create / 업데이트만 할 때: update
+      ddl-auto: update  # 기존 테이블 삭제 후 다시 생성: create / 업데이트만 할 때: update
     defer-datasource-initialization: true
     show-sql: true
     properties:
