@@ -155,7 +155,7 @@
       li.className = 'top-member-item';
       li.innerHTML = `
           <img src="${member.profileImageUrl}" class="profile-img" alt="${member.nickname}" />
-          <span class="rank">${idx + 1}위</span>
+          <span class="rank">우수 활동 멤버 ${idx + 1}위</span>
           <span class="membername">${member.nickname} 님</span>
           <span class="level">Lv.${member.level.levelId}</span>
         `;
@@ -260,14 +260,14 @@
     }
 
     // // 직무별 색상 배열 (필요시 더 추가)
-    // const langChipColors = [
-    //   'rgb(255, 99, 132)',   // 예: 백엔드
-    //   'rgb(54, 162, 235)',   // 예: 프론트엔드
-    //   'rgb(255, 206, 86)',   // 예: 데이터
-    //   'rgb(75, 192, 192)',   // 예: 인프라
-    //   'rgb(153, 102, 255)',  // 예: 기획
-    //   'rgb(255, 159, 64)'    // 예: 기타
-    // ];
+    const langChipColors = [
+      'rgb(255, 99, 132)',   // 예: 백엔드
+      'rgb(54, 162, 235)',   // 예: 프론트엔드
+      'rgb(255, 206, 86)',   // 예: 데이터
+      'rgb(75, 192, 192)',   // 예: 인프라
+      'rgb(153, 102, 255)',  // 예: 기획
+      'rgb(255, 159, 64)'    // 예: 기타
+    ];
 
     // langLabels: 직무명 배열, langScores: 각 직무별 회원 수
     // ex) langLabels = ['백엔드', '프론트엔드', ...], langScores = [10, 7, ...]

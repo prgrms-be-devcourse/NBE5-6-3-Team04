@@ -6,8 +6,10 @@ import com.grepp.nbe563team04.model.company.entity.CompanyAlias;
 import com.grepp.nbe563team04.model.company.entity.NormalizedCompany;
 import com.grepp.nbe563team04.model.company.NormalizedCompanyRepository;
 import com.grepp.nbe563team04.model.goalcompany.GoalCompanyRepository;
+import com.grepp.nbe563team04.model.goalcompany.entity.GoalCompany;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -124,6 +126,18 @@ public class AdminCompanyApiController {
             if (!normalizedCompanyRepository.existsById(id)) {
                 return ResponseEntity.notFound().build();
             }
+
+            // 연결된 GoalCompany 있는지 확인
+            List<GoalCompany> linkedCompanies = goalCompanyRepository.findByNormalizedCompanyId(id);
+            log.info("🔗 연결된 GoalCompany 개수: {}", linkedCompanies.size());
+
+            if (!linkedCompanies.isEmpty()) {
+                return ResponseEntity
+                    .badRequest()
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body("삭제 실패: 연결된 목표 기업이 존재합니다.");
+            }
+
             normalizedCompanyRepository.deleteById(id);
             return ResponseEntity.ok().build();
         } catch (Exception e) {

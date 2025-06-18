@@ -121,7 +121,7 @@
       <!--admin-dashboard 에서 수정한 기업 색상으로 반영-->
       <div th:each="company : ${dashboard.goalCompanies}"
            class="company-card"
-           th:style="'background-color:' + ${company.color} + '; color:' + ${company.textColor} + '; border: 2px solid ' + ${company.borderColor}">
+           th:style="'background-color:' + ${company.color} + '; color:' + ${company.textColor} + '; border: 3px solid ' + ${company.borderColor}">
 
         <div class="card-header">
           <span class="status" th:text="${company.statusLabel}"

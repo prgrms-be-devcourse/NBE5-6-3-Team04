@@ -332,6 +332,7 @@ canvas {
   font-size: 13px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease;
+  cursor: pointer;
 }
 
 .chip .close {
@@ -610,8 +611,8 @@ canvas {
   align-items: flex-start !important;
 }
 
-.card-title {
-  font-size: 1.2rem;
+.card .card-title {
+  font-size: 2rem;
   font-weight: bold;
   color: #3F2296;
   margin-bottom: 1.2rem;
@@ -619,53 +620,6 @@ canvas {
 
 .summary-row b {
   color: #3F2296;
-}
-
-/*레벨 상위 유저 Top 5*/
-.top-level-card {
-  padding: 1rem;
-  background: #f8fafc;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  min-height: 231.5px;
-}
-
-.top-member-list {
-  list-style: none;
-  padding: 0;
-  margin: 1rem 0;
-}
-
-.top-member-item {
-  display: flex;
-  align-items: center; /* 수직 정렬 */
-  justify-content: space-between; /* 좌우 간격 조절 */
-  gap: 2rem;
-  padding: 0.5rem 1rem;
-}
-
-.rank {
-  font-weight: bold;
-}
-
-.username {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  font-weight: 500;
-}
-
-.level {
-  font-weight: bold;
-  color: #3F2296;
-}
-
-.profile-img {
-  align-items: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  object-fit: cover;
 }
 
 /* dashboard-summary */
@@ -939,4 +893,64 @@ td input[type="color"] {
 
 .material-icons .menu-icon{
   margin-left: 1rem;
+}
+
+/*랭킹*/
+/*레벨 상위 유저 Top 5*/
+.top-level-card {
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  min-height: 231.5px;
+  width: 500px;
+}
+
+.top-member-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.top-member-item {
+  display: flex;
+  align-items: center; /* 수직 정렬 */
+  justify-content: space-between; /* 좌우 간격 조절 */
+  gap: 2rem;
+  padding: 0.5rem 1rem;
+}
+
+.rank {
+  font-weight: bold;
+}
+
+.username {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-weight: 500;
+}
+
+.level {
+  font-weight: bold;
+  color: #3F2296;
+}
+
+.profile-img {
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.card.top-level-card {
+  position: relative;
+  padding-bottom: 2.5rem; /* 하단 공간 확보 */
+}
+
+.card.top-level-card .card-footer {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
 }
