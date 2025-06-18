@@ -70,7 +70,7 @@ public class AdminController {
         }
 
         memberService.signup(form.toDto(), Role.ROLE_ADMIN);
-        return "redirect:/member/signin";
+        return "redirect:/signin";
     }
 
     // 관리자페이지 대시보드
@@ -81,7 +81,6 @@ public class AdminController {
         try {
             // 관리자 정보 조회
             Member admin = memberService.findByEmail(principal.getUsername());
-            log.info("관리자 정보 조회 완료 - 닉네임: {}", admin.getNickname());
             model.addAttribute("nickname", admin.getNickname());
 
             // 회원 그룹별 통계
