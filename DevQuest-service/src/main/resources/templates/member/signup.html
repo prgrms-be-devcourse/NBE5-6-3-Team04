@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevQuest 회원가입</title>
+  <link rel="stylesheet" th:href="@{/css/common.css}">
+  <style>
+    .logo {
+      font-size: 28px;
+      font-weight: 700;
+      color: #3F2296;
+      position: absolute;
+      top: 30px;
+      left: 40px;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 400px;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+      font-size: 30px;
+      font-weight: bolder;
+    }
+
+    .input-box {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+
+    input {
+      padding: 14px;
+      border: transparent;
+      border-radius: 10px;
+      font-size: 15px;
+    }
+
+    .error {
+      color: red;
+      font-size: 12px;
+      margin-top: 1px;
+      margin-bottom: 8px;
+      text-align: left;
+    }
+
+    .submit {
+      margin-top: 20px;
+      text-align: right;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 20px;
+      background: none;
+      border: none;
+      padding: 0;
+      color: inherit;
+    }
+
+    .submit:hover {
+      text-decoration: underline;
+    }
+    .login-link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    .login-link a {
+      color: #3b4bd3;
+      text-decoration: none;
+    }
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 30px 16px;
+        box-shadow: none;
+        border-radius: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="logo">
+  <a href="/">DevQuest</a>
+</div>
+
+<div class="container">
+  <h1>회원가입</h1>
+
+  <form th:action="@{/signup}" th:object="${signupForm}" method="post" id="signupForm">
+    <div class="input-box">
+      <input th:field="*{nickname}" type="text" placeholder="닉네임을 입력해주세요" required>
+      <input th:field="*{email}" id="email" type="email" placeholder="이메일을 입력해주세요" required>
+      <span class="error" id="emailCheckMsg" style="display: none"></span>
+      <input th:field="*{password}" type="password" placeholder="비밀번호를 입력해주세요" required>
+      <span class="error" id="passwordCheckMsg"></span>
+    </div>
+
+    <button class="submit" type="submit">시작하기 →</button>
+  </form>
+
+  <div class="login-link">계정이 있으신가요? <a href="/signin">로그인</a></div>
+
+  <script>
+    const validElement = document.querySelector('#emailCheckMsg');
+    document.querySelector('#email').addEventListener('focusout', async ev => {
+      const email = encodeURIComponent(ev.target.value);
+      if(!email) return;
+      const response = await fetch('/api/member/exists/' + email);
+      const data = await response.json();
+
+      validElement.style.display = 'block';
+      if (data.data) {
+        validElement.textContent = '사용이 불가능한 이메일 입니다.';
+        validElement.style.color = 'red';
+      } else {
+        validElement.textContent = '사용 가능한 이메일 입니다.';
+        validElement.style.color = 'blue';
+      }
+    });
+
+    const passwordInput = document.querySelector('#password');
+    const passwordMsg = document.querySelector('#passwordCheckMsg');
+
+    function validatePassword(pw) {
+      const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+      return regex.test(pw);
+    }
+
+    passwordInput.addEventListener('input', () => {
+      const value = passwordInput.value;
+      if (!validatePassword(value)) {
+        passwordMsg.textContent = '비밀번호는 8자 이상, 영문+숫자를 포함해야 합니다.';
+        passwordMsg.style.display = 'block';
+      } else {
+        passwordMsg.textContent = '';
+        passwordMsg.style.display = 'none';
+      }
+    });
+
+    document.querySelector('#signupForm').addEventListener('submit', async ev => {
+      ev.preventDefault();
+
+      // 이메일 중복 체크
+      const email = encodeURIComponent(document.querySelector('#email').value);
+      const emailRes = await fetch('/api/member/exists/' + email);
+      const emailData = await emailRes.json();
+
+      if(emailData.data){
+        document.querySelector('#email').focus();
+        validElement.textContent = '사용이 불가능한 이메일 입니다.';
+        validElement.style.color = 'red';
+        validElement.style.display = 'block';
+        return;
+      }
+
+      // 비밀번호 유효성 검사
+      const password = passwordInput.value;
+      if (!validatePassword(password)) {
+        passwordInput.focus();
+        passwordMsg.textContent = '비밀번호는 8자 이상, 영문+숫자를 포함해야 합니다.';
+        passwordMsg.style.display = 'block';
+        return;
+      }
+
+      ev.target.submit();
+    });
+
+  </script>
+</div>
+</body>
+</html>

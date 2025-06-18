@@ -1,0 +1,21 @@
+<div th:fragment="sidenav">
+  <ul id="slide-out" class="sidenav custom-sidenav">
+    <li>
+      <div class="user-view">
+        <div class="background"></div>
+        <a href="#member" class="profile-link">
+          <img class="circle" src="/img/profile.png">
+        </a>
+      </div>
+    </li>
+
+    <li>
+      <a href="/admin/dashboard" class="sidenav-title">DevQuest</a>
+    </li>
+    <li><a href="/admin/dashboard"><i class="material-icons">desktop_mac</i>대시 보드</a></li>
+    <li><a href="/admin/company/colors"><i class="material-icons">brush</i>기업 색상 관리</a></li>
+    <li><a href="/admin/company/stats/aliases"><i class="material-icons">translate</i>기업 유사어 관리</a></li>
+    <li><a href="/admin/member-management"><i class="material-icons">person</i>회원 관리</a></li>
+    <li><a href="/admin/achievement-management"><i class="material-icons">fiber_new</i>업적 관리</a></li>
+  </ul>
+</div>

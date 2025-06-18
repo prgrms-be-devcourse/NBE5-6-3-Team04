@@ -1,0 +1,34 @@
+.top-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+}
+
+/*햄버거메뉴*/
+.menu-icon {
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+  margin-top: 1rem;
+  margin-left: 1em;
+
+}
+
+.top-menu {
+  margin-left: auto;
+}
+
+.logout:hover {
+  color: #333;
+}
+
+.logout {
+  font-size: 1rem;
+  color: #aaa;
+  cursor: pointer;
+  display: block;
+  text-align: right;
+  padding: 1rem 2rem;
+  margin-left: auto;
+}

@@ -1,33 +1,45 @@
-remember-me:
-  key: dladmldmlzl123
+upload:
+  path: ${UPLOAD_PATH}
+  achievement-path: ${ACHIEVEMENT_UPLOAD_PATH} # 업적 이미지 저장 전용 경로 추가
+
+
+jwt:
+  secret: ${JWT_SECRET}
+  access-expiration: ${JWT_ACCESS_EXPIRATION}
+  refresh-expiration: ${JWT_REFRESH_EXPIRATION}
 
 spring:
   application:
-    name: NBE5-6-2-Team04
-
+    name: NBE5-6-3-Team04
   web:
     resources:
-      static-locations: classpath:/static/, file:uploads/
-
+      static-locations: classpath:/static/, file:${UPLOAD_PATH}/, file:${ACHIEVEMENT_UPLOAD_PATH}/
   servlet:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
 
   datasource:
-    url: jdbc:mysql://localhost:3306/todoRpg
-    username: bm
-    password: it2116016^^
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  sql:
+    init:
+      mode: never  # 초기 데이터 넣을 때: always / 업데이트만 할 떄: never
   jpa:
     hibernate:
-      ddl-auto: none  # 개발 중엔 update 권장
+      ddl-auto: update  # 기존 테이블 삭제 후 다시 생성: create / 업데이트만 할 때: update
+    defer-datasource-initialization: true
     show-sql: true
     properties:
       hibernate:
         format_sql: true
 
 gemini:
-  base-url: https://generativelanguage.googleapis.com
-  api-key: "AIzaSyDJ2t_TcJ7ZwV0AI5AePRiVdUtqhvnvkN4"
+  base-url: ${GEMINI_BASE_URL}
+  api-key: ${GEMINI_API_KEY}
+
+mail:
+  service-url: http://localhost:8081

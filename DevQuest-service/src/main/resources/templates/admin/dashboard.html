@@ -5,195 +5,439 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>DevQuest 관리자 페이지</title>
 
+  <!--cdn-->
   <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- sidenav -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <!--css-->
   <link rel="stylesheet" href="/css/common.css">
-  <link rel="stylesheet" href="/css/header.css">
-  <link rel="stylesheet" href="/css/adminDashboard.css">
+  <link rel="stylesheet" href="/css/admin/header.css">
+  <link rel="stylesheet" href="/css/admin/sidenav.css">
+  <link rel="stylesheet" href="/css/admin/adminDashboard.css">
 </head>
+
 <body>
-<div class="logo">
-  <a href="/admin/dashboard">DevQuest</a>
-</div>
 
-<div th:replace="~{fragments/header :: header}"></div>
+<!-- fragments -->
+<div th:replace="~{fragments/admin-header :: header}"></div>
+<div th:replace="~{fragments/admin-sidenav :: sidenav}"></div>
+
 <main>
-  <h2><b th:text="${nickname} + ' 관리자님, 안녕하세요!'"></b></h2>
-
-  <div class="container">
-    <h2 class="member-title">
-      <i class="material-icons" style="vertical-align: middle; margin-right: 6px;">supervisor_account</i>
-      회원 목록
-    </h2>
-
-    <div class="tabs">
-      <a href="#" class="tab-btn" onclick="showTab('admin'); return false;">관리자</a>
-      <a href="#" class="tab-btn active" onclick="showTab('active'); return false;">현재 회원</a>
-      <a href="#" class="tab-btn" onclick="showTab('deleted'); return false;">탈퇴 회원</a>
+  <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;"><b
+      th:text="${nickname} + ' 관리자님, 반갑습니다!'"></b></h2>
+  <!-- Dashboard 요약 카드-->
+  <div class="dashboard-summary-wrapper">
+    <div class="dashboard-summary-card card">
+      <div class="card-content">
+        <span class="card-title">Summary</span>
+        <div class="summary-content">
+          <div class="summary-row">
+            👤 오늘 가입한 사용자는 <b id="today-join">0</b>명, 탈퇴한 사용자는 <b id="today-leave">0</b>명 이에요!
+          </div>
+          <br/>
+          <div class="summary-row">
+            🤓 지금 사용자들은 <b id="top-langs"></b>에 관심이 많아요!<br/>
+            <br/>
+            🏢 지금 사용자들은 <b id="top-companies"></b> 기업에 관심을 갖고 있어요!
+          </div>
+        </div>
+      </div>
     </div>
 
-    <hr/>
+    <!-- 레벨 상위 유저 Top 3 -->
+    <div class="card top-level-card">
+      <div class="card-header-with-link">
+        <span class="card-title">🏆 Level Top3</span>
+        <a href="/admin/member-management" class="view-all-link">전체 보기</a>
+      </div>
 
-    <!-- 현재 회원 -->
-    <div class="card tab-content" id="tab-active">
-      <table class="display user-table" style="width:100%">
-        <thead>
-        <tr>
-          <th style="width: 0"></th>
-          <th>번호</th>
-          <th>사용자</th>
-          <th>가입일</th>
-          <th>권한</th>
-          <th>관리</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="user, iterStat : ${activeUsers}">
-          <td style="width: 0"></td>
-          <td th:text="${iterStat.count}">1</td>
-          <td>
-            <div th:text="${user.nickname}">닉네임</div>
-            <span class="email-small" th:text="${user.email}">user@example.com</span>
-          </td>
-          <td th:text="${user.createdAt}">2025-05-15</td>
-          <td>
-            <span th:if="${user.role.name() == 'ROLE_ADMIN'}" class="role-admin">관리자</span>
-            <span th:unless="${user.role.name() == 'ROLE_ADMIN'}"></span>
-          </td>
-          <td>
-            <form th:action="@{/admin/removeUser}" method="post">
-              <input type="hidden" name="email" th:value="${user.email}"/>
-              <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
-            </form>
-            <span th:if="${user.email == currentUserEmail}" style="color: gray;">본인</span>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+      <ul class="top-user-list" id="top-user-list">
+        <!-- JS가 이 안에 <li>를 동적으로 넣어줌 -->
+      </ul>
     </div>
+  </div>
 
-    <!-- 관리자 -->
-    <div class="card tab-content" id="tab-admin" style="display: none;">
-      <table class="display user-table" style="width:100%">
-        <thead>
-        <tr>
-          <th style="width: 0"></th>
-          <th>번호</th>
-          <th>사용자</th>
-          <th>가입일</th>
-          <th>권한</th>
-          <th>관리</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="user, iterStat : ${adminUsers}">
-          <td style="width: 0"></td>
-          <td th:text="${iterStat.count}">1</td>
-          <td>
-            <div th:text="${user.nickname}">닉네임</div>
-            <span class="email-small" th:text="${user.email}">user@example.com</span>
-          </td>
-          <td th:text="${user.createdAt}">2025-05-15</td>
-          <td><span class="role-admin">관리자</span></td>
-          <td>
-            <form th:action="@{/admin/removeUser}" method="post">
-              <input type="hidden" name="email" th:value="${user.email}"/>
-              <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
-            </form>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+  <!-- 차트 영역-->
+  <div class="dashboard-charts-row">
+    <!-- 차트1. 회원 가입/탈퇴 차트 -->
+    <div class="dashboard-chart-card">
+      <div class="card-toolbar-title">👤 회원 가입/탈퇴 현황</div>
+      <div class="card">
+        <div class="card-toolbar">
+          <div class="card-toolbar-actions">
+            <div class="chips-wrapper">
+              <div data-index="0" class="chip white-text"
+                   style="background-color: rgb(156,204,129);">가입자 수
+              </div>
+              <div data-index="1" class="chip white-text"
+                   style="background-color: rgb(172,172,172);">탈퇴자 수
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-content">
+          <canvas id="memberChart"></canvas>
+        </div>
+      </div>
     </div>
-
-    <!-- 탈퇴 회원 -->
-    <div class="card tab-content" id="tab-deleted" style="display: none;">
-      <table class="display user-table" style="width:100%">
-        <thead>
-        <tr>
-          <th style="width: 0"></th>
-          <th>번호</th>
-          <th>사용자</th>
-          <th>가입일</th>
-          <th>권한</th>
-          <th>관리</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="user, iterStat : ${deletedUsers}">
-          <td style="width: 0"></td>
-          <td th:text="${iterStat.count}">1</td>
-          <td>
-            <div th:text="${user.nickname}">닉네임</div>
-            <span class="email-small" th:text="${user.email}">user@example.com</span>
-          </td>
-          <td th:text="${user.createdAt}">2025-05-15</td>
-          <td>
-            <span th:if="${user.role.name() == 'ROLE_ADMIN'}" class="role-admin">관리자</span>
-            <span th:unless="${user.role.name() == 'ROLE_ADMIN'}"></span>
-          </td>
-          <td>
-            <span style="color: #888;">탈퇴</span><br/>
-            <span class="email-small"
-                  th:text="${#temporals.format(user.deletedAt, 'yyyy-MM-dd')}"></span>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+    <!-- 차트2. 회원 관심태그 (직무, 언어) 차트 -->
+    <div class="dashboard-chart-card">
+      <div class="card-toolbar-title">🤓 회원 관심태그 (직무, 언어)</div>
+      <div class="card">
+        <div class="card-toolbar">
+          <div class="card-toolbar-actions">
+            <div class="chips-wrapper" id="lang-chips-wrapper">
+              <!-- JS에서 동적으로 칩 생성 -->
+            </div>
+          </div>
+        </div>
+        <div class="card-content">
+          <canvas id="langChart"></canvas>
+        </div>
+      </div>
     </div>
-
+    <!-- 차트3. 기업통계 차트 -->
+    <div class="dashboard-chart-card">
+      <div class="card-toolbar-title">🏢 기업별 지원자 수 통계</div>
+      <div class="card">
+        <div class="card-toolbar">
+          <div class="card-toolbar-actions">
+            <div class="chips-wrapper" id="company-chips-wrapper">
+              <!-- JS에서 동적으로 칩 생성 -->
+            </div>
+          </div>
+        </div>
+        <div class="card-content">
+          <canvas id="stacked-bar-chart"></canvas>
+        </div>
+      </div>
+    </div>
   </div>
 </main>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<!-- 필수 스크립트 -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<!-- sidenav 초기화 -->
 <script>
-  const initializedTables = {};
+  document.addEventListener('DOMContentLoaded', function () {
+    const elems = document.querySelectorAll('.sidenav');
+    M.Sidenav.init(elems, {
+      onOpenStart: function () {
+        document.querySelector('.top-header').style.display = 'none';
+      },
+      onCloseEnd: function () {
+        document.querySelector('.top-header').style.display = '';
+      }
+    });
+  });
+</script>
 
-  function showTab(type) {
-
-    localStorage.setItem('adminActiveTab', type);
-
-    document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    const targetTab = document.getElementById(`tab-${type}`);
-    targetTab.style.display = '';
-    document.querySelector(`.tab-btn[onclick*="${type}"]`).classList.add('active');
-
-    // 해당 탭의 테이블만 초기화 (한 번만)
-    if (!initializedTables[type]) {
-      const table = $(targetTab).find('.user-table').DataTable({
-        language: {
-          info: "_START_ - _END_ / 총 _TOTAL_명",
-        },
-        paging: true,
-        searching: true,
-        ordering: true,
-        info: true,
-        columnDefs: [
-          { orderable: false, targets: 0 }
-        ],
-        scrollY: '400px',
-        scrollCollapse: false
-      });
-
-      // 검색창 placeholder
-      $(targetTab).find('.dataTables_filter input').attr('placeholder', '검색어를 입력하세요.');
-
-      // 전체 선택
-      $(targetTab).find('.select-all').on('click', function () {
-        const checked = this.checked;
-        $(table.rows({ search: 'applied' }).nodes()).find('input[type="checkbox"]').prop('checked', checked);
-      });
-
-      initializedTables[type] = true;
+<!-- 레벨 상위 유저 Top 5 js 렌더링-->
+<script>
+  fetch('/admin/dashboard/top-members')
+  .then(res => {
+    if (!res.ok) {
+      throw new Error('서버 응답 에러');
     }
-  }
+    return res.json();
+  })
+  .then(data => {
+    const list = document.getElementById('top-user-list');
+    list.innerHTML = ''; // 기존 내용 지우기
 
-  $(document).ready(function () {
-    // localStorage에서 마지막으로 본 탭 정보 불러오기
-    const savedTab = localStorage.getItem('adminActiveTab') || 'active';
-    showTab(savedTab);
+    data.forEach((member, idx) => {
+      const li = document.createElement('li');
+      li.className = 'top-member-item';
+      li.innerHTML = `
+          <img src="${member.profileImageUrl}" class="profile-img" alt="${member.nickname}" />
+          <span class="rank">우수 활동 멤버 ${idx + 1}위</span>
+          <span class="membername">${member.nickname} 님</span>
+          <span class="level">Lv.${member.level.levelId}</span>
+        `;
+      list.appendChild(li);
+    });
+  })
+  .catch(err => console.error('Top user fetch 실패:', err));
+</script>
+
+<!-- 차트 데이터 및 초기화 -->
+<script th:inline="javascript">
+  document.addEventListener('DOMContentLoaded', function () {
+    // 차트 데이터
+    const labels = /*[[${labels}]]*/ [];
+    const joinData = /*[[${joinData}]]*/ [];
+    const leaveData = /*[[${leaveData}]]*/ [];
+    const langLabels = /*[[${langLabels}]]*/ [];
+    const langScores = /*[[${langScores}]]*/ [];
+    const langScoresOrigin = [...langScores]; // 원본 데이터 따로 저장
+
+    // 칩의 원래 색상 저장
+    const chipColors = [
+      'rgb(156, 204, 129)',   // 가입자 수
+      'rgb(172, 172, 172)'    // 탈퇴자 수
+    ];
+
+    // 회원 가입/탈퇴 차트
+    const memberCtx = document.getElementById('memberChart');
+    if (memberCtx) {
+      const memberChart = new Chart(memberCtx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: '가입자 수',
+            data: joinData,
+            borderColor: 'rgb(156, 204, 129)',
+            backgroundColor: 'rgba(75, 192, 192, 0.1)',
+            tension: 0.4,
+            fill: true
+          }, {
+            label: '탈퇴자 수',
+            data: leaveData,
+            borderColor: 'rgb(172, 172, 172)',
+            backgroundColor: 'rgba(255, 99, 132, 0.1)',
+            tension: 0.4,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
+          plugins: {
+            legend: {
+              display: false // 칩으로 대체하므로 기본 범례는 숨김
+            },
+            tooltip: {
+              enabled: true,
+              mode: 'index',
+              intersect: false
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                stepSize: 1,
+                precision: 0
+              },
+              grid: {
+                drawBorder: false
+              }
+            },
+            x: {
+              grid: {
+                display: false
+              }
+            }
+          }
+        }
+      });
+
+      // 칩 클릭 이벤트 처리 (X 아이콘 없이 칩 전체를 토글)
+      document.querySelectorAll('.chips-wrapper .chip').forEach((chip, index) => {
+        chip.addEventListener('click', function () {
+          const datasetIndex = parseInt(this.dataset.index);
+          const meta = memberChart.getDatasetMeta(datasetIndex);
+          meta.hidden = !meta.hidden;
+          memberChart.update();
+
+          // 활성/비활성에 따라 칩 색상 변경
+          if (meta.hidden) {
+            this.style.backgroundColor = '#bdbdbd'; // 비활성화: 회색
+          } else {
+            this.style.backgroundColor = chipColors[datasetIndex]; // 활성화: 원래 색상
+          }
+        });
+      });
+    }
+
+    // // 직무별 색상 배열 (필요시 더 추가)
+    const langChipColors = [
+      'rgb(255, 99, 132)',   // 예: 백엔드
+      'rgb(54, 162, 235)',   // 예: 프론트엔드
+      'rgb(255, 206, 86)',   // 예: 데이터
+      'rgb(75, 192, 192)',   // 예: 인프라
+      'rgb(153, 102, 255)',  // 예: 기획
+      'rgb(255, 159, 64)'    // 예: 기타
+    ];
+
+    // langLabels: 직무명 배열, langScores: 각 직무별 회원 수
+    // ex) langLabels = ['백엔드', '프론트엔드', ...], langScores = [10, 7, ...]
+    const langChipsWrapper = document.getElementById('lang-chips-wrapper');
+    const langChipStates = []; // 칩 활성/비활성 상태 저장
+
+    // 칩 동적 생성 및 색상 추출용 배열 준비
+    const chipBgColors = [];
+    langLabels.forEach((label, idx) => {
+      const chip = document.createElement('div');
+      // label 값을 소문자, 공백/특수문자 → 하이픈 등으로 변환
+      // const className = 'chip white-text ' + label.toLowerCase().replace(/ /g, '-');
+      const className = 'chip white-text lang-chip ' + label.toLowerCase().replace(/ /g, '-');
+      chip.className = className;
+      chip.dataset.index = idx;
+      chip.textContent = label;
+      langChipsWrapper.appendChild(chip);
+      langChipStates[idx] = true;
+      // 칩이 DOM에 추가된 후 실제 배경색 추출
+      chipBgColors[idx] = window.getComputedStyle(chip).backgroundColor;
+    });
+
+    // 차트 생성
+    const langCtx = document.getElementById('langChart');
+    let langChart;
+    if (langCtx) {
+      // y축 최대값 계산: 데이터 최대값 + 1 (여유 있게)
+      const maxLangScore = Math.max(...langScoresOrigin);
+      langChart = new Chart(langCtx, {
+        type: 'bar',
+        data: {
+          labels: langLabels,
+          datasets: [{
+            label: '회원 관심태그',
+            data: langScores,
+            // 칩의 실제 배경색을 막대그래프 색상으로 사용
+            backgroundColor: chipBgColors,
+            borderColor: chipBgColors,
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {display: false},
+            tooltip: {enabled: true}
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              // 최대값을 데이터 최대값 + 1로 설정
+              max: maxLangScore + 1,
+              ticks: {stepSize: 1, precision: 0}
+            }
+          }
+        }
+      });
+
+      // 칩 클릭 이벤트 (토글)
+      langChipsWrapper.querySelectorAll('.chip').forEach((chip, idx) => {
+        chip.addEventListener('click', function () {
+          langChipStates[idx] = !langChipStates[idx];
+          // 한글 주석: 칩 활성/비활성에 따라 색상 변경
+          if (!langChipStates[idx]) {
+            this.style.backgroundColor = '#bdbdbd';
+            langChart.data.datasets[0].data[idx] = 0; // 비활성화: 0으로
+          } else {
+            this.style.backgroundColor = langChipColors[idx % langChipColors.length];
+            langChart.data.datasets[0].data[idx] = langScoresOrigin[idx]; // 활성화: 원본값 복구
+          }
+          langChart.update();
+        });
+      });
+    }
+
+    // 관심 언어 TOP3 추출
+    const topLangs = langLabels
+    .map((label, idx) => ({label, score: langScores[idx]}))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3)
+    .map(item => item.label)
+    .join(', ');
+
+    // 임시로 전체 수로 바꿔보기
+    const todayJoin = /*[[${todayJoin}]]*/ 0;
+    const todayLeave = /*[[${todayLeave}]]*/ 0;
+    document.getElementById('today-join').textContent = (todayJoin ?? 0);
+    document.getElementById('today-leave').textContent = (todayLeave ?? 0);
+
+    // 요약 카드에 데이터 삽입
+    document.getElementById('top-langs').textContent = topLangs;
+
+    fetch('/api/admin/company/stats/data')
+    .then(response => response.json())
+    .then(data => {
+      const ctx = document.getElementById('stacked-bar-chart').getContext('2d');
+      const companyLabels = data.labels;
+      const companyData = data.data;
+      const companyDataOrigin = [...companyData];
+
+      // 색상 배열 생성
+      const companyChipColors = companyLabels.map((_, i) =>
+          `hsl(${(i * 40) % 360}, 70%, 70%)`
+      );
+
+      // 차트 먼저 생성
+      const companyChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: companyLabels,
+          datasets: [{
+            label: '지원자 수',
+            data: companyData,
+            backgroundColor: companyChipColors,
+            borderColor: companyChipColors,
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {display: false}
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: Math.max(...companyData) + 1,
+              ticks: {stepSize: 1}
+            }
+          }
+        }
+      });
+
+      // 차트 생성 이후 칩 추가
+      const chipWrapper = document.getElementById('company-chips-wrapper');
+      const chipStates = [];
+
+      companyLabels.forEach((label, idx) => {
+        const chip = document.createElement('div');
+        // chip.className = 'chip white-text';
+        chip.className = 'chip white-text company-chip';
+        chip.dataset.index = idx;
+        chip.textContent = label;
+        chip.style.backgroundColor = companyChipColors[idx];
+        chipWrapper.appendChild(chip);
+        chipStates[idx] = true;
+
+        // 칩 클릭 이벤트 연결
+        chip.addEventListener('click', function () {
+          chipStates[idx] = !chipStates[idx];
+          if (!chipStates[idx]) {
+            this.style.backgroundColor = '#bdbdbd';
+            companyChart.data.datasets[0].data[idx] = 0;
+          } else {
+            this.style.backgroundColor = companyChipColors[idx];
+            companyChart.data.datasets[0].data[idx] = companyDataOrigin[idx];
+          }
+          companyChart.update();
+        });
+      });
+
+      // 기업 요약 텍스트 설정
+      const topCompanies = companyLabels.slice(0, 3).join(', ');
+      document.getElementById('top-companies').textContent = topCompanies;
+    })
+    .catch(error => {
+      console.error('차트 데이터를 불러오는데 실패했습니다:', error);
+    });
   });
 </script>
 
