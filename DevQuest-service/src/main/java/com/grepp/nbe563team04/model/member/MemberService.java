@@ -265,12 +265,12 @@ public class MemberService implements UserDetailsService {
         mailApi.sendMail("DevQuest-mail", "ROLE_SERVER", dto);
     }
 
-    // admin-dashbaord Top5 member 조회
-    public List<Member> getTop5MembersByLevel() {
+    // admin-dashboard Top3 member 조회
+    public List<Member> getTop3MembersByLevel() {
         return memberRepository.findAll().stream()
             .filter(member -> member.getRole() != Role.ROLE_ADMIN) // 관리자 제외
             .sorted(Comparator.comparingInt(Member::getExp).reversed())
-            .limit(5)
+            .limit(3)
             .collect(Collectors.toList());
     }
 
