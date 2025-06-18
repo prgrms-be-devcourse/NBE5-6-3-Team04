@@ -110,7 +110,7 @@
 
 <div class="container">
   <h1>로그인</h1>
-  <form th:object="${signinRequest}" method="post">
+  <form th:object="${signinRequest}" method="post" onsubmit="handleLogin(event)">
     <div id="errorBox" class="error" style="display: none;">
       이메일 또는 비밀번호를 확인하세요
     </div>
@@ -119,7 +119,7 @@
       <input id="password" th:field="*{password}" type="password" placeholder="비밀번호를 입력해주세요">
     </div>
 
-    <button id="btnForm" class="submit" type="button" name="action">로그인 →</button>
+    <button class="submit" type="submit">로그인 →</button>
   </form>
   <div class="links">
     <a href="/signup">회원가입</a>
@@ -127,8 +127,11 @@
   </div>
 </div>
 
+
 <script>
-  document.querySelector("#btnForm").addEventListener("click", async ev => {
+  async function handleLogin(ev) {
+    ev.preventDefault(); // 기본 form 제출 막기
+
     const email = document.querySelector("#email").value;
     const password = document.querySelector("#password").value;
 
@@ -145,12 +148,10 @@
     try {
       data = await res.json();
     } catch (e) {
-      // 응답이 JSON이 아니면 에러 표시
       document.querySelector("#errorBox").style.display = "block";
       return;
     }
 
-    // 401 코드이거나 res.ok가 false이면 에러 박스 보이기
     if (!res.ok || data.code === "401") {
       const errorBox = document.querySelector("#errorBox");
       errorBox.innerText = data.message || "이메일 또는 비밀번호를 확인하세요";
@@ -159,7 +160,6 @@
     }
 
     const accessToken = data.data.accessToken;
-    // JWT Payload 디코드
     const payload = JSON.parse(atob(accessToken.split('.')[1]));
     const roles = payload.authorities || [];
 
@@ -168,7 +168,7 @@
     } else {
       location.href = "/dashboard";
     }
-  });
+  }
 </script>
 </body>
 </html>
