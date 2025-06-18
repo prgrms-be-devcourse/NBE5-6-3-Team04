@@ -1,11 +1,10 @@
 package com.grepp.nbe563team04.model.goal;
 
 import com.grepp.nbe563team04.model.goal.entity.Goal;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
-import java.util.List;
 
 public interface GoalRepository extends JpaRepository<Goal, Long> {
 //    기본적인 CRUD

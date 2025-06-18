@@ -18,17 +18,6 @@ public class CommonException extends RuntimeException {
         this.redirect = redirect;
     }
     
-    public CommonException(ResponseCode code, Exception e) {
-        this.code = code;
-        log.error(e.getMessage(), e);
-    }
-    
-    public CommonException(ResponseCode code, Exception e, String redirect) {
-        this.code = code;
-        this.redirect = redirect;
-        log.error(e.getMessage(), e);
-    }
-    
     public String redirect(){return redirect; }
     public ResponseCode code() {
         return code;

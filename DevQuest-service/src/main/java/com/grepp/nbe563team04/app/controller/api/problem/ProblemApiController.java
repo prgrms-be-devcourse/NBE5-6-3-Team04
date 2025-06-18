@@ -1,23 +1,19 @@
 package com.grepp.nbe563team04.app.controller.api.problem;
 
 import com.grepp.nbe563team04.model.auth.domain.Principal;
-import com.grepp.nbe563team04.model.goalcompany.GoalCompanyService;
-import com.grepp.nbe563team04.model.goalcompany.dto.GoalCompanyRequestDto;
-import com.grepp.nbe563team04.model.goalcompany.dto.GoalCompanyResponseDto;
-import com.grepp.nbe563team04.model.member.entity.Member;
 import com.grepp.nbe563team04.model.problem.ProblemService;
-import com.grepp.nbe563team04.model.problem.dto.ProblemRequestDto;
 import com.grepp.nbe563team04.model.problem.dto.ProblemResponseDto;
-import com.grepp.nbe563team04.model.userProblemSolve.UserProblemSolveRepository;
 import com.grepp.nbe563team04.model.userProblemSolve.UserProblemSolveService;
 import com.grepp.nbe563team04.model.userProblemSolve.dto.UserProblemSolveRequestDto;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,8 +23,6 @@ public class ProblemApiController {
     // 생성자 주입
     private final ProblemService problemService;
     private final UserProblemSolveService userProblemSolveService;
-
-
 
     // 추천문제 불러오기
     @GetMapping("/select")

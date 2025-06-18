@@ -2,11 +2,10 @@ package com.grepp.nbe563team04.model.company;
 
 import com.grepp.nbe563team04.model.company.entity.CompanyAlias;
 import com.grepp.nbe563team04.model.company.entity.NormalizedCompany;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

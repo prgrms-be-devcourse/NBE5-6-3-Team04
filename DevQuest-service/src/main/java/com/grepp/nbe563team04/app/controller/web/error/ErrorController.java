@@ -8,7 +8,7 @@ public class ErrorController {
 
     @GetMapping("/access-denied")
     public String accessDenied() {
-        return "error/accessDenied"; // templates/error/accessDenied.html
+        return "error/accessDenied";
     }
 }
 

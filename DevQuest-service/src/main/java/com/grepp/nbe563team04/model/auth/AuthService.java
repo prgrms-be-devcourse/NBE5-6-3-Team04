@@ -9,7 +9,6 @@ import com.grepp.nbe563team04.model.auth.token.dto.TokenResponseDto;
 import com.grepp.nbe563team04.model.auth.token.entity.RefreshToken;
 import com.grepp.nbe563team04.model.member.MemberRepository;
 import com.grepp.nbe563team04.model.member.entity.Member;
-import io.jsonwebtoken.security.Password;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -6,7 +6,6 @@ import com.grepp.nbe563team04.model.member.entity.Member;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,17 +38,5 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         );
 
         return Principal.createPrincipal(member, authorities);
-    }
-
-    /**
-     * JwtProvider에서만 필요한 경우 사용할 수 있는 권한 조회 메서드
-     */
-    // JWT 토큰이 의미하는 사용자가 가지고 있는 권한 조회
-    @Cacheable("user-authorities")
-    public List<SimpleGrantedAuthority> findAuthorities(String email) {
-        Member member = memberRepository.findByEmail(email)
-            .orElseThrow(() -> new UsernameNotFoundException(email));
-
-        return List.of(new SimpleGrantedAuthority(member.getRole().name()));
     }
 }

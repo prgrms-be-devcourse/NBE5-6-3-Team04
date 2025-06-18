@@ -6,19 +6,23 @@ import com.grepp.nbe563team04.model.goal.dto.GoalResponseDto;
 import com.grepp.nbe563team04.model.goal.entity.Goal;
 import com.grepp.nbe563team04.model.goalCategory.GoalCategoryRepository;
 import com.grepp.nbe563team04.model.goalCategory.entity.GoalCategory;
-import com.grepp.nbe563team04.model.goalcompany.entity.GoalCompany;
 import com.grepp.nbe563team04.model.goalcompany.GoalCompanyRepository;
+import com.grepp.nbe563team04.model.goalcompany.entity.GoalCompany;
+import com.grepp.nbe563team04.model.member.MemberRepository;
+import com.grepp.nbe563team04.model.member.MemberService;
 import com.grepp.nbe563team04.model.member.entity.Member;
 import com.grepp.nbe563team04.model.todo.TodoRepository;
 import com.grepp.nbe563team04.model.todo.entity.Todo;
-import com.grepp.nbe563team04.model.member.MemberRepository;
-import com.grepp.nbe563team04.model.member.MemberService;
 import jakarta.transaction.Transactional;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.util.*;
 
 @Service
 @RequiredArgsConstructor

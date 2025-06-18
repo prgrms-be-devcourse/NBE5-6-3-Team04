@@ -116,7 +116,6 @@ public class MemberService implements UserDetailsService {
 
     @Transactional
     public void updateUser(String email, MemberDto dto, List<MultipartFile> file) throws IOException {
-        log.info(">> 수정 요청 진입: " + email);
 
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));

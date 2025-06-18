@@ -2,12 +2,10 @@ package com.grepp.nbe563team04.model.goalCategory;
 
 import com.grepp.nbe563team04.model.goalCategory.dto.GoalCategoryResponseDto;
 import com.grepp.nbe563team04.model.goalCategory.entity.GoalCategory;
-import com.grepp.nbe563team04.model.goalcompany.entity.GoalCompany;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor

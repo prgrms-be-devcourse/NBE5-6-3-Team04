@@ -2,10 +2,9 @@ package com.grepp.nbe563team04.model.goalcompany;
 
 import com.grepp.nbe563team04.model.goalcompany.entity.GoalCompany;
 import com.grepp.nbe563team04.model.member.entity.Member;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public interface GoalCompanyRepository extends JpaRepository<GoalCompany, Long> {
