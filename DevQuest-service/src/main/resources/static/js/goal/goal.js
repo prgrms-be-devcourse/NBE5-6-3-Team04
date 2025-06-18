@@ -107,6 +107,7 @@ function showCalendar() {
   document.querySelector('#ongoingGoalsSection').style.display = 'none';
   document.querySelector('.calendar').style.display = 'flex';
   document.querySelector('#completedGoalsSection').style.display = 'none';
+  closeAllModals()
 
   setTimeout(() => {
     if (calendar) {
@@ -123,6 +124,7 @@ function showGoalList() {
   document.querySelector('#ongoingGoalsSection').style.display = 'flex';
   document.querySelector('.calendar').style.display = 'none';
   document.querySelector('#completedGoalsSection').style.display = 'none';
+  closeAllModals()
 
 
 }
@@ -132,6 +134,7 @@ function showCompletedGoals() {
   document.querySelector('#ongoingGoalsSection').style.display = 'none';
   document.querySelector('.calendar').style.display = 'none';
   document.querySelector('#completedGoalsSection').style.display = 'flex';
+  closeAllModals()
 }
 
 
