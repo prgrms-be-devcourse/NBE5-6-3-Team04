@@ -32,7 +32,7 @@
 **설명**: 기존 DevQuest 버전에 아래의 기능들을 추가하여 업데이트하였습니다.
 
 <details>
-<summary><h3> ✚ 추가된 주요 기능 보기</h3></summary>
+<summary><h4> ✚ 추가된 주요 기능 보기</h4></summary>
  
 | 대분류           | 세부 항목           | 설명                                                                |
 | ------------- | --------------- | ----------------------------------------------------------------- |
@@ -50,6 +50,25 @@
 |               | 업적 관리           | 경험치 기반 업적 추가/수정/삭제 기능 (별도 구현 로직 불필요)                              |
 
 </details>
+
+<br>
+
+<details>
+<summary><h4>시스템 구성도</h4></summary>
+ 
+<img src="DevQuest-service/src/main/resources/static/img/시스템 구성도.jpg" alt="DevQuest 시스템 구성도" width="600"/>
+
+</details>
+
+<br>
+
+<details>
+<summary><h4>API 설계서 (추가사항 반영)</h4></summary>
+ 
+<img src="DevQuest-service/src/main/resources/static/img/API설계서.jpg" alt="DevQuest API 설계서" width="600"/>
+
+</details>
+
 <br>
 
 ## <span id="2">🏃 2. 팀원 소개</span>
@@ -68,7 +87,7 @@
 
 > 개발 기간: 2025.06.11 ~ 2025.06.18 (7일)
 
-<img src="/src/main/resources/static/img/WBS.jpg" alt="DevQuest 일정 구성도" width="600"/>
+<img src="DevQuest-service/src/main/resources/static/img/WBS.jpg" alt="DevQuest 일정 구성도" width="600"/>
 
 <br>
 
