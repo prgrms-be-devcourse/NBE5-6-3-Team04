@@ -38,7 +38,7 @@
 | 이름       | 역할                                        | GitHub                                             |
 | ---------- | ------------------------------------------- | -------------------------------------------------- |
 | 채철민     | 팀장 / 마이페이지 / 업적 시스템             | [@moooonbong](https://github.com/moooonbong)       |
-| 임서현     | 메인 인덱스 / 회원가입 / 로그인 / 관리자 페이지 | [@nunLSH](https://github.com/nunLSH)              |
+| 임서현     | 인덱스 / 회원가입 / 로그인 / 관리자 페이지 | [@nunLSH](https://github.com/nunLSH)              |
 | 노선우     | AI 멘탈 관리 기능                           | [@noopy2020](https://github.com/shtjsdn2000)      |
 | 김나단     | 목표 기업 TODO / 목표 상세 페이지            | [@nathan960307](https://github.com/nathan960307)  |
 | 이초롱     | 대시보드 / 관심 분야 / 알림 정렬 및 필터     | [@0802222](https://github.com/0802222)            |
@@ -47,7 +47,7 @@
 
 ## <span id="3">📅 3. 프로젝트 일정</span>
 
-> 개발 기간: 2025.04.25 ~ 2025.05.19 (약 3.5주)
+> 개발 기간: 2025.06.11 ~ 2025.06.18 (7일)
 
 <img src="/src/main/resources/static/img/WBS.jpg" alt="DevQuest 일정 구성도" width="600"/>
 
@@ -55,10 +55,10 @@
 
 ## <span id="4">📚 4. 기술 스택</span>
 
-- **Backend**: Java, Spring Boot, Spring Data JPA
-- **Frontend**: HTML, CSS, JavaScript, Thymeleaf
-- **Database**: MySQL, H2 (개발용)
-- **Infra**: AWS EC2, GitHub Actions (CI), GitHub
+- **Backend**: Java, Kotlin, Spring Boot, Spring Data JPA, Spring Security, JWT, JavaMailSender, QueryDSL, ModelMapper, Coroutine
+- **Frontend**: Thymeleaf, HTML, CSS, JavaScript
+- **Database**: MySQL
+- **Version Control**: Git, GitHub
 
 > 협업 툴: Notion, Figma, Zoom, Slack, Zep, Google Sheet
 
@@ -66,14 +66,21 @@
 
 ## <span id="5">❓ 5. 라이브러리 사용 이유</span>
 
-| 라이브러리   | 목적 및 이유 |
-| ------------ | ------------ |
-| Spring Boot  | 빠른 설정과 의존성 관리로 개발 생산성 향상 |
-| JPA          | 객체 중심의 DB 매핑, 생산성 높은 CRUD 처리 |
-| Thymeleaf    | 템플릿 엔진을 통한 동적 HTML 렌더링 |
-| Lombok       | 반복되는 getter/setter, 생성자 자동화 |
-| H2 DB        | 테스트용 인메모리 DB 환경 구성 |
-
+| 라이브러리            | 목적 및 이유                                  |
+| ---------------- | ---------------------------------------- |
+| Spring Boot      | 빠른 설정과 의존성 관리로 개발 생산성 향상                 |
+| Spring Security  | 인증 및 인가 처리, JWT와 연동한 보안 체계 구축            |
+| JWT (jjwt)       | 로그인 상태 유지를 위한 토큰 기반 인증 처리                |
+| JPA              | 객체 중심의 DB 매핑, 생산성 높은 CRUD 처리             |
+| QueryDSL         | 타입 안정성 있는 동적 쿼리 작성                       |
+| JavaMailSender   | 회원가입 완료 시 사용자에게 이메일 발송 기능 구현             |
+| Kotlin           | 간결하고 효율적인 문법으로 이메일 서버 개발                 |
+| Coroutine        | 이메일 발송 시 비동기 처리로 서버 자원 효율화               |
+| ModelMapper      | DTO ↔ Entity 간 매핑 자동화로 코드 간결화            |
+| Validation       | 사용자 입력값 검증을 통한 데이터 무결성 확보                |
+| Lombok           | 반복되는 getter/setter, 생성자 자동화              |
+| Thymeleaf        | 템플릿 엔진을 통한 동적 HTML 렌더링                   |
+| Thymeleaf Extras | 로그인 상태에 따른 동적 UI 제어 (Spring Security 연동) |
 <br>
 
 ## <span id="6">🤝 6. 컨벤션</span>
@@ -90,7 +97,7 @@
 | test       | 테스트 코드 관련         |
 | chore      | 설정 파일 변경 등 기타   |
 
-> 예시: `feat: 목표 기업 D-DAY 알림 기능 추가`
+> 예시: `(0611) feat: [#이슈번호] 목표 기업 D-DAY 알림 기능 추가`
 
 <br>
 
@@ -120,12 +127,12 @@
 
 ## <span id="8">💻 8. 주요 기능 소개</span>
 
-- 🔐 회원가입 / 로그인 / 마이페이지
+- 🔐 회원가입 / 로그인(JWT) / 마이페이지
 - 🏆 업적 시스템 기반의 레벨 업 & 경험치 부여
 - 🗂 목표 기업 관리 + 기업별 TODO + 마감일(D-day) 알림
 - 💬 AI 멘탈 관리 챗봇 (프롬프트 기반)
 - 📊 대시보드: 관심 분야, 업적, 주요 알림 통합 시각화
-- 🛠 관리자 페이지: 유저 관리, 정렬 및 검색 기능
+- 🛠 관리자 페이지: 유저 관리, 기업관리, 정렬 및 검색 기능
 
 <br>
 
@@ -149,7 +156,7 @@
 
 - 제미나이 API 적용
 - 사용자 맞춤형 AI챗봇 성격부여 기능
-- 사용자의 입력을 위한  input구현
+- 사용자의 입력을 위한 input구현
 - 대화맥락 파악을 위한 session단위 내용저장
 - 챗봇 UI창 모달구현 및 스타일 변경
   
@@ -160,10 +167,18 @@
   * 사용자 레벨 취득 기능
   * 사용자 별 업적 취득
   * 업적 및 레벨 획득 시 이벤트 요소
-- 관리자 페이지 내 업적 관리 
+- 관리자 페이지 내 업적 관리
+
+### 🧠 임서현 (로그인 방식 개선(JWT) 및 이메일 발송 서버)
+
+- (3차) JWT 기반 인증/인가 처리 로직 리팩토링
+- (3차) 회원가입 완료 시, 이메일 발송 (Kotlin, 별도 서버)
+- 인덱스, 회원가입, 로그인 페이지
+- 관리자 대시보드 (회원관리)
+- 목표 페이지 일부 UI
 
 > 주요 기술: Spring MVC, Thymeleaf, JavaScript, MySQL, DTO 설계, @ModelAttribute 바인딩
-
+> 
 ---
 
 기타 팀원 담당 기능은 [2. 팀원 소개](#2) 참고
@@ -179,7 +194,7 @@ $ git clone https://github.com/prgrms-be-devcourse/NBE5-6-2-Team04.git
 # 2. IntelliJ로 프로젝트 열기
 #    의존성 자동 로딩 (Maven)
 
-# 3. 로컬 DB 세팅 (H2 또는 application.yml 수정 후 MySQL 연결)
+# 3. 로컬 DB 세팅 (application.yml 수정 후 MySQL 연결)
 
 # 4. 실행
 Run 'DevQuestApplication' 또는 ./mvnw spring-boot:run
