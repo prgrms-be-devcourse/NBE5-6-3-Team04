@@ -61,7 +61,7 @@
 <details>
 <summary><h4>✚ API 설계서 (추가사항 반영)</h4></summary>
  
-<img src="DevQuest-service/src/main/resources/static/img/API설계서.png" alt="DevQuest API 설계서" width="600"/>
+<img src="DevQuest-service/src/main/resources/static/img/API설계서.png" alt="DevQuest API 설계서" width="1,826"/>
 
 </details>
 
