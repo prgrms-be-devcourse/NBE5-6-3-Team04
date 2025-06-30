@@ -2,10 +2,10 @@
 
 <div align='center'>
 
-<h1><b>DevQuest - 게이미피케이션 기반 TODO 서비스</b></h1>
+<h1><b>DevQuest (ver.2) - 게이미피케이션 기반 TODO 서비스</b></h1>
 <h3><b>프로그래머스 데브코스 5기 6회차 Team 04 - 3차 프로젝트</b></h3>
 
-<img src="/src/main/resources/static/img/DevQuestLogo.png" alt="DevQuest 로고 이미지" width="300"/>
+<img src="src/main/resources/static/img/DevQuestLogo.png" alt="DevQuest 로고 이미지" width="300"/>
 
 </div>
 
@@ -188,13 +188,13 @@
 ## <span id="10">🛠️ 시작 가이드</span>
 
 
-# 1. 프로젝트 클론
+### 1. 프로젝트 클론
 $ git clone https://github.com/prgrms-be-devcourse/NBE5-6-2-Team04.git
 
-# 2. IntelliJ로 프로젝트 열기
-#    의존성 자동 로딩 (Maven)
+### 2. IntelliJ로 프로젝트 열기
+의존성 자동 로딩 (Maven)
 
-# 3. 로컬 DB 세팅 (application.yml 수정 후 MySQL 연결)
+### 3. 로컬 DB 세팅 (application.yml 수정 후 MySQL 연결)
 
-# 4. 실행
+### 4. 실행
 Run 'DevQuestApplication' 또는 ./mvnw spring-boot:run
