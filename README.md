@@ -215,7 +215,7 @@
 
 
 ### 1. 프로젝트 클론
-$ git clone https://github.com/prgrms-be-devcourse/NBE5-6-2-Team04.git
+`$ git clone https://github.com/prgrms-be-devcourse/NBE5-6-2-Team04.git`
 
 ### 2. IntelliJ로 프로젝트 열기
 의존성 자동 로딩 (Maven)
