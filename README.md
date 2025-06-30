@@ -5,7 +5,7 @@
 <h1><b>DevQuest (ver.2) - 게이미피케이션 기반 TODO 서비스</b></h1>
 <h3><b>프로그래머스 데브코스 5기 6회차 Team 04 - 3차 프로젝트</b></h3>
 
-<img src="src/main/resources/static/img/DevQuestLogo.png" alt="DevQuest 로고 이미지" width="300"/>
+<img src="DevQuest-service/src/main/resources/static/img/DevQuestLogo.png" alt="DevQuest 로고 이미지" width="300"/>
 
 </div>
 
