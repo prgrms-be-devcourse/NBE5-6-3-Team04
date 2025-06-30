@@ -51,21 +51,17 @@
 
 </details>
 
-<br>
-
 <details>
 <summary><h4>시스템 구성도</h4></summary>
  
-<img src="DevQuest-service/src/main/resources/static/img/시스템 구성도.jpg" alt="DevQuest 시스템 구성도" width="600"/>
+<img src="DevQuest-service/src/main/resources/static/img/시스템 구성도.png" alt="DevQuest 시스템 구성도" width="600"/>
 
 </details>
 
-<br>
-
 <details>
-<summary><h4>API 설계서 (추가사항 반영)</h4></summary>
+<summary><h4>✚ API 설계서 (추가사항 반영)</h4></summary>
  
-<img src="DevQuest-service/src/main/resources/static/img/API설계서.jpg" alt="DevQuest API 설계서" width="600"/>
+<img src="DevQuest-service/src/main/resources/static/img/API설계서.png" alt="DevQuest API 설계서" width="600"/>
 
 </details>
 
