@@ -50,13 +50,11 @@
 |               | 업적 관리           | 경험치 기반 업적 추가/수정/삭제 기능 (별도 구현 로직 불필요)                              |
 
 </details>
+#### [✚ API 설계서 (추가사항 반영)](DevQuest-service/src/main/resources/static/img/API설계서.png)
 <details>
 <summary><h4>시스템 구성도</h4></summary>
 <img src="DevQuest-service/src/main/resources/static/img/시스템 구성도.png" alt="DevQuest 시스템 구성도" width="600"/>
 </details>
-
-#### [✚ API 설계서 (추가사항 반영)](DevQuest-service/src/main/resources/static/img/API설계서.png)
-
 <br>
 
 ## <span id="2">🏃 2. 팀원 소개</span>
