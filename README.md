@@ -55,10 +55,7 @@
 <img src="DevQuest-service/src/main/resources/static/img/시스템 구성도.png" alt="DevQuest 시스템 구성도" width="600"/>
 </details>
 
-<br>
-
 #### [✚ API 설계서 (추가사항 반영)](DevQuest-service/src/main/resources/static/img/API설계서.png)
-
 
 <br>
 
